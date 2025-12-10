@@ -4,12 +4,12 @@
 
 - Diferenciando-se das abordagens convencionais de estilização e animação, o Vectora foi projetado para oferecer maior flexibilidade semântica e criativa, possibilitando um nível mais elevado de controle sobre a temporalidade, a fluidez e a composição dos efeitos dinâmicos aplicados à interface. Essa característica confere à linguagem uma notável capacidade de abstrair a complexidade dos mecanismos subjacentes de renderização e execução, ao mesmo tempo em que preserva a legibilidade e a modularidade do código.
 
-- Em suma, o Vectora propõe-se como uma camada intermediária entre o design declarativo do CSS e a lógica imperativa do JavaScript, consolidando-se como uma solução inovadora para a definição de animações e interações web com ênfase na clareza sintática, extensibilidade e liberdade criativa do desenvolvedor.
+- Em suma, o Vectora propõe-se como uma camada intermediária entre o design declarativo previsível e a lógica imperativa, consolidando-se como uma solução inovadora para a definição de animações e interações web com ênfase na clareza sintática, extensibilidade e liberdade criativa do desenvolvedor.
 
 
 ## O que há de especial no Vectora?
 
-- Sua principal característica é facilitar o uso de animações JavaScript, com uma sintaxe mais amigável e legível. Além disso, há características íncriveis a serem exploradas que serão explicadas conforme a idéia do projeto se amplia. Meu objeto com isso é incentivar a criatividade e animar mais um mundo onde a maioria dos sites são estáticos.
+- Sua principal característica é facilitar o uso de animações, com uma sintaxe mais amigável e legível. Além disso, há características íncriveis a serem exploradas que serão explicadas conforme a idéia do projeto se amplia. Meu objeto com isso é incentivar a criatividade e animar mais um mundo onde a maioria dos sites são estáticos.
 
 - Vale ressaltar que, além da sua sintaxe simplificada, o Vectora é capaz de criar novas animações através da junção de animações pré-moldadas, estimulando o uso da criatividade para atribuir novas animações para a comunidade.
 

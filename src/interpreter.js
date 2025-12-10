@@ -127,7 +127,7 @@ import { parseVectora, processVectora } from "./parse.js";
     });
 
     // after: links .vec
-    const links = Array.from(document.querySelectorAll('link[rel="stylesheet"][href$=".vec"]'));
+    const links = Array.from(document.querySelectorAll('link[rel="vectora"][href$=".vec"]'));
     macron('info', `carregando ${links.length} arquivos .vec via fetch()`);
     for (const link of links) {
       const href = link.getAttribute('href');
