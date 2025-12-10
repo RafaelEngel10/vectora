@@ -24,5 +24,29 @@
   "main": "eslint.config.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "contributes": {
+    "languages": [
+      {
+        "id": "vectora",
+        "aliases": ["Vectora", "vectora"],
+        "extensions": [".vec"],
+        "configuration": "./src/language-configuration.json"
+      }
+    ],
+
+    "grammars": [
+      {
+        "language": "vectora",
+        "scopeName": "source.vec",
+        "path": "./src/syntaxes/vectora.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "uiTheme": "vs-dark",
+        "path": "./src/syntaxes/vectora-themes.json"
+      }
+    ]
+  }
 }

@@ -3,7 +3,7 @@ import { macron } from "./console.js";
 import { attachHandlerForEvent } from "./events/commonEvents.js";
 import { AsyncEvents } from "./events/asyncEvents.js";
 
-/********** parser (stack-safe para blocos aninhados 1 nível) **********/
+/********** parser (stack-safe for nested blocks 1 level) **********/
 export function parseVectora(code) {
   code = removeComments(code);
   let i = 0, n = code.length, blocks = [];

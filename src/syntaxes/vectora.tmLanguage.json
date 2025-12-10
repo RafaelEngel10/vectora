@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "vectora",
+  "scopeName": "source.vec",
   "patterns": [
     {
       "name": "entity.name.tag.vec",
@@ -24,11 +25,19 @@
     },
     {
       "name": "support.constant.property-name.vec",
-      "match": "\\b(color|background-color|text|message|radius|gap|weight|brightness|request|value)\\b\\:"
+      "match": "\\b(color|background-color|text|message|radius|gap|weight|brightness|shadow|request|value)\\b\\:"
     }, 
     {
       "name": "support.function.animation.vec",
-      "match": "\\b(fadeIn|fadeOut|slideIn|slideOut|fall|rise||pop|implode|shake|create|shiver|fadeColor|chameleonCamo|octopusCamo|paint|suddenChange|bloomGap|stagedGapColumn|stagedGapRow|skinny|heavy|callBack|callDismiss)\\b\\("
+      "match": "\\b(fadeIn|fadeOut|slideIn|slideOut|fall|rise|pop|implode|shake|create|shiver|fadeColor|chameleonCamo|octopusCamo|paint|round|bloom|stagedBloom|skinny|heavy|callBack|callDismiss)\\b\\("
+    },
+    {
+      "name": "support.operator.vec",
+      "match": "\\b(=>|++|+-)"
+    },
+    {
+      "name": "support.property-value.vec",
+      "match": "\\b(&|--)"
     },
     {
       "name": "comment.line.double-slash.vec",
@@ -39,6 +48,5 @@
       "begin": "/\\*",
       "end": "\\*/"
     }
-  ],
-  "scopeName": "source.vec"
+  ]
 }
