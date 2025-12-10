@@ -1,0 +1,27 @@
+h1 {
+    window.onLoad {
+        text: fall();
+    };
+
+    onSing.click {
+        color: paint(left, red, 2000);
+    };
+
+    onHold.click {
+        color: paint(left, black, 2000);
+    };
+}
+
+h2 {
+    window.onLoad {
+        text: fall();
+    };
+
+    onSing.click {
+        text: slideOut(right, 30px, 300ms);
+    };
+
+    onHold.click {
+        text: shake(seesaw, 1.2, 600);
+    };
+}

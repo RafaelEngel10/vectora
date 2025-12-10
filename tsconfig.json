@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    // Diretórios
+    "rootDir": "src",
+    "outDir": "dist",
+
+    // Modo estrito
+    "strict": true,
+
+    // Target moderno
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    // Interop com Node e libs modernas
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    // JSX (se for usar React; se não usar, remova!)
+    "jsx": "react-jsx",
+
+    // Geração de mapas e declarações
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Checagens úteis
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Evita problemas com imports "sujos"
+    "isolatedModules": true,
+    "moduleDetection": "force"
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
