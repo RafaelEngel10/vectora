@@ -1,15 +1,13 @@
-/* index.js
+/* interpreter.js
    Runtime simples e resiliente para Vectora (.vec)
    - <link rel="stylesheet" href="... .vec"> fetch only (host server needed)
-   - <script type="text/vec"> inline (without CORS)
+   - <script type="module"> inline (without CORS)
    - support for event blocks:
     #id { window.onLoad { text: fall(600ms); }; }
 */
 
-import { attachHandlerForEvent } from "./events/commonEvents.js";
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./basics.js";
-import { console } from "./console.js";
-import { AsyncEvents } from "./events/asyncEvents.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
+import { macron } from "./console.js";
 import { parseVectora, processVectora } from "./parse.js";
 
 (function () {
@@ -73,7 +71,7 @@ import { parseVectora, processVectora } from "./parse.js";
   function aplicaScrollReveal(selector, props) {
     const els = document.querySelectorAll(selector);
     if (!els.length) {
-      console('warn', `Nenhum elemento encontrado com nome ${selector} para ScrollReveal`)
+      macron('warn', `Nenhum elemento encontrado com nome ${selector} para ScrollReveal`)
       return;
     }
 
@@ -117,19 +115,20 @@ import { parseVectora, processVectora } from "./parse.js";
   } 
 
 
-  /********** loader: link[href$=".cssc"] fetch (server) + inline <script type="modules"> fallback **********/
+  /********** loader: link[href$=".vec"] fetch (server) + inline <script type="modules"> fallback **********/
   async function loadAll() {
     // before: inline scripts
     document.querySelectorAll('script[type="modules"]').forEach(s => {
       try {
         processVectora(s.textContent || s.innerText || '');
       } catch (e) {
-        console('error', `Erro no inline do .vec ${err}`);
+        macron('error', `Erro no inline do .vec ${err}`);
       }
     });
 
     // after: links .vec
     const links = Array.from(document.querySelectorAll('link[rel="stylesheet"][href$=".vec"]'));
+    macron('info', `carregando ${links.length} arquivos .vec via fetch()`);
     for (const link of links) {
       const href = link.getAttribute('href');
       try {
@@ -137,13 +136,13 @@ import { parseVectora, processVectora } from "./parse.js";
         const base = new URL(href, location.href).href;
         const res = await fetch(base);
         if (!res.ok) {
-          console('warn', `fetch .vec não ok ${res.status}, ${href}`)
+          macron('warn', `fetch .vec não ok ${res.status}, ${href}`)
           continue;
         }
         const text = await res.text();
         processVectora(text);
       } catch (err) {
-        console('error', `falha ao carregar .vec (CORS ou caminho): ${href}/${err}`);
+        macron('error', `falha ao carregar .vec (CORS ou caminho): ${href}/${err}`);
       }
     }
   }

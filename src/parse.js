@@ -1,3 +1,8 @@
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
+import { macron } from "./console.js";
+import { attachHandlerForEvent } from "./events/commonEvents.js";
+import { AsyncEvents } from "./events/asyncEvents.js";
+
 /********** parser (stack-safe para blocos aninhados 1 nível) **********/
 export function parseVectora(code) {
   code = removeComments(code);
@@ -81,10 +86,9 @@ export function parseVectora(code) {
 export function processVectora(code) {
   try {
     const blocks = parseVectora(code);
-    let xselector = blocks.selector;
     blocks.forEach(b => {
       b.events.forEach(e => {
-        if (xselector === '@async') {
+        if (b.selector === '@async') {
           AsyncEvents(b.selector, e.name, e.actions);
         } else {
           attachHandlerForEvent(b.selector, e.name, e.actions);
@@ -92,6 +96,6 @@ export function processVectora(code) {
       });
     });
   } catch (err) {
-    console('error', err);
+    macron('error', err);
   }
 }

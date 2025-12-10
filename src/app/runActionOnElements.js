@@ -1,14 +1,14 @@
-import { parseAnimString } from "../basics.js";
-import { textAnimations } from "../anim/catalog/text/textAnimations.js";
+import { parseAnimString } from "../../dist/basics.js";
+import { textAnimations } from "../../dist/anim/catalog/text/textAnimations.js";
 import { colorAnimations } from "../anim/catalog/color/colorAnimations.js";
-import { console } from "../console.js";
+import { macron }from "../console.js";
 
 let animations;
 
 export function runActionOnElements(selector, action) {
   const els = document.querySelectorAll(selector);
   if (!els.length) {
-    console.debug('[Vectora] nenhum elemento encontrado para selector:', selector);
+    macron(`debug`, `nenhum elemento encontrado para selector: ${selector}`)
     return;
   }
 

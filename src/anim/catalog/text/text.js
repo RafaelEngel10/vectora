@@ -1,5 +1,5 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from "../../../basics.js";
-import { console } from "../../../console.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from "../../../../dist/basics.js";
+import { macron }from "../../../console.js";
 
 export const textAnimations = {
   fall: (el, arg) => {

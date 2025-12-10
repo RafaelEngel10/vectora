@@ -1,5 +1,5 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from "../../../basics.js";
-import { console } from "../../../console.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from "../../../../dist/basics.js";
+import { macron }from "../../../console.js";
 
 export const colorAnimations = {
   fadeColor: (el, arg) => {
@@ -95,7 +95,7 @@ export const colorAnimations = {
 
       el.style.transition = '';
 
-      if (prev.color) {el.style.color = prev.color; console('warn', 'Comando de cor prévia executado');}
+      if (prev.color) {el.style.color = prev.color; macron('warn', 'Comando de cor prévia executado');}
     }, duration + 40);
   },
 

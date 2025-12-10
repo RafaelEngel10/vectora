@@ -1,5 +1,4 @@
-import { textAnimations } from "../catalog/text/textAnimations";
-import {} from "../catalog/color/colorAnimations";
+import { textAnimations } from "../../../dist/anim/catalog/text/textAnimations.js";
 
 export function reverseAnimation(el, animName, arg) {
     switch (animName) {

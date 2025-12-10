@@ -9,15 +9,12 @@
 
     // Target moderno
     "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
 
     // Interop com Node e libs modernas
     "esModuleInterop": true,
     "skipLibCheck": true,
-
-    // JSX (se for usar React; se não usar, remova!)
-    "jsx": "react-jsx",
 
     // Geração de mapas e declarações
     "sourceMap": true,

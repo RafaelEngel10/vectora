@@ -1,0 +1,74 @@
+{
+  "name": "Vectora theme",
+  "type": "dark-modern",
+  "colors": {
+    "editor.foreground": "#D4D4D4",
+    "editor.background": "#1E1E1E"
+  },
+  "tokenColors": [
+    {
+      "scope": "entity.name.tag.vec",
+      "settings": {
+        "foreground": "#569CD6", 
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "entity.other.attribute-name.class.vec",
+      "settings": {
+        "foreground": "#D7BA7D" 
+      }
+    },
+    {
+      "scope": "entity.other.attribute-name.id.vec",
+      "settings": {
+        "foreground": "#9CDCFE" 
+      }
+    },
+    {
+      "scope": "entity.other.attribute-name.async.vec",
+      "settings": {
+        "foreground": "#f09cf3"
+      }
+    },
+    {
+      "scope": "keyword.control.event.vec",
+      "settings": {
+        "foreground": "#C586C0", 
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "support.constant.property-name.vec",
+      "settings": {
+        "foreground": "#4FC1FF"
+      }
+    },
+    {
+      "scope": "support.function.animation.vec",
+      "settings": {
+        "foreground": "#DCDCAA"
+      }
+    },
+    {
+      "scope": [
+        "comment.line.double-slash.vec",
+        "comment.block.vec"
+      ],
+      "settings": {
+        "foreground": "#6A9955",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "punctuation.definition.block.cssc",
+        "punctuation.section.block.begin.cssc",
+        "punctuation.section.block.end.cssc"
+      ],
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    }
+  ]
+}

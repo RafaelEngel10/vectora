@@ -1,6 +1,6 @@
 import { runActionOnElements } from "../app/runActionOnElements.js";
-import { mapEventName } from "../basics.js";
-import { console } from "../console.js";
+import { mapEventName } from "../../dist/basics.js";
+import { macron }from "../console.js";
 
 export function attachHandlerForEvent(selector, rawEventName, actions) {
     // rawEventName: ex "window.onLoad" or "reveal.onScroll"
@@ -22,7 +22,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     // onSing.click event listener
     if (rawEventName.toLowerCase() === 'onsing.click') {
       const els = document.querySelectorAll(selector);
-      if (!els.length) return console('error', 'Nenhum elemento para onSing.click!');
+      if (!els.length) return macron('error', 'Nenhum elemento para onSing.click!');
 
       els.forEach(el => {
         el.addEventListener('click', () => {
@@ -38,7 +38,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     // onDbl.click event listener
     if (rawEventName.toLowerCase() === 'ondbl.click') {
     const els = document.querySelectorAll(selector);
-    if (!els.length) return console('error', 'Nenhum elemento para onDbl.click!');
+    if (!els.length) return macron('error', 'Nenhum elemento para onDbl.click!');
 
       els.forEach(el => {
         el.addEventListener('dblclick', () => {
@@ -54,7 +54,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     // onHold.click event listener
     if (rawEventName.toLowerCase() === 'onhold.click') {
       const els = document.querySelectorAll(selector);
-      if (!els.length) return console('error', 'Nenhum elemento para onHold.click!');
+      if (!els.length) return macron('error', 'Nenhum elemento para onHold.click!');
 
       const holdDuration = 175; // enough time to consider "hold" (ms).
       els.forEach(el => {
@@ -79,7 +79,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     if (target && target.toLowerCase() === 'window') {
       window.addEventListener(jsEvent, handler);
       if (jsEvent === 'load' && document.readyState === 'complete') {
-        console('log', `window already loaded — executing handler for ${selector}`);
+        macron('log', `window already loaded — executing handler for ${selector}`);
         handler();
       }
       return;
@@ -104,7 +104,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     // attach to elements (delegation not implemented — attach individually)
     const els = document.querySelectorAll(selector);
     if (!els || els.length === 0) {
-      console('log', `Nenhum elemento encontrado para bind do evento ${selector} e ${rawEventName}`);
+      macron('log', `Nenhum elemento encontrado para bind do evento ${selector} e ${rawEventName}`);
       return;
     }
     const mapped = mapEventName(jsEvent);
@@ -130,7 +130,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
       const els = document.querySelectorAll(selector);
       els.forEach(el => observer.observe(el));
 
-      console('debug', `Ativado reveal.onScroll para ${selector}`)
+      macron('debug', `Ativado reveal.onScroll para ${selector}`)
       return;
     }
   console.log("handler.js foi executado com sucesso!");

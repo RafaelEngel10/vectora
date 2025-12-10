@@ -1,4 +1,4 @@
-export function console(type, message) {
+export function macron(type, message) {
     switch (type) {
         case 'debug':
             console.debug('[Vectora]', message);
