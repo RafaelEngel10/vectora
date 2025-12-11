@@ -99,6 +99,32 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
       } else { handler(); }
       return;
     }
+    
+    if (rawEventName === 'reveal.onScroll') {
+      const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        for (const a of actions) {
+          runActionOnElements(selector, a);
+        }
+        // remove o observador após o primeiro disparo 
+        obs.unobserve(entry.target);
+      }
+      });
+    }, {
+      threshold: 0.05 // 5% visível já ativa
+    });
+
+      const els = document.querySelectorAll(selector);
+      els.forEach(el => observer.observe(el));
+
+      macron('debug', `Ativado reveal.onScroll para ${selector}`)
+      return;
+    }
+
+
+
+
 
     
     // attach to elements (delegation not implemented — attach individually)
@@ -111,27 +137,4 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     els.forEach(el => {
       el.addEventListener(mapped, handler);
     });
-
-    if (rawEventName === 'reveal.onScroll') {
-      const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        for (const a of actions) {
-          runActionOnElements(selector, a);
-        }
-        // remove o observador após o primeiro disparo (ou comente se quiser repetir)
-        obs.unobserve(entry.target);
-      }
-      });
-    }, {
-      threshold: 0.1 // 10% visível já ativa
-    });
-
-      const els = document.querySelectorAll(selector);
-      els.forEach(el => observer.observe(el));
-
-      macron('debug', `Ativado reveal.onScroll para ${selector}`)
-      return;
-    }
-  console.log("handler.js foi executado com sucesso!");
 }

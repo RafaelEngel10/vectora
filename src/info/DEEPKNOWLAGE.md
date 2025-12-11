@@ -42,6 +42,8 @@
         - "seesaw": "gangorra" -> diagonal; 
         - "cocktail-shaker": "coqueteleira" -> vertical;
         - "sideways": "laterais" -> horizontal;
+    
+    - rotate(sentido, graus, duração) ---> rotaciona o texto através de um sentido, horário ou anti-horário, em uma certa duração.
 
 - [x] color == 
     - fadeColor(cor final, duração) ---> animação de aparecimento da cor

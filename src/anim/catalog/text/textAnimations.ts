@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
 
 export const textAnimations = {
   fall: (el: any, arg: any) => {
@@ -199,33 +199,41 @@ export const textAnimations = {
 
   shake: (el: any, arg: any) => {
     // Sintaxe: shake(direction, intensity, duration)
-    // Exemplo: shake(sideways, 10px, 600ms)
+    // Exemplo: shake('sideways', 10px, 600ms)
 
     const parts: any = arg ? arg.split(',').map((p: any) => p.trim()) : [];
-    const direction: any = (parts[0] || 'sideways').toLowerCase();
+    const direction: any = (parts[0] || 'seesaw').toLowerCase();
     const intensity: any = parts[1] || '10px';
     const duration: number = toMs(parts[2] || '600ms');
-
+    
     ensureInlineBlockIfNeeded(el);
+    el.style.transformOrigin = "center center";
     el.style.transition = 'none';
     void el.offsetWidth;
 
     // Define o eixo e o padrão de movimento
-    let keyframes: any;
+    let keyframes: string[];
     switch (direction) {
       case 'seesaw':
-        for (let i = 0; i < intensity.length; i+=0.10) {
-          keyframes = [
-            `rotate(${i}deg)`
-          ];
-          if (i == 5) break;
-        }
-        for (let i = 0; i < intensity.length; i-=0.10) {
-          keyframes = [
-            `rotate(${i}deg)`
-          ];
-          if (i == -5) break;
-        }
+        case 'seesaw':
+        keyframes = [
+          'rotate(0deg)',
+          'rotate(0.625deg)',
+          'rotate(1.25deg)',
+          'rotate(2.5deg)',
+          'rotate(5deg)',
+          'rotate(-0.625deg)',
+          'rotate(-1.25deg)',
+          'rotate(-2.5deg)',
+          'rotate(-5deg)',
+          'rotate(3deg)',
+          'rotate(1.5deg)',
+          'rotate(0.75deg)',
+          'rotate(-3deg)',
+          'rotate(-1.5deg)',
+          'rotate(-0.75deg)',
+          'rotate(0deg)'
+        ];
         break;
 
       case 'cocktail-shaker':
@@ -346,5 +354,56 @@ export const textAnimations = {
       el.style.animation = '';
       styleTag.remove();
     }, duration + 50);
+  },
+
+
+  rotate: (el: any, arg: any) => {
+    const parts: any = arg ? arg.split(',').map((p: any) => p.trim()) : [];
+    const way: any = parts[0] || 'clockwise';
+    const degrees: number = parseFloat(parts[1]) || 90;
+    let duration: any = parts[2] || '600ms';
+
+    duration = toMs(duration);
+
+    ensureInlineBlockIfNeeded(el);
+
+    const animationName = `rotateAnimation_${Date.now()}`;
+    const finalRotation = way === 'counter-clock' ? -degrees : degrees;
+    
+    const keyframesCSS = `
+      @keyframes ${animationName} {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(${finalRotation}deg); }
+      }
+    `;
+
+    const styleTag: HTMLStyleElement = document.createElement('style');
+    styleTag.textContent = keyframesCSS;
+    document.head.appendChild(styleTag);
+
+    el.style.animation = `${animationName} ${duration}ms ease-in-out forwards`;
+
+    // When animation ends, apply final transform inline so rotation persists,
+    // then remove the generated <style> and the listener.
+    const onAnimationEnd = () => {
+      el.style.transform = `rotate(${finalRotation}deg)`;
+      // Clear animation property so element keeps the inline transform
+      el.style.animation = '';
+      if (styleTag.parentNode) styleTag.remove();
+      el.removeEventListener('animationend', onAnimationEnd);
+    };
+
+    el.addEventListener('animationend', onAnimationEnd);
+
+    // Fallback: if animationend doesn't fire for some reason, cleanup after a bit
+    setTimeout(() => {
+      if (document.body.contains(styleTag)) {
+        el.style.transform = `rotate(${finalRotation}deg)`;
+        el.style.animation = '';
+        styleTag.remove();
+        el.removeEventListener('animationend', onAnimationEnd);
+      }
+    }, duration + 250);
   }
+
 }

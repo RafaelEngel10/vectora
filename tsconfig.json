@@ -10,7 +10,7 @@
     // Target moderno
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
 
     // Interop com Node e libs modernas
     "esModuleInterop": true,
@@ -27,7 +27,8 @@
 
     // Evita problemas com imports "sujos"
     "isolatedModules": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": false
   },
 
   "include": ["src/**/*.ts"],
