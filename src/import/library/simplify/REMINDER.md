@@ -16,6 +16,8 @@
 
 -   camo(type, other arguments) ---> camo types = {octopus, chameleon}
 
+-   zoom(type, other arguments) ---> zoom types = {in, out}
+
 
 -   val(variable_name) && var(variable_name) ==
 
@@ -29,4 +31,6 @@
     -   newObj(object_name) ---> creates an object
 
     -   obj(object_name) ---> search objects value
+
+
 

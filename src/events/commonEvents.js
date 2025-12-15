@@ -54,9 +54,10 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     // onHold.click event listener
     if (rawEventName.toLowerCase() === 'onhold.click') {
       const els = document.querySelectorAll(selector);
-      if (!els.length) return macron('error', 'Nenhum elemento para onHold.click!');
+      if (!els.length) return macron('error', `Nenhum elemento para ${rawEventName}`);
+      els.style.userSelect = "none";
 
-      const holdDuration = 175; // enough time to consider "hold" (ms).
+      const holdDuration = 150; // enough time to consider "hold" (ms).
       els.forEach(el => {
         let holdTimer;
 

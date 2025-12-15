@@ -1,6 +1,6 @@
 # File Tree: vectora
 
-**Generated:** 12/10/2025, 12:17:48 PM
+**Generated:** 12/15/2025, 7:41:40 AM
 **Root Path:** `c:\Users\Usuario\Documents\rafael\projeto\vectora`
 
 ```
@@ -15,20 +15,21 @@
 │   │   │   ├── 📁 radius
 │   │   │   ├── 📁 shadow
 │   │   │   ├── 📁 text
-│   │   │   │   ├── 📄 text.js
 │   │   │   │   └── 📄 textAnimations.ts
 │   │   │   ├── 📁 value
-│   │   │   │   └── 📄 valueActions.js
+│   │   │   │   └── 📄 valueActions.ts
 │   │   │   └── 📁 weight
 │   │   ├── 📁 interpolation
 │   │   │   ├── 📁 concatenation
 │   │   │   │   ├── 📁 common
-│   │   │   │   │   └── 📄 concatenation.coffee
+│   │   │   │   │   ├── 📄 concatenation.coffee
+│   │   │   │   │   └── 📄 concatenation.js
 │   │   │   │   └── 📁 induce
-│   │   │   │       └── 📄 induce.coffee
+│   │   │   │       └── 📄 induce.js
 │   │   │   ├── 📁 sum
-│   │   │   │   └── 📄 sum.coffee
-│   │   │   └── 📄 filter.coffee
+│   │   │   │   ├── 📄 sum.coffee
+│   │   │   │   └── 📄 sum.js
+│   │   │   └── 📄 filter.ts
 │   │   └── 📁 reverse
 │   │       └── 📄 reverseAnimations.js
 │   ├── 📁 app
@@ -53,21 +54,23 @@
 │   │   │       └── 📝 REMINDER.md
 │   │   └── 📝 REMINDER.md
 │   ├── 📁 info
+│   │   ├── 📝 DEEPKNOWLAGE.md
 │   │   ├── 📝 EXTENSIONS.md
+│   │   ├── 📝 FILETREE.md
 │   │   └── 📝 REMINDER.md
 │   ├── 📁 syntaxes
-│   │   ├── ⚙️ language-configuration.json
+│   │   ├── ⚙️ vectora-themes.json
 │   │   └── ⚙️ vectora.tmLanguage.json
 │   ├── 📄 basics.ts
 │   ├── 📄 console.js
 │   ├── 📄 interpreter.js
 │   ├── 📄 parse.js
-│   └── 📄 styles.cssc
+│   └── 📄 styles.vec
 ├── ⚙️ .gitignore
-├── 📝 DEEPKNOWLAGE.md
 ├── 📝 READ.md
 ├── 📝 README.md
 ├── 📝 REMINDER.md
+├── ⚙️ language-configuration.json
 ├── ⚙️ package-lock.json
 ├── ⚙️ package.json
 └── ⚙️ tsconfig.json

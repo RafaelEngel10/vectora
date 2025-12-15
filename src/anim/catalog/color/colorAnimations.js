@@ -111,7 +111,7 @@ export const colorAnimations = {
 
     ensureInlineBlockIfNeeded(el);
 
-    el.style.background = `radial-gradient(circle at center, ${finalColor} 0%, ${originalColor} 60%)`;
+    el.style.background = `radial-gradient(circle at center, ${finalColor} 0%, ${originalColor} 100%)`;
     el.style.backgroundSize = '100% 100%';
     el.style.backgroundPosition = 'center center';
     el.style.backgroundRepeat = 'no-repeat';

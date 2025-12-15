@@ -357,10 +357,10 @@ export const textAnimations = {
   },
 
 
-  rotate: (el: any, arg: any) => {
+  spin: (el: any, arg: any) => {
     const parts: any = arg ? arg.split(',').map((p: any) => p.trim()) : [];
     const way: any = parts[0] || 'clockwise';
-    const degrees: number = parseFloat(parts[1]) || 90;
+    const degrees: number = parseFloat(parts[1]) || 360;
     let duration: any = parts[2] || '600ms';
 
     duration = toMs(duration);
@@ -383,25 +383,12 @@ export const textAnimations = {
 
     el.style.animation = `${animationName} ${duration}ms ease-in-out forwards`;
 
-    // When animation ends, apply final transform inline so rotation persists,
-    // then remove the generated <style> and the listener.
-    const onAnimationEnd = () => {
-      el.style.transform = `rotate(${finalRotation}deg)`;
-      // Clear animation property so element keeps the inline transform
-      el.style.animation = '';
-      if (styleTag.parentNode) styleTag.remove();
-      el.removeEventListener('animationend', onAnimationEnd);
-    };
-
-    el.addEventListener('animationend', onAnimationEnd);
-
     // Fallback: if animationend doesn't fire for some reason, cleanup after a bit
     setTimeout(() => {
       if (document.body.contains(styleTag)) {
         el.style.transform = `rotate(${finalRotation}deg)`;
         el.style.animation = '';
         styleTag.remove();
-        el.removeEventListener('animationend', onAnimationEnd);
       }
     }, duration + 250);
   }

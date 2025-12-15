@@ -4,6 +4,8 @@
 
 - color: ; ---> propriedade referente a cor do elemento.
 
+- transform: ; ---> propriedade geral que mantém o efeitos finais de animações.
+
 - radius: ; ---> propriedade referente ao raio de curvatura de um elemento.
 
 - gap: ; ---> propriedade referente a distância entre dois elementos ou mais.
@@ -43,7 +45,7 @@
         - "cocktail-shaker": "coqueteleira" -> vertical;
         - "sideways": "laterais" -> horizontal;
     
-    - rotate(sentido, graus, duração) ---> rotaciona o texto através de um sentido, horário ou anti-horário, em uma certa duração.
+    - spin(sentido, graus, duração) ---> rotaciona o texto através de um sentido, horário ou anti-horário, em uma certa duração.
 
 - [x] color == 
     - fadeColor(cor final, duração) ---> animação de aparecimento da cor
@@ -55,6 +57,13 @@
     - paint(sentido, cor final, duração) ---> colore conforme a sentido.
 
     - liquidFill(sentido, cor final, duração) ---> colore como se estivesse enchendo de algum líquido.
+
+- [ ] transform ==
+    - rotate(sentido, intensidade, duração) ---> rotaciona o texto através de um sentido, horário ou anti-horário, em uma certa duração, perdurando sua posição.
+
+    - zoomIn(intensidade, duração) ---> aproxima o elemento, perdurando a animação.
+
+    - zoomOut(intensidade, duração) ---> afasta o elemento, perdurando a animação.
 
 - [ ] radius ==
     - round(estado inicial, estado final, duração) ---> muda do estado inicial de border-radius para o estado final com uma transição simples.
