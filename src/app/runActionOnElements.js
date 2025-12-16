@@ -7,6 +7,8 @@ import { valueFilter } from "../../dist/anim/interpolation/value.js";
 import { transformAnimations } from "../../dist/anim/catalog/transform/transform.js";
 import { backgroundColor } from "../../dist/anim/catalog/background/color/backgroundColor.js";
 import { backgroundImage } from "../../dist/anim/catalog/background/image/backgroundImage.js";
+import { shadowAnimations } from "../../dist/anim/catalog/shadow/shadowAnimations.js";
+import { radiusAnimations } from "../../dist/anim/catalog/radius/radiusAnimations.js";
 
 let animations;
 
@@ -71,6 +73,16 @@ export function runActionOnElements(selector, action) {
       case 'mirror':
         animations = transformAnimations;
         break;
+      /* shadow case */
+      case 'surge':
+      case 'fadeDusk':
+      case 'purge':
+        animations = shadowAnimations;
+        break;
+      /* radius case */
+      case 'round':
+        animations = radiusAnimations;
+        break;
       /* default case */
       default:
         macron('warn', `Sem filtragem para ${animationTypes}`)
@@ -134,6 +146,16 @@ export function runActionOnElements(selector, action) {
             case 'zoomOut':
             case 'mirror':
               animations = transformAnimations;
+              break;
+            /* shadow case */
+            case 'surge':
+            case 'fadeDusk':
+            case 'purge':
+              animations = shadowAnimations;
+              break;
+            /* radius case */
+            case 'round':
+              animations = radiusAnimations;
               break;
             /* default case */
             default:
