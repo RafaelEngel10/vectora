@@ -58,12 +58,14 @@
 
     - liquidFill(sentido, cor final, duração) ---> colore como se estivesse enchendo de algum líquido.
 
-- [ ] transform ==
+- [x] transform ==
     - rotate(sentido, intensidade, duração) ---> rotaciona o texto através de um sentido, horário ou anti-horário, em uma certa duração, perdurando sua posição.
 
-    - zoomIn(intensidade, duração) ---> aproxima o elemento, perdurando a animação.
+    - zoomIn(intensidade, duração) ---> aproxima o elemento, perdurando a animação. 
 
     - zoomOut(intensidade, duração) ---> afasta o elemento, perdurando a animação.
+
+    - mirror(intensidade, duração) ---> inverte e espelha o elemento.
 
 - [ ] radius ==
     - round(estado inicial, estado final, duração) ---> muda do estado inicial de border-radius para o estado final com uma transição simples.

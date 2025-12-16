@@ -5,6 +5,8 @@ import { macron }from "../console.js";
 import { animFilter } from "../../dist/anim/interpolation/filter.js";
 import { valueFilter } from "../../dist/anim/interpolation/value.js";
 import { transformAnimations } from "../../dist/anim/catalog/transform/transform.js";
+import { backgroundColor } from "../../dist/anim/catalog/background/color/backgroundColor.js";
+import { backgroundImage } from "../../dist/anim/catalog/background/image/backgroundImage.js";
 
 let animations;
 
@@ -56,7 +58,11 @@ export function runActionOnElements(selector, action) {
       case 'chameleonCamo': 
       case 'octopusCamo': 
       case 'liquidFill':
-        animations = colorAnimations;
+        if (action.prop.toLowerCase() === 'background.color') {
+          animations = backgroundColor;
+        } else {
+          animations = colorAnimations;
+        }
         break;
       /* transform case */
       case 'rotate':
@@ -116,7 +122,11 @@ export function runActionOnElements(selector, action) {
             case 'chameleonCamo': 
             case 'octopusCamo': 
             case 'liquidFill':
-              animations = colorAnimations;
+              if (action.prop.toLowerCase() === 'background.color') {
+                animations = backgroundColor;
+              } else {
+                animations = colorAnimations;
+              }
               break;
             /* transform case */
             case 'rotate':
@@ -131,15 +141,16 @@ export function runActionOnElements(selector, action) {
           }
           macron('debug', `Interpolações no script. Animação em execução: ${part}`);
           const fn = animations[part];
-          // Filtra por tipo de propriedade
+        
           if (
             (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(part)) ||
             (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
-            (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'].includes(part))  
+            (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'].includes(part))  ||
+            (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
             //(propType === 'gap' && ['bloomGap', 'stagedGapColumn', 'stagedGapRow'].includes(part)) ||
             //(propType === 'radius' && ['suddenChange'].includes(part)) ||
             //(propType === 'weight' && ['skinny', 'heavy'].includes(part)) ||  
-            //(propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) ||
+            (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) 
             //(propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) ||
             //(propType === 'value' && ['searchValue'].includes(part))
           ) {
@@ -152,15 +163,16 @@ export function runActionOnElements(selector, action) {
 
       if (animState.type === 'NONE' || types === 'NONE') {
         macron('debug', `Sem interpolações no script. Animação básica ${animInfo.name}`);
-        // Filtra por tipo de propriedade
+
         if (
           (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(animInfo.name)) ||
           (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
-          (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'])  
+          (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'])  ||
+          (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
           //(propType === 'gap' && ['bloomGap', 'stagedGapColumn', 'stagedGapRow'].includes(animInfo.name)) ||
           //(propType === 'radius' && ['suddenChange'].includes(animInfo.name)) ||
           //(propType === 'weight' && ['skinny', 'heavy'].includes(animInfo.name)) ||  
-          //(propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) ||
+          (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) 
           //(propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) ||
           //(propType === 'value' && ['searchValue'].includes(animInfo.name))
         ) {

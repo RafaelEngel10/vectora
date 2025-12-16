@@ -1,0 +1,1 @@
+O contexto inteiro está nos arquivos presente nas "/info/DEEPKNOWLAGE.md", leia ele para entender como tudo vai funcionar

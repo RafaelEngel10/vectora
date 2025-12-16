@@ -1,43 +1,41 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from "../../../../dist/basics.js";
-import { macron }from "../../../console.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../../basics.js';
 
-export const colorAnimations = {
-  fadeColor: (el, arg) => {
-  // Sintax: fadeColor(initialColor, finalColor, duration)
-  // Exemplo: fadeColor(#ff0000, #00ff00, 1.5s)
-    const parts = arg ? arg.split(',').map(p => p.trim()) : [];
+export const backgroundColor = {
+
+    fadeColor: (el: any, arg: any) => {
+    const parts = arg ? arg.split(',').map((p: string) => p.trim()) : [];
     const initialColor = parts[0] || '#000000';
     const finalColor = parts[1] || '#ffffff';
-    const duration = toMs(parts[2] || '1000ms');
+    const duration: number = toMs(parts[2] || '1000ms');
 
     el.style.transition = 'none';
-    el.style.color = initialColor;
+    el.style.backgroundColor = initialColor;
 
     void el.offsetWidth;
 
     el.style.transition = `color ${duration}ms ease-in-out`;
 
     requestAnimationFrame(() => {
-      el.style.color = finalColor;
+      el.style.backgroundColor = finalColor;
     });
   },
 
 
-  paint: (el, arg) => {
+  paint: (el: any, arg: any) => {
     // Sintax: paint(direction, finalColor, duration)
     // Ex: paint(left, #ff0000, 1200ms)
-    const parts = arg ? arg.split(',').map(p => p.trim()) : [];
+    const parts = arg ? arg.split(',').map((p: any) => p.trim()) : [];
     const direction = (parts[0] || 'left').toLowerCase();
     const finalColor = parts[1] || '#000000';
-    const duration = toMs(parts[2] || '600ms');
+    const duration: number = toMs(parts[2] || '600ms');
 
-    const computed = getComputedStyle(el).color || '#000000';
-    const initialColor = computed;
+    const computed: string = getComputedStyle(el).backgroundColor || '#000000';
+    const initialColor: string = computed;
 
     ensureInlineBlockIfNeeded(el);
 
     const prev = {
-      color: el.style.color || '',
+      color: el.style.backgroundColor || '',
       bg: el.style.backgroundImage || '',
       bgPos: el.style.backgroundPosition || '',
       bgSize: el.style.backgroundSize || '',
@@ -84,7 +82,7 @@ export const colorAnimations = {
     });
 
     setTimeout(() => {
-      el.style.color = finalColor;
+      el.style.backgroundColor = finalColor;
 
       el.style.backgroundImage = prev.bg;
       el.style.backgroundPosition = prev.bgPos;
@@ -95,19 +93,19 @@ export const colorAnimations = {
 
       el.style.transition = '';
 
-      if (prev.color) {el.style.color = prev.color; macron('warn', 'Comando de cor prévia executado');}
+      if (prev.color) {el.style.backgroundColor = prev.color; console.warn('[Vectora] Comando de cor prévia executado');}
     }, duration + 40);
   },
 
 
-  chameleonCamo: (el, arg) => {
+  chameleonCamo: (el: any, arg: any) => {
     // Sintax: chameleonCamo(originalColor, finalColor, duration)
     // Ex: chameleonCamo(#fff, #00aaff, 1500)
 
-    const parts = arg ? arg.split(',').map(p => p.trim()) : [];
+    const parts = arg ? arg.split(',').map((p: any) => p.trim()) : [];
     const originalColor = parts[0] || getComputedStyle(el).color || '#000';
     const finalColor = parts[1] || '#fff';
-    const duration = toMs(parts[2] || '1200ms');
+    const duration: number = toMs(parts[2] || '1200ms');
 
     ensureInlineBlockIfNeeded(el);
 
@@ -126,18 +124,18 @@ export const colorAnimations = {
     });
 
     setTimeout(() => {
-      el.style.color = finalColor;
+      el.style.backgroundColor = finalColor;
       el.style.background = '';
       el.style.webkitTextFillColor = '';
     }, duration + 50);
   },
 
 
-  octopusCamo: (el, arg) => {
+  octopusCamo: (el: any, arg: any) => {
     // Sintax: octopusCamo(originalColor, finalColor, duration)
     // Ex: octopusCamo(#fff, #00aaff, 1500)
 
-    const parts = arg ? arg.split(',').map(p => p.trim()) : [];
+    const parts = arg ? arg.split(',').map((p: any) => p.trim()) : [];
     const originalColor = parts[0] || getComputedStyle(el).color || '#000';
     const finalColor = parts[1] || '#fff';
     const duration = toMs(parts[2] || '1200ms');
@@ -160,29 +158,29 @@ export const colorAnimations = {
     });
 
     setTimeout(() => {
-      el.style.color = finalColor;
+      el.style.backgroundColor = finalColor;
       el.style.background = '';
       el.style.webkitTextFillColor = '';
     }, duration + 50);
   },
 
 
-  liquidFill: (el, arg) => {
-  // Sintax: liquidFill(fillColor, duration)
-  // Ex: liquidFill(#00aaff, 1800)
+  liquidFill: (el: any, arg: any) => {
+    // Sintax: liquidFill(fillColor, duration)
+    // Ex: liquidFill(#00aaff, 1800)
 
-    const parts = arg ? arg.split(',').map(p => p.trim()) : [];
+    const parts = arg ? arg.split(',').map((p: any) => p.trim()) : [];
     const fillColor = parts[0] || '#00aaff';
-    const duration = toMs(parts[1] || '1500ms');
+    const duration: number = toMs(parts[1] || '1500ms');
 
     ensureInlineBlockIfNeeded(el);
 
     el.style.background = `
-      linear-gradient(
+        linear-gradient(
         to top,
         ${fillColor} 50%,
         transparent 50%
-      )
+        )
     `;
     el.style.backgroundSize = '100% 200%';
     el.style.backgroundPosition = '0% 100%';
@@ -193,23 +191,24 @@ export const colorAnimations = {
     el.style.webkitTextFillColor = 'transparent';
 
     el.style.transition = `
-      background-position ${duration}ms ease-in-out
+        background-position ${duration}ms ease-in-out
     `;
 
     // força reflow
     void el.offsetWidth;
 
     requestAnimationFrame(() => {
-      // sobe o "líquido"
-      el.style.backgroundPosition = '0% 0%';
+        // sobe o "líquido"
+        el.style.backgroundPosition = '0% 0%';
     });
 
     setTimeout(() => {
-      // finaliza preenchendo de vez
-      el.style.background = '';
-      el.style.color = fillColor;
-      el.style.webkitTextFillColor = '';
+        // finaliza preenchendo de vez
+        el.style.background = '';
+        el.style.backgroundColor = fillColor;
+        el.style.webkitTextFillColor = '';
     }, duration + 50);
-  },
-  
+    },
+
+
 }

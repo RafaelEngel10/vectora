@@ -44,9 +44,22 @@
 
 - Toda propriedade representa a parte do elemento a qual vai ser manipulada, sendo sempre seguida de ":" para sua manipulação. Sendo assim, é atribuindo para essa propriedade, oque a animação vai fazer. Além disso, toda animação precisa de "()", já que são nada mais que funções com parâmetros atribuíveis que passam instruções de como vão ser executadas.
 
+### Operadores Lógicos:
+
+> ++ -> Soma ou concatena duas ou mais animações, levando em conta sua grandeza física e seu sentido/direção.
+
+> +- -> Induz a concatenação de duas ou mais animações que seriam somadas normalmente.
+
+> => -> Manipula a interpolação resultante da soma/concatenação.
+
+> -- -> Aplica um delay entre animações concatenadas.
+
+> & -> Aplica uma propriedade à interpolação.
+
+
 ### Precedência e associatividade dos operadores:
 
-- Acima de tudo, os símbolos (++ e +-) são os primeiros a serem levados em conta, logo após a mudança na propriedade da interpolação, vulgo junção das animações, em seguida o delay entre cada animação (--) e por último, mas não menos importante, a atribuição de propriedade (&), a qual sempre é antecedida pelo sinal universal de interpolação (=>);
+- Acima de tudo, o símbolo (=>) é o primeiro a ser levado em conta, logo após é levado em conta a soma e concatenação e a concatenação forçada (++, +-), em seguida o delay entre cada animação (--) e por último, mas não menos importante, a atribuição de propriedade (&), a qual sempre é antecedida pelo sinal universal de interpolação (=>);
 
 <pre>
     fall() ++ slideIn() => &ease-in;
@@ -57,3 +70,4 @@
 <pre>
     fall() ++ slideIn() => &ease-in => slideOut(right,2px,300ms) => --500ms;
 </pre>
+

@@ -25,11 +25,11 @@
     },
     {
       "name": "support.constant.property-name.vec",
-      "match": "\\b(color|background-color|text|transform|message|radius|gap|weight|brightness|shadow|request|value)\\b\\:"
+      "match": "\\b(color|background.color|text|transform|message|radius|gap|weight|brightness|shadow|request|value)\\b\\:"
     }, 
     {
       "name": "support.function.animation.vec",
-      "match": "\\b(fadeIn|fadeOut|slideIn|slideOut|fall|rise|pop|implode|shake|spin|create|shiver|fadeColor|chameleonCamo|octopusCamo|paint|round|bloom|stagedBloom|skinny|heavy|callBack|callDismiss|rotate|mirror|zoomIn|zoomOut)\\b\\("
+      "match": "\\b(fadeIn|fadeOut|slideIn|slideOut|fall|rise|pop|implode|shake|spin|shiver|fadeColor|chameleonCamo|octopusCamo|paint|liquidFill|round|bloom|stagedBloom|skinny|heavy|rotate|mirror|zoomIn|zoomOut|halo|fadeLight|pillar|neon|surge|purge|fadeDusk)\\b\\("
     },
     {
       "name": "support.operator.vec",
