@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // Diretórios
-    "rootDir": "src",
+    "rootDirs": ["src"],
     "outDir": "dist",
 
     // Modo estrito

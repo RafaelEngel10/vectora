@@ -1,5 +1,4 @@
 import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
-import { execptCond } from './exceptCond';
 
 export const radiusAnimations = {
     round: (el: any, args: any) => {
@@ -34,19 +33,19 @@ export const radiusAnimations = {
                 requestAnimationFrame(() => {el.style.borderRadius = `${round}px`;});
                 break;
             case 'top-left':
-                el.style.transition = `border-top-left-radius ${duration}ms`;
+                el.style.transition = `border-top-left-radius ${duration}ms ease`;
                 requestAnimationFrame(() => {el.style.borderTopLeftRadius = `${round}px`;});
                 break;
             case 'top-right':
-                el.style.transition = `border-top-right-radius ${duration}ms`;
+                el.style.transition = `border-top-right-radius ${duration}ms ease`;
                 requestAnimationFrame(() => {el.style.borderTopRightRadius = `${round}px`;});
                 break;
             case 'bottom-left':
-                el.style.transition = `border-bottom-left-radius ${duration}ms`;
+                el.style.transition = `border-bottom-left-radius ${duration}ms ease`;
                 requestAnimationFrame(() => {el.style.borderBottomLeftRadius = `${round}px`;});
                 break;
             case 'bottom-right':
-                el.style.transition = `border-bottom-right-radius ${duration}ms`;
+                el.style.transition = `border-bottom-right-radius ${duration}ms ease`;
                 requestAnimationFrame(() => {el.style.borderBottomRightRadius = `${round}px`;});
                 break;
             default:
@@ -57,7 +56,52 @@ export const radiusAnimations = {
                 console.error(`[Vectora] Sem especificação para radius: ${specific}`);
                 break;
         }
-        
     }
+}
 
+
+function execptCond(el: any, duration: number, round: number, specific: string): void {
+    const parts = specific.split('pt-')[1];
+
+    switch (parts) {
+        case 'top-right':
+            el.style.transition = 
+                `border-top-left ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`;
+            requestAnimationFrame(() => {
+                el.style.borderBottomLeftRadius = `${round}px`;
+                el.style.borderBottomRightRadius = `${round}px`;
+                el.style.borderTopLeftRadius = `${round}px`;
+            });
+            break;
+        case 'top-left':
+            el.style.transition = 
+                `border-top-right ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`;
+            requestAnimationFrame(() => {
+                el.style.borderBottomLeftRadius = `${round}px`;
+                el.style.borderBottomRightRadius = `${round}px`;
+                el.style.borderTopRightRadius = `${round}px`;
+            });
+            break;
+        case 'bottom-right':
+            el.style.transition = 
+                `border-top-left ${duration}ms ease, border-bottom-left ${duration}ms ease, border-top-right ${duration}ms ease`;
+            requestAnimationFrame(() => {
+                el.style.borderBottomLeftRadius = `${round}px`;
+                el.style.borderTopRightRadius = `${round}px`;
+                el.style.borderTopLeftRadius = `${round}px`;
+            });
+            break;
+        case 'bottom-left':
+            el.style.transition = 
+                `border-top-left ${duration}ms ease, border-top-right ${duration}ms ease, border-bottom-right ${duration}ms ease`;
+            requestAnimationFrame(() => {
+                el.style.borderTopRightRadius = `${round}px`;
+                el.style.borderBottomRightRadius = `${round}px`;
+                el.style.borderTopLeftRadius = `${round}px`;
+            });
+            break;
+        default: 
+            console.error(`[Vectora] Sem exceção para radius: ${specific}`);
+            break;
+    }
 }
