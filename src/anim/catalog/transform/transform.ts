@@ -10,8 +10,9 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
-        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
+        el.style.transition = 'none';
+        void el.offsetWidth; 
 
         const animationName = `rotateAnimation_${Date.now()}`;
         const finalRotation = way === 'counter-clock' ? -degrees : degrees;
@@ -60,8 +61,9 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
-        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
+        el.style.transition = 'none';
+        void el.offsetWidth; 
 
         el.style.transform = `scale(0)`;
         el.style.transition = `transform ${duration}ms ease`;
@@ -79,8 +81,9 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
-        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
+        el.style.transition = 'none';
+        void el.offsetWidth; 
 
         el.style.transform = `scale(0)`;
         el.style.transition = `transform ${duration}ms ease`;
@@ -98,8 +101,9 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
-        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
+        el.style.transition = 'none';
+        void el.offsetWidth; 
 
         el.style.transform = `scale(0)`;
         el.style.transition = `transform ${duration}ms ease`;

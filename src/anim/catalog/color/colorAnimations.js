@@ -34,8 +34,9 @@ export const colorAnimations = {
     const computed = getComputedStyle(el).color || '#000000';
     const initialColor = computed;
 
-    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
+    el.style.transition = 'none';
+    void el.offsetWidth; 
 
     const prev = {
       color: el.style.color || '',
@@ -110,8 +111,9 @@ export const colorAnimations = {
     const finalColor = parts[1] || '#fff';
     const duration = toMs(parts[2] || '1200ms');
 
-    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
+    el.style.transition = 'none';
+    void el.offsetWidth; 
 
     el.style.background = `radial-gradient(circle at center, ${finalColor} 0%, ${originalColor} 100%)`;
     el.style.backgroundSize = '100% 100%';
@@ -144,8 +146,9 @@ export const colorAnimations = {
     const finalColor = parts[1] || '#fff';
     const duration = toMs(parts[2] || '1200ms');
 
-    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
+    el.style.transition = 'none';
+    void el.offsetWidth; 
 
     // initial state
     el.style.background = `radial-gradient(circle at center, ${originalColor} 0%, ${finalColor} 40%)`;
@@ -178,8 +181,9 @@ export const colorAnimations = {
     const fillColor = parts[0] || '#00aaff';
     const duration = toMs(parts[1] || '1500ms');
 
-    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
+    el.style.transition = 'none';
+    void el.offsetWidth; 
 
     el.style.background = `
       linear-gradient(

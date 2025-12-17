@@ -67,11 +67,13 @@
 
     - mirror(intensidade, duração) ---> inverte e espelha o elemento.
 
-- [ ] radius ==
-    - round(estado inicial, estado final, duração) ---> muda do estado inicial de border-radius para o estado final com uma transição simples.
+- [x] radius ==
+    - round(intensidade, duração) ---> muda do estado inicial de border-radius para o estado final com uma transição simples.
+
+    - corner(borda específica, intensidade, duração) ---> arredonda um canto específico em um certo período de tempo.
 
 - [ ] gap ==
-    - bloom(gap inicial, gap final, duração) ---> transita do gap inicial para o final sem preferência.
+    - bloom(gap final, duração) ---> transita do gap inicial para o final sem preferência.
 
     - stagedBloom(sentido (vertical/horizontal), duração) ---> transita do gap inicial para o final com preferência referenciada.
 

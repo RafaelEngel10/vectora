@@ -7,8 +7,9 @@ export const shadowAnimations = {
         const intensity: any = parts[1] || '5';
         const duration: number = toMs(parts[2] || '600ms');
 
-        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
+        el.style.transition = 'none';
+        void el.offsetWidth; 
 
         el.style.boxShadow = ``;
         el.style.transition = `box-shadow ${duration}ms ease`;
@@ -39,6 +40,7 @@ export const shadowAnimations = {
         ensureInlineBlockIfNeeded(el);
 
         el.style.transition = 'none';
+        void el.offsetWidth; 
         const shadowPosition = getComputedStyle(el).boxShadow;
 
         if (!shadowPosition) console.error(`[Vectora] Sem sombra para desfazer: ${el}`);
@@ -52,8 +54,9 @@ export const shadowAnimations = {
     },
 
     purge: (el: any, args: any) => {
-        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
+        el.style.transition = 'none';
+        void el.offsetWidth; 
         console.debug(`[Vectora] Purge em construção, não use por enquanto.`);
     }
 

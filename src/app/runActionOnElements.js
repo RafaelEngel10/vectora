@@ -81,6 +81,7 @@ export function runActionOnElements(selector, action) {
         break;
       /* radius case */
       case 'round':
+      case 'corner':
         animations = radiusAnimations;
         break;
       /* default case */
@@ -155,6 +156,7 @@ export function runActionOnElements(selector, action) {
               break;
             /* radius case */
             case 'round':
+            case 'corner':
               animations = radiusAnimations;
               break;
             /* default case */
@@ -169,9 +171,9 @@ export function runActionOnElements(selector, action) {
             (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
             (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'].includes(part))  ||
             (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
-            //(propType === 'gap' && ['bloom', 'stagedBloom'].includes(part)) ||
-            (propType === 'radius' && ['round'].includes(part)) ||
-            //(propType === 'weight' && ['skinny', 'heavy'].includes(part)) ||  
+            (propType === 'gap' && ['bloom', 'stagedBloom'].includes(part)) ||
+            (propType === 'radius' && ['round', 'corner'].includes(part)) ||
+            (propType === 'weight' && ['skinny', 'heavy'].includes(part)) ||  
             (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) ||
             (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) 
             //(propType === 'value' && ['searchValue'].includes(part))
@@ -192,8 +194,8 @@ export function runActionOnElements(selector, action) {
           (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'])  ||
           (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
           (propType === 'gap' && ['bloom', 'stagedBloom'].includes(animInfo.name)) ||
-          (propType === 'radius' && ['round'].includes(animInfo.name)) ||
-          //(propType === 'weight' && ['skinny', 'heavy'].includes(animInfo.name)) ||  
+          (propType === 'radius' && ['round', 'corner'].includes(animInfo.name)) ||
+          (propType === 'weight' && ['skinny', 'heavy'].includes(animInfo.name)) ||  
           (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) ||
           (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) 
           //(propType === 'value' && ['searchValue'].includes(animInfo.name))
