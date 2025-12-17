@@ -29,7 +29,7 @@
     }, 
     {
       "name": "support.function.animation.vec",
-      "match": "\\b(fadeIn|fadeOut|slideIn|slideOut|fall|rise|pop|implode|shake|spin|shiver|fadeColor|chameleonCamo|octopusCamo|paint|liquidFill|round|bloom|stagedBloom|skinny|heavy|rotate|mirror|zoomIn|zoomOut|halo|fadeLight|pillar|neon|surge|purge|fadeDusk)\\b\\("
+      "match": "\\b(fadeIn|fadeOut|slideIn|slideOut|fall|rise|pop|implode|shake|spin|shiver|fadeColor|chameleonCamo|octopusCamo|paint|liquidFill|round|corner|bloom|stagedBloom|skinny|heavy|rotate|mirror|zoomIn|zoomOut|halo|fadeLight|pillar|neon|surge|purge|fadeDusk)\\b\\("
     },
     {
       "name": "support.operator.vec",

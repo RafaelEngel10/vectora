@@ -83,7 +83,7 @@
     - heavy(escala, duração) ---> divide o peso da fonte pela escala em porcentagem.
 
 - [ ] brightness ==
-    - halo(intensidade, duração) ---> cria uma luz envolta do texto.
+    - halo(intensidade, cor, duração) ---> cria uma luz envolta do texto.
 
     - fadeLight(intensidade original, duração) ---> desfaz uma luz envolta do texto.
 
@@ -91,12 +91,12 @@
 
     - pillar(cor, intensidade) ---> cria um pilar de luz.
 
-- [ ] shadow ==
+- [x] shadow ==
     - surge(direção, intensidade, duração) ---> cria uma sombra dependendo da direção, com intensidade definida.
 
     - fadeDusk(duração) ---> desfaz uma sombra em certo tempo.
 
-    - purge(direção original, duração) ---> rotaciona a sombra para o lado oposto ao seu.
+    - purge(duração) ---> rotaciona a sombra para o lado oposto ao seu.
 
 - [ ] value == 
     - proposeValue(nome da variável root) ---> cria um objeto que guarda propriedades pré-estabelecidas.

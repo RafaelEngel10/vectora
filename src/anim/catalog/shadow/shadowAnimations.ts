@@ -53,11 +53,64 @@ export const shadowAnimations = {
         });
     },
 
+
     purge: (el: any, args: any) => {
+        const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
+        const duration: number = toMs(parts[0] || '600ms');
+
+        const originalShadow = getComputedStyle(el).boxShadow;
+        if (!originalShadow) console.error(`[Vectora] Sem sombra para alternar: ${el}`);
+
         ensureInlineBlockIfNeeded(el);
         el.style.transition = 'none';
         void el.offsetWidth; 
-        console.debug(`[Vectora] Purge em construção, não use por enquanto.`);
+
+        el.style.transition = `box-shadow ${duration}ms ease`;
+
+        const newShadow: string[] = originalShadow.split(') ');
+        const shadowProp: string[] = newShadow[1]?.split(' ') || [''];
+
+        /* 
+            shadowProp[0] = x;
+            shadowProp[1] = y;
+            shadowProp[2] = intensity;
+        */
+
+        if (shadowProp[0]?.includes('-') && shadowProp[1]?.includes('-')) {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `4px 4px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        } else if ((!shadowProp[0]?.includes('-') && !shadowProp[1]?.includes('-')) && (shadowProp[0] !== '0px' && shadowProp[1] !== '0px')) {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `-4px -4px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        } else if ((!shadowProp[0]?.includes('-') && shadowProp[1]?.includes('-')) && shadowProp[0] !== '0px') {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `-4px 4px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        } else if ((shadowProp[0]?.includes('-') && !shadowProp[1]?.includes('-')) && shadowProp[1] !== '0px') {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `4px -4px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        }
+
+        if (shadowProp[0] === '0px' && shadowProp[1]?.includes('-')) {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `0px 4px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        } else if (shadowProp[0] === '0px' && !shadowProp[1]?.includes('-')) {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `0px -4px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        } else if (!shadowProp[0]?.includes('-') && shadowProp[1] === '0px') {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `4px 0px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        } else if (shadowProp[0]?.includes('-') && shadowProp[1] === '0px') {
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `-4px 0px ${shadowProp[2]} ${newShadow[0]})`;
+            });
+        }
     }
 
 }
