@@ -10,6 +10,7 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
+        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
 
         const animationName = `rotateAnimation_${Date.now()}`;
@@ -59,6 +60,7 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
+        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
 
         el.style.transform = `scale(0)`;
@@ -77,6 +79,7 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
+        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
 
         el.style.transform = `scale(0)`;
@@ -95,6 +98,7 @@ export const transformAnimations = {
 
         duration = toMs(duration);
 
+        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
 
         el.style.transform = `scale(0)`;

@@ -1,8 +1,7 @@
 import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../../basics.js';
 
 export const backgroundColor = {
-
-    fadeColor: (el: any, arg: any) => {
+  fadeColor: (el: any, arg: any) => {
     const parts = arg ? arg.split(',').map((p: string) => p.trim()) : [];
     const initialColor = parts[0] || '#000000';
     const finalColor = parts[1] || '#ffffff';
@@ -91,7 +90,7 @@ export const backgroundColor = {
       el.style.webkitBackgroundClip = prev.bgClip;
       el.style.webkitTextFillColor = prev.webkitTextFill;
 
-      el.style.transition = '';
+      el.style.transition = 'none';
 
       if (prev.color) {el.style.backgroundColor = prev.color; console.warn('[Vectora] Comando de cor prévia executado');}
     }, duration + 40);
@@ -208,7 +207,7 @@ export const backgroundColor = {
         el.style.backgroundColor = fillColor;
         el.style.webkitTextFillColor = '';
     }, duration + 50);
-    },
+  },
 
 
 }

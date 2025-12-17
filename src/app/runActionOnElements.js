@@ -168,12 +168,12 @@ export function runActionOnElements(selector, action) {
             (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(part)) ||
             (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
             (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'].includes(part))  ||
-            (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
-            //(propType === 'gap' && ['bloomGap', 'stagedGapColumn', 'stagedGapRow'].includes(part)) ||
-            //(propType === 'radius' && ['suddenChange'].includes(part)) ||
+            (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
+            //(propType === 'gap' && ['bloom', 'stagedBloom'].includes(part)) ||
+            (propType === 'radius' && ['round'].includes(part)) ||
             //(propType === 'weight' && ['skinny', 'heavy'].includes(part)) ||  
-            (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) 
-            //(propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) ||
+            (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) ||
+            (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) 
             //(propType === 'value' && ['searchValue'].includes(part))
           ) {
             fn(el, animInfo.arg);
@@ -191,11 +191,11 @@ export function runActionOnElements(selector, action) {
           (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
           (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'])  ||
           (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
-          //(propType === 'gap' && ['bloomGap', 'stagedGapColumn', 'stagedGapRow'].includes(animInfo.name)) ||
-          //(propType === 'radius' && ['suddenChange'].includes(animInfo.name)) ||
+          (propType === 'gap' && ['bloom', 'stagedBloom'].includes(animInfo.name)) ||
+          (propType === 'radius' && ['round'].includes(animInfo.name)) ||
           //(propType === 'weight' && ['skinny', 'heavy'].includes(animInfo.name)) ||  
-          (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) 
-          //(propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) ||
+          (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) ||
+          (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) 
           //(propType === 'value' && ['searchValue'].includes(animInfo.name))
         ) {
           fn(el, animInfo.arg);

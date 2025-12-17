@@ -20,7 +20,7 @@ export const colorAnimations = {
     requestAnimationFrame(() => {
       el.style.color = finalColor;
     });
-  },
+ },
 
 
   paint: (el, arg) => {
@@ -34,6 +34,7 @@ export const colorAnimations = {
     const computed = getComputedStyle(el).color || '#000000';
     const initialColor = computed;
 
+    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
 
     const prev = {
@@ -93,7 +94,7 @@ export const colorAnimations = {
       el.style.webkitBackgroundClip = prev.bgClip;
       el.style.webkitTextFillColor = prev.webkitTextFill;
 
-      el.style.transition = '';
+      el.style.transition = 'none';
 
       if (prev.color) {el.style.color = prev.color; macron('warn', 'Comando de cor prévia executado');}
     }, duration + 40);
@@ -109,6 +110,7 @@ export const colorAnimations = {
     const finalColor = parts[1] || '#fff';
     const duration = toMs(parts[2] || '1200ms');
 
+    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
 
     el.style.background = `radial-gradient(circle at center, ${finalColor} 0%, ${originalColor} 100%)`;
@@ -142,6 +144,7 @@ export const colorAnimations = {
     const finalColor = parts[1] || '#fff';
     const duration = toMs(parts[2] || '1200ms');
 
+    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
 
     // initial state
@@ -175,6 +178,7 @@ export const colorAnimations = {
     const fillColor = parts[0] || '#00aaff';
     const duration = toMs(parts[1] || '1500ms');
 
+    el.style.transition = 'none';
     ensureInlineBlockIfNeeded(el);
 
     el.style.background = `

@@ -3,9 +3,10 @@ import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapE
 export const radiusAnimations = {
     round: (el: any, args: any) => {
         const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
-        const roundNumber: any = parseFloat(parts[0]) || 100;
+        const roundNumber: any = parseFloat(parts[0]) || 15;
         const duration: number = toMs(parts[1] || '600ms');
 
+        el.style.transition = 'none';
         ensureInlineBlockIfNeeded(el);
 
         el.style.borderRadius = `0px`;
@@ -13,7 +14,4 @@ export const radiusAnimations = {
 
         requestAnimationFrame(() => {el.style.borderRadius = `${roundNumber}px`;});
     },
-
-    
-    
 }
