@@ -9,6 +9,7 @@ import { backgroundColor } from "../../dist/anim/catalog/background/color/backgr
 import { backgroundImage } from "../../dist/anim/catalog/background/image/backgroundImage.js";
 import { shadowAnimations } from "../../dist/anim/catalog/shadow/shadowAnimations.js";
 import { radiusAnimations } from "../../dist/anim/catalog/radius/radiusAnimations.js";
+import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
 
 let animations;
 
@@ -78,6 +79,11 @@ export function runActionOnElements(selector, action) {
       case 'fadeDusk':
       case 'purge':
         animations = shadowAnimations;
+        break;
+      /* gap case */
+      case 'bloom':
+      case 'stagedBloom':
+        animations = gapAnimations;
         break;
       /* radius case */
       case 'round':
@@ -158,6 +164,11 @@ export function runActionOnElements(selector, action) {
             case 'round':
             case 'corner':
               animations = radiusAnimations;
+              break;
+            /* gap case */
+            case 'bloom':
+            case 'stagedBloom':
+              animations = gapAnimations;
               break;
             /* default case */
             default:

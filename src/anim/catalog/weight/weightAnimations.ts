@@ -9,6 +9,12 @@ export const weightAnimations = {
         ensureInlineBlockIfNeeded(el);
         el.style.transition = 'none';
         void el.offsetWidth; 
+
+        el.style.transition = `font-weight ${duration}ms ease`;
+        
+        requestAnimationFrame(() => {
+            el.style.fontWeight = `${intensity / 10}`;
+        });
     },
 
     heavy: (el: any, args: any) => {
@@ -19,5 +25,11 @@ export const weightAnimations = {
         ensureInlineBlockIfNeeded(el);
         el.style.transition = 'none';
         void el.offsetWidth; 
+
+        el.style.transition = `font-weight ${duration}ms ease`;
+
+        requestAnimationFrame(() => {
+            el.style.fontWeight = `${intensity * 2}`;
+        });
     }
 }
