@@ -5,6 +5,7 @@ export const colorAnimations = {
   fadeColor: (el, arg) => {
   // Sintax: fadeColor(initialColor, finalColor, duration)
   // Exemplo: fadeColor(#ff0000, #00ff00, 1.5s)
+  return new Promise ((resolve) => {
     const parts = arg ? arg.split(',').map(p => p.trim()) : [];
     const initialColor = parts[0] || '#000000';
     const finalColor = parts[1] || '#ffffff';
@@ -15,11 +16,21 @@ export const colorAnimations = {
 
     void el.offsetWidth;
 
+    const onEnd = (e) => {
+        if (e.propertyName !== 'gap') return;
+        el.removeEventListener('transitionend', onEnd);
+        resolve();
+    };
+    el.addEventListener('transitionend', onEnd, { once: true });
+
     el.style.transition = `color ${duration}ms ease-in-out`;
 
     requestAnimationFrame(() => {
       el.style.color = finalColor;
     });
+    
+    setTimeout(resolve, duration + 50);
+  });
  },
 
 

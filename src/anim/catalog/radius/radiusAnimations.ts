@@ -1,72 +1,90 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, appendTransition  } from '../../../basics.js';
 
 export const radiusAnimations = {
     round: (el: any, args: any) => {
-        const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
-        const roundNumber: any = parseFloat(parts[0]) || 15;
-        const duration: number = toMs(parts[1] || '600ms');
+        return new Promise<void>((resolve) => {
+            const parts = args ? args.split(',').map((p: any) => p.trim()) : [];
+            const roundNumber: number = parseFloat(parts[0]) || 10;
+            const duration: number = toMs(parts[1] || '600ms');
 
-        ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
-        void el.offsetWidth; 
+            ensureInlineBlockIfNeeded(el);
+            el.style.transition = 'none';
+            void el.offsetWidth;
 
-        el.style.borderRadius = `0px`;
-        el.style.transition = `border-radius ${duration}ms ease-in-out`;
+            el.style.borderRadius = '0px';
 
-        requestAnimationFrame(() => {el.style.borderRadius = `${roundNumber}px`;});
+            el.style.transition = `border-radius ${duration}ms ease-in-out`;
+
+            requestAnimationFrame(() => {
+                el.style.borderRadius = `${roundNumber}px`;
+            });
+
+            setTimeout(resolve, duration);
+        });
     },
 
     corner: (el: any, args: any) => {
-        const parts = args ? args.split(',').map((p: any) => p.trim()) : [];
-        const specific = parts[0] || 'all';
-        const round = parseFloat(parts[1] || '15');
-        const duration = toMs(parts[2] || '600ms');
+        return new Promise<void>((resolve) => {
+            const parts = args ? args.split(',').map((p: any) => p.trim()) : [];
+            const specific: string = parts[0] || 'all';
+            const round: number = parseFloat(parts[1] || '15');
+            const duration: number = toMs(parts[2] || '600ms');
 
-        ensureInlineBlockIfNeeded(el);
+            ensureInlineBlockIfNeeded(el);
 
-        el.style.transition = 'none';
-        void el.offsetWidth; 
+            void el.offsetWidth; 
 
-        switch (specific) {
-            case 'all': 
-                el.style.transition = `border-radius ${duration}ms ease`;
-                requestAnimationFrame(() => {el.style.borderRadius = `${round}px`;});
-                break;
-            case 'top-left':
-                el.style.transition = `border-top-left-radius ${duration}ms ease`;
-                requestAnimationFrame(() => {el.style.borderTopLeftRadius = `${round}px`;});
-                break;
-            case 'top-right':
-                el.style.transition = `border-top-right-radius ${duration}ms ease`;
-                requestAnimationFrame(() => {el.style.borderTopRightRadius = `${round}px`;});
-                break;
-            case 'bottom-left':
-                el.style.transition = `border-bottom-left-radius ${duration}ms ease`;
-                requestAnimationFrame(() => {el.style.borderBottomLeftRadius = `${round}px`;});
-                break;
-            case 'bottom-right':
-                el.style.transition = `border-bottom-right-radius ${duration}ms ease`;
-                requestAnimationFrame(() => {el.style.borderBottomRightRadius = `${round}px`;});
-                break;
-            default:
-                if (specific.includes('except')) {
-                    execptCond(el, duration, round, specific);
+            let ver: boolean;
+
+            switch (specific) {
+                case 'all': 
+                    ver = appendTransition(el, `border-radius ${duration}ms ease`);
+                    if (ver === false) el.style.transition = `border-radius ${duration}ms ease`;
+                    requestAnimationFrame(() => {el.style.borderRadius = `${round}px`;});
                     break;
-                }
-                console.error(`[Vectora] Sem especificação para radius: ${specific}`);
-                break;
-        }
+                case 'top-left':
+                    ver = appendTransition(el, `border-top-left-radius ${duration}ms ease`);
+                    if (ver === false) el.style.transition = `border-top-left-radius ${duration}ms ease`;
+                    requestAnimationFrame(() => {el.style.borderTopLeftRadius = `${round}px`;});
+                    break;
+                case 'top-right':
+                    ver = appendTransition(el, `border-top-right-radius ${duration}ms ease`);
+                    if (ver === false) el.style.transition = `border-top-right-radius ${duration}ms ease`;
+                    requestAnimationFrame(() => {el.style.borderTopRightRadius = `${round}px`;});
+                    break;
+                case 'bottom-left':
+                    ver = appendTransition(el, `border-bottom-left-radius ${duration}ms ease`);
+                    if (ver === false) el.style.transition = `border-bottom-left-radius ${duration}ms ease`;
+                    requestAnimationFrame(() => {el.style.borderBottomLeftRadius = `${round}px`;});
+                    break;
+                case 'bottom-right':
+                    ver = appendTransition(el, `border-bottom-right-radius ${duration}ms ease`);
+                    if (ver === false) el.style.transition = `border-bottom-right-radius ${duration}ms ease`;
+                    requestAnimationFrame(() => {el.style.borderBottomRightRadius = `${round}px`;});
+                    break;
+                default:
+                    if (specific.includes('except')) {
+                        execptCond(el, duration, round, specific);
+                        break;
+                    }
+                    console.error(`[Vectora] Sem especificação para radius: ${specific}`);
+                    break;
+            }
+
+            setTimeout(resolve, duration + 50);
+        });
     }
 }
 
 
 function execptCond(el: any, duration: number, round: number, specific: string): void {
     const parts = specific.split('pt-')[1];
+    let ver: boolean;
 
     switch (parts) {
         case 'top-right':
-            el.style.transition = 
-                `border-top-left ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`;
+            ver = appendTransition(el, `border-top-left ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`)
+            if (ver === false) el.style.transition = `border-top-left ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`;
             requestAnimationFrame(() => {
                 el.style.borderBottomLeftRadius = `${round}px`;
                 el.style.borderBottomRightRadius = `${round}px`;
@@ -74,8 +92,8 @@ function execptCond(el: any, duration: number, round: number, specific: string):
             });
             break;
         case 'top-left':
-            el.style.transition = 
-                `border-top-right ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`;
+            ver = appendTransition(el, `border-top-right ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`)
+            if (ver === false) el.style.transition = `border-top-right ${duration}ms ease, border-bottom-left ${duration}ms ease, border-bottom-right ${duration}ms ease`;
             requestAnimationFrame(() => {
                 el.style.borderBottomLeftRadius = `${round}px`;
                 el.style.borderBottomRightRadius = `${round}px`;

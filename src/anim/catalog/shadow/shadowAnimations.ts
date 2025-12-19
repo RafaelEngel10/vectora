@@ -1,55 +1,66 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
 
 export const shadowAnimations = {
     surge: (el: any, args: any) => {
-        const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
-        const direction: any = parts[0] || 'bottom-left';
-        const intensity: any = parts[1] || '5';
-        const duration: number = toMs(parts[2] || '600ms');
+        return new Promise<void>((resolve) => {
+            const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
+            const direction: any = parts[0] || 'bottom-left';
+            const intensity: any = parts[1] || '5';
+            const duration: number = toMs(parts[2] || '600ms');
+    
+            ensureInlineBlockIfNeeded(el);
+            void el.offsetWidth; 
 
-        ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
-        void el.offsetWidth; 
+            appendTransition(el, `box-shadow ${duration}ms ease`);
 
-        el.style.boxShadow = ``;
-        el.style.transition = `box-shadow ${duration}ms ease`;
+            el.style.boxShadow = ``;
+            
+    
+            let x: number = 0;
+            let y: number = 0;
+    
+            switch (direction) {
+                case 'left': x = -4; break;
+                case 'right': x = 4; break;
+                case 'top': y = -4; break;
+                case 'bottom': y = 4; break;
+                case 'top-left': x = -4; y = -4; break;
+                case 'top-right': x = 4; y = -4; break;
+                case 'bottom-left': x = -4; y = 4; break;
+                case 'bottom-right': x = 4; y = 4; break;
+                default: console.warn(`[Vectora] Sentido inválido para surge: ${direction}`); break;
+            }
+    
+            requestAnimationFrame(() => (el.style.boxShadow = `${x}px ${y}px ${intensity}px rgba(0, 0, 0, 0.6)`));
 
-        let x: number = 0;
-        let y: number = 0;
-
-        switch (direction) {
-            case 'left': x = -4; break;
-            case 'right': x = 4; break;
-            case 'top': y = -4; break;
-            case 'bottom': y = 4; break;
-            case 'top-left': x = -4; y = -4; break;
-            case 'top-right': x = 4; y = -4; break;
-            case 'bottom-left': x = -4; y = 4; break;
-            case 'bottom-right': x = 4; y = 4; break;
-            default: console.warn(`[Vectora] Sentido inválido para surge: ${direction}`); break;
-        }
-
-        requestAnimationFrame(() => (el.style.boxShadow = `${x}px ${y}px ${intensity}px rgba(0, 0, 0, 0.6)`));
+            setTimeout(resolve, duration + 50);
+        });
     },
 
 
     fadeDusk: (el: any, args: any) => {
-        const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
-        const duration: any = parts[0] || '600';
+        return new Promise<void>((resolve) => {
+            const parts: any = args ? args.split(',').map((p: any) => p.trim()) : [];
+            const duration: any = parts[0] || '600';
+    
+            ensureInlineBlockIfNeeded(el);
+            el.style.transition = 'none';
+            void el.offsetWidth; 
 
-        ensureInlineBlockIfNeeded(el);
 
-        el.style.transition = 'none';
-        void el.offsetWidth; 
-        const shadowPosition = getComputedStyle(el).boxShadow;
 
-        if (!shadowPosition) console.error(`[Vectora] Sem sombra para desfazer: ${el}`);
+            const shadowPosition = getComputedStyle(el).boxShadow;
+    
+            if (!shadowPosition) console.error(`[Vectora] Sem sombra para desfazer: ${el}`);
+    
+            el.style.boxShadow = `${shadowPosition}`;
+            el.style.transition = `box-shadow ${duration}ms ease`;
+    
+            requestAnimationFrame(() => {
+                el.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0)`;
+            });
 
-        el.style.boxShadow = `${shadowPosition}`;
-        el.style.transition = `box-shadow ${duration}ms ease`;
-
-        requestAnimationFrame(() => {
-            el.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0)`;
+            setTimeout(resolve, duration + 50);
         });
     },
 

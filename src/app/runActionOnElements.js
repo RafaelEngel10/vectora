@@ -13,7 +13,7 @@ import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
 
 let animations;
 
-export function runActionOnElements(selector, action) {
+export async function runActionOnElements(selector, action) {
   const els = document.querySelectorAll(selector);
   if (!els.length) {
     macron(`debug`, `nenhum elemento encontrado para selector: ${selector}, ${action}`)
@@ -37,7 +37,7 @@ export function runActionOnElements(selector, action) {
 
   let animationType = action.value;
   let animationTypes = animationType.match(/^([^(]+)/)[1];
-  let animVerify = animationTypes.includes('++' || '+-' || '=>')
+  let animVerify = animationType.includes('++' || '+-' || '=>')
   if (!animVerify) {
     macron('log',`Switch de filtro de animações: ${action.value}`);
     switch (animationTypes) {   // animation filter...
@@ -189,7 +189,7 @@ export function runActionOnElements(selector, action) {
             (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) 
             //(propType === 'value' && ['searchValue'].includes(part))
           ) {
-            fn(el, animInfo.arg);
+            await fn(el, animInfo.arg);
           }
         }
       }
@@ -211,7 +211,7 @@ export function runActionOnElements(selector, action) {
           (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) 
           //(propType === 'value' && ['searchValue'].includes(animInfo.name))
         ) {
-          fn(el, animInfo.arg);
+          await fn(el, animInfo.arg);
           jk++;
         } else {
           macron('warn', `animação '${animInfo.name}' não é compatível com a propriedade '${propType}'.`);

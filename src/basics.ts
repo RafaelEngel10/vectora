@@ -46,3 +46,20 @@ export function parseProperties(text: any): any {
     }
     return props;
 }
+
+
+export function appendTransition(el: HTMLElement, property: string): boolean {
+  const current = el.style.transition;
+
+  if (!current || current === 'none') return false;
+
+  const transitions = current.split(',').map(t => t.trim()).filter(Boolean);
+
+  const filtered = transitions.filter(t => !t.startsWith(property));
+
+  filtered.push(`${property}`);
+
+  el.style.transition = filtered.join(', ');
+
+  return true;
+}
