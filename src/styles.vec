@@ -27,7 +27,3 @@ h2 {
         text: shake(seesaw, 1.2, 600);
     };
 }
-
-@cmd {
-    message: alert('Hello World!');
-}

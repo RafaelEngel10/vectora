@@ -26,44 +26,51 @@ export const textAnimations = {
 
 
   rise: (el: any, arg: any) => {
-    const duration: number = toMs(arg);
-    
-    ensureInlineBlockIfNeeded(el);
+    return new Promise<void>((resolve) => {
+      const duration: number = toMs(arg);
+      
+      ensureInlineBlockIfNeeded(el);
 
-    el.style.transition = 'none';
-    el.style.transform = 'translateY(30px)';
-    el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.opacity = '0';
 
-    void el.offsetWidth;
+      void el.offsetWidth;
 
-    el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+      appendTransition(el,`transform ${duration}ms ease, opacity ${duration}ms ease`);
 
-    requestAnimationFrame(() => {
-      el.style.transform = 'translateY(0)';
-      el.style.opacity = '1';
-    });
+      requestAnimationFrame(() => {
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+      });
+
+      setTimeout(resolve, duration + 50);
+    })
   },
 
 
   fadeIn: (el: any, arg: any) => {
+    return new Promise<void>((resolve) => {
       const duration = toMs(arg);
     // simple fade
-      el.style.transition = 'none';
       el.style.opacity = '0';
       void el.offsetWidth;
-      el.style.transition = `opacity ${duration}ms ease`;
+      appendTransition(el, `opacity ${duration}ms ease`);
       requestAnimationFrame(() => (el.style.opacity = '1'));
+      setTimeout(resolve, duration + 50);
+    })
   },
 
 
   fadeOut: (el: any, arg: any) => {
+    return new Promise<void>((resolve) => {
       const duration: number = toMs(arg);
     // simple fade
-      el.style.transition = 'none';
       el.style.opacity = '1';
       void el.offsetWidth;
-      el.style.transition = `opacity ${duration}ms ease`;
+      appendTransition(el, `opacity ${duration}ms ease`);
       requestAnimationFrame(() => (el.style.opacity = '0'));
+      setTimeout(resolve, duration + 50);
+    })
   },
 
 

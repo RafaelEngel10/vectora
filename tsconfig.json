@@ -31,6 +31,6 @@
     "allowImportingTsExtensions": false
   },
 
-  "include": ["src/**/*.ts", "src/anim/interpolation/**/*.ts"],
+  "include": ["src/**/*.ts", "private/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

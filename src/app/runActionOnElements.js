@@ -1,17 +1,16 @@
-import { parseAnimString } from "../../dist/basics.js";
 import { textAnimations } from "../../dist/anim/catalog/text/textAnimations.js";
 import { colorAnimations } from "../anim/catalog/color/colorAnimations.js";
-import { macron }from "../console.js";
-import { animFilter } from "../../dist/anim/interpolation/filter.js";
-import { valueFilter } from "../../dist/anim/interpolation/value.js";
 import { transformAnimations } from "../../dist/anim/catalog/transform/transform.js";
 import { backgroundColor } from "../../dist/anim/catalog/background/color/backgroundColor.js";
 import { backgroundImage } from "../../dist/anim/catalog/background/image/backgroundImage.js";
 import { shadowAnimations } from "../../dist/anim/catalog/shadow/shadowAnimations.js";
 import { radiusAnimations } from "../../dist/anim/catalog/radius/radiusAnimations.js";
 import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
-import { filterAnimationFamilies, resolveAnimationCombination, getAnimationFamily, filterVectorSubfamilies } from "../anim/interpolation/familyFilter.js";
-import { processCombinedAnimations } from "../anim/interpolation/sum/animationSum.js";
+import { parseAnimString } from "../../dist/basics.js";
+import { macron }from "../console.js";
+import { filterAnimation } from "../filter/switchFilterAnimation.js";
+import { filterAnimationFamilies, resolveAnimationCombination, getAnimationFamily, filterVectorSubfamilies } from "../../private/client/operator/interpolation/familyFilter.js";
+import { processCombinedAnimations } from "../../private/client/operator/interpolation/sum/animationSum.js";
 
 let animations;
 
@@ -64,54 +63,7 @@ export async function runActionOnElements(selector, action) {
           const cleanName = part.split('(')[0].trim();
           
           // Determinar qual biblioteca usar (mesmo switch de antes)
-          switch (cleanName) {
-            case 'fall': 
-            case 'rise':  
-            case 'fadeIn':  
-            case 'fadeOut':
-            case 'slideIn':
-            case 'slideOut':  
-            case 'shake': 
-            case 'shiver':
-            case 'pop':
-            case 'implode':
-            case 'spin':
-              animations = textAnimations;
-              break;
-            case 'paint':
-            case 'fadeColor': 
-            case 'chameleonCamo': 
-            case 'octopusCamo': 
-            case 'liquidFill':
-              if (action.prop.toLowerCase() === 'background.color') {
-                animations = backgroundColor;
-              } else {
-                animations = colorAnimations;
-              }
-              break;
-            case 'rotate':
-            case 'zoomIn':
-            case 'zoomOut':
-            case 'mirror':
-              animations = transformAnimations;
-              break;
-            case 'surge':
-            case 'fadeDusk':
-            case 'purge':
-              animations = shadowAnimations;
-              break;
-            case 'bloom':
-            case 'stagedBloom':
-              animations = gapAnimations;
-              break;
-            case 'round':
-            case 'corner':
-              animations = radiusAnimations;
-              break;
-            default:
-              macron('warn', `Sem filtragem para ${cleanName}`);
-              animations = null;
-          }
+          animations = filterAnimation(cleanName);
           
           if (animations) {
             const fn = animations[cleanName];
@@ -173,60 +125,9 @@ export async function runActionOnElements(selector, action) {
           animInfo.name = part;
 
           macron('log',`Switch de filtro de animações: ${animInfo.name}`);
-          switch (part) {   // animation filter...
-            /* text case */
-            case 'fall': 
-            case 'rise':  
-            case 'fadeIn':  
-            case 'fadeOut':
-            case 'slideIn':
-            case 'slideOut':  
-            case 'shake': 
-            case 'shiver':
-            case 'pop':
-            case 'implode':
-            case 'spin':
-              animations = textAnimations;
-              break;
-            /* color case */
-            case 'paint':
-            case 'fadeColor': 
-            case 'chameleonCamo': 
-            case 'octopusCamo': 
-            case 'liquidFill':
-              if (action.prop.toLowerCase() === 'background.color') {
-                animations = backgroundColor;
-              } else {
-                animations = colorAnimations;
-              }
-              break;
-            /* transform case */
-            case 'rotate':
-            case 'zoomIn':
-            case 'zoomOut':
-            case 'mirror':
-              animations = transformAnimations;
-              break;
-            /* shadow case */
-            case 'surge':
-            case 'fadeDusk':
-            case 'purge':
-              animations = shadowAnimations;
-              break;
-            /* radius case */
-            case 'round':
-            case 'corner':
-              animations = radiusAnimations;
-              break;
-            /* gap case */
-            case 'bloom':
-            case 'stagedBloom':
-              animations = gapAnimations;
-              break;
-            /* default case */
-            default:
-              macron('warn', `Sem filtragem para ${animationTypes}`)
-          }
+          
+          animations = filterAnimation(part);
+
           macron('debug', `Interpolações no script. Animação em execução: ${part}`);
           
           if (animations) {
@@ -258,74 +159,7 @@ export async function runActionOnElements(selector, action) {
         macron('debug', `Sem interpolações no script. Animação básica ${animInfo.name}`);
 
         // Reinicializar animations para animações básicas
-        switch (animInfo.name) {
-          /* text case */
-          case 'fall': 
-          case 'rise':  
-          case 'fadeIn':  
-          case 'fadeOut':
-          case 'slideIn':
-          case 'slideOut':  
-          case 'shake': 
-          case 'shiver':
-          case 'pop':
-          case 'implode':
-          case 'spin':
-            animations = textAnimations;
-            break;
-          /* color case */
-          case 'paint':
-          case 'fadeColor': 
-          case 'chameleonCamo': 
-          case 'octopusCamo': 
-          case 'liquidFill':
-            if (action.prop.toLowerCase() === 'background.color') {
-              animations = backgroundColor;
-            } else {
-              animations = colorAnimations;
-            }
-            break;
-          /* transform case */
-          case 'rotate':
-          case 'zoomIn':
-          case 'zoomOut':
-          case 'mirror':
-            animations = transformAnimations;
-            break;
-          /* shadow case */
-          case 'surge':
-          case 'fadeDusk':
-          case 'purge':
-            animations = shadowAnimations;
-            break;
-          /* radius case */
-          case 'round':
-          case 'corner':
-            animations = radiusAnimations;
-            break;
-          /* gap case */
-          case 'bloom':
-          case 'stagedBloom':
-            animations = gapAnimations;
-            break;
-          /* brightness case */
-          case 'neon':
-          case 'pillar':
-          case 'halo':
-          case 'fadeLight':
-            // Importar brightnessAnimations se necessário
-            macron('warn', `Animações de brightness ainda não implementadas: ${animInfo.name}`);
-            break;
-          /* weight case */
-          case 'skinny':
-          case 'heavy':
-            // Importar weightAnimations se necessário
-            macron('warn', `Animações de weight ainda não implementadas: ${animInfo.name}`);
-            break;
-          default:
-            macron('warn', `Animação '${animInfo.name}' não foi reconhecida`);
-            animations = null;
-        }
+        animations = filterAnimation(animInfo.name);
 
         if (animations) {
           if (
