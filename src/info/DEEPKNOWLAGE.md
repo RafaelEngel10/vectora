@@ -72,7 +72,7 @@
 
     - corner(borda específica, intensidade, duração) ---> arredonda um canto específico em um certo período de tempo.
 
-- [ ] gap ==
+- [x] gap ==
     - bloom(gap final, duração) ---> transita do gap inicial para o final sem preferência.
 
     - stagedBloom(sentido (vertical/horizontal), duração) ---> transita do gap inicial para o final com preferência referenciada.

@@ -15,8 +15,8 @@
 - In the **.html** file, it is necessary to declare two elements which will be fundamental for linking the Vectora file with the interpreter.
 
 <pre>
-    <*link* rel="vectora" href="~~.vec">
-    <*script* src="vectora/interpreter.js"></*script*>
+    <*link* rel="vectora" href="~~.vec">            -- vectora file link
+    <*script* src="vectora/interpreter.js"></*script*>    -- direct linking to interpreter
 </pre>
 
 - By that, now all you need to do is just to create an file with **.vec** extension.

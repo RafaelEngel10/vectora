@@ -50,19 +50,27 @@
 
 > +- -> Induz a concatenação de duas ou mais animações que seriam somadas normalmente.
 
-> => -> Manipula a interpolação resultante da soma/concatenação.
-
 > -- -> Aplica um delay entre animações concatenadas.
 
+> %% -> Contador de gatilhos da animação. Nesse estado ele retorna true para quando o número de vezes repetidas for par.
+
+> => -> Permite manipular a interpolação resultante da soma/concatenação.
+
 > & -> Aplica uma propriedade à interpolação.
+
+> ?? -> Condicional "SE" If.
+
+> !! -> Condicional "SENÃO" Else.
+
+> !? -> Condicional "SENÃO SE" Else If.
 
 
 ### Precedência e associatividade dos operadores:
 
-- Acima de tudo, o símbolo (=>) é o primeiro a ser levado em conta, logo após é levado em conta a soma e concatenação e a concatenação forçada (++, +-), em seguida o delay entre cada animação (--) e por último, mas não menos importante, a atribuição de propriedade (&), a qual sempre é antecedida pelo sinal universal de interpolação (=>);
+- Acima de tudo, o contador (%%) é testado para saber se pode ou não continuar para a animação, depois o símbolo (=>) é o primeiro a ser levado em conta, logo após é levado em conta a soma e concatenação e a concatenação forçada (++, +-), em seguida o delay entre cada animação (--) e por último, mas não menos importante, a atribuição de propriedade (&), a qual sempre é antecedida pelo sinal universal de interpolação (=>);
 
 <pre>
-    fall() ++ slideIn() => &ease-in;
+    fall() ++ slideIn() => &ease-in --600;
 </pre>
 
 - Através dessa simples soma de animações, é possível deduzir que a interpolação será um vetor diagonal com uma curva suave até o ponto de chegada. Além disso, através do sinal universal de interpolação, pode-se definir uma animação que será executada em sequência, segue o exemplo abaixo:
