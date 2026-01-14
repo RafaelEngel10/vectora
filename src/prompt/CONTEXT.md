@@ -1,1 +1,3 @@
-O contexto inteiro está nos arquivos presente nas "/info/DEEPKNOWLAGE.md", leia ele para entender como tudo vai funcionar
+Você se enganou e leu as propriedades como se fossem as familias, as propriedades só definem oque vai sofrer a animação. Vectora leva em conta as grandezas da Física e essa que são as familias. Estou falando das grandezas vetoriais, escalares e adimensionais.
+
+Revise familyFilter para ver se tudo condiz com a explicação acima e faça a exportação ir direto para abaixo do comentário ***DESTAQUE*** dentro de runActionOnElements caso seja uma concatenação, assim colocando as animações concatenadas em um fila de execução. Caso seja uma soma de animações, faça um módulo dentro da pasta "sum" que faça a soma dessas animações e a execução da resultante.

@@ -10,6 +10,8 @@ import { backgroundImage } from "../../dist/anim/catalog/background/image/backgr
 import { shadowAnimations } from "../../dist/anim/catalog/shadow/shadowAnimations.js";
 import { radiusAnimations } from "../../dist/anim/catalog/radius/radiusAnimations.js";
 import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
+import { filterAnimationFamilies, resolveAnimationCombination } from "../../dist/anim/interpolation/familyFilter.js";
+import { processCombinedAnimations } from "../../dist/anim/interpolation/sum/animationSum.js";
 
 let animations;
 
@@ -37,63 +39,89 @@ export async function runActionOnElements(selector, action) {
 
   let animationType = action.value;
   let animationTypes = animationType.match(/^([^(]+)/)[1];
-  let animVerify = animationType.includes('++' || '+-' || '=>')
-  if (!animVerify) {
+
+
+  //verifica se há operadores lógicos dentro da propriedade
+  // ***DESTAQUE***
+  let animVerify = animationType.includes('++')
+  if (animVerify) {
     macron('log',`Switch de filtro de animações: ${action.value}`);
-    switch (animationTypes) {   // animation filter...
-      /* text case */
-      case 'fall': 
-      case 'rise':  
-      case 'fadeIn':  
-      case 'fadeOut':
-      case 'slideIn':
-      case 'slideOut':  
-      case 'shake': 
-      case 'shiver':
-      case 'pop':
-      case 'implode':
-      case 'spin':
-        animations = textAnimations;
-        break;
-      /* color case */
-      case 'paint':
-      case 'fadeColor': 
-      case 'chameleonCamo': 
-      case 'octopusCamo': 
-      case 'liquidFill':
-        if (action.prop.toLowerCase() === 'background.color') {
-          animations = backgroundColor;
-        } else {
-          animations = colorAnimations;
+    
+    // Usar o módulo familyFilter para processar combinações
+    const combinationResult = resolveAnimationCombination(action.value);
+    macron('log', `Tipo de combinação: ${combinationResult.type}`);
+    
+    if (combinationResult.type === 'concatenation') {
+      // Concatenação: executar animações em fila (sequencial)
+      for (const el of els) {
+        const parts = action.value.split('++').map(p => p.trim());
+        for (const part of parts) {
+          const cleanName = part.split('(')[0].trim();
+          
+          // Determinar qual biblioteca usar
+          switch (cleanName) {
+            case 'fall': 
+            case 'rise':  
+            case 'fadeIn':  
+            case 'fadeOut':
+            case 'slideIn':
+            case 'slideOut':  
+            case 'shake': 
+            case 'shiver':
+            case 'pop':
+            case 'implode':
+            case 'spin':
+              animations = textAnimations;
+              break;
+            case 'paint':
+            case 'fadeColor': 
+            case 'chameleonCamo': 
+            case 'octopusCamo': 
+            case 'liquidFill':
+              if (action.prop.toLowerCase() === 'background.color') {
+                animations = backgroundColor;
+              } else {
+                animations = colorAnimations;
+              }
+              break;
+            case 'rotate':
+            case 'zoomIn':
+            case 'zoomOut':
+            case 'mirror':
+              animations = transformAnimations;
+              break;
+            case 'surge':
+            case 'fadeDusk':
+            case 'purge':
+              animations = shadowAnimations;
+              break;
+            case 'bloom':
+            case 'stagedBloom':
+              animations = gapAnimations;
+              break;
+            case 'round':
+            case 'corner':
+              animations = radiusAnimations;
+              break;
+            default:
+              macron('warn', `Sem filtragem para ${cleanName}`);
+          }
+          
+          const fn = animations[cleanName];
+          if (fn && typeof fn === 'function') {
+            const animInfo = parseAnimString(part);
+            await fn(el, animInfo.arg);
+          }
         }
-        break;
-      /* transform case */
-      case 'rotate':
-      case 'zoomIn':
-      case 'zoomOut':
-      case 'mirror':
-        animations = transformAnimations;
-        break;
-      /* shadow case */
-      case 'surge':
-      case 'fadeDusk':
-      case 'purge':
-        animations = shadowAnimations;
-        break;
-      /* gap case */
-      case 'bloom':
-      case 'stagedBloom':
-        animations = gapAnimations;
-        break;
-      /* radius case */
-      case 'round':
-      case 'corner':
-        animations = radiusAnimations;
-        break;
-      /* default case */
-      default:
-        macron('warn', `Sem filtragem para ${animationTypes}`)
+      }
+    } else if (combinationResult.type === 'sum') {
+      // Soma: processar com o módulo de soma
+      for (const el of els) {
+        await processCombinedAnimations(action.value, el, animations);
+      }
     }
+    
+    return; // Pular a execução padrão
   }
 
   let types = '';

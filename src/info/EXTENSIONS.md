@@ -6,6 +6,5 @@
 - Typescript ==
     - Para criação de animações dentro do ./anim/catalog.
 
-- Coffeescript ==
-    - Ajuda na criação da interpolações, propriedades e intercalações com sua sintaxe mais simplificada.
+
 
