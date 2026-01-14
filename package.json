@@ -5,10 +5,8 @@
   "scripts": {
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
-    "build:coffee": "coffee --compile src/",
-    "watch:coffee": "coffee -wc src/",
-    "build": "npm run build:ts && npm run build:coffee",
-    "dev": "npm run watch:ts & npm run watch:coffee"
+    "build": "npm run build:ts",
+    "dev": "npm run watch:ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

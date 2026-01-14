@@ -1,23 +1,27 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
 
 export const textAnimations = {
   fall: (el: any, arg: any) => {
-    const duration: number = toMs(arg);
+    return new Promise<void>((resolve) => {
+      const duration: number = toMs(arg);
+  
+      ensureInlineBlockIfNeeded(el);
+      
+      appendTransition(el, `transform ${duration}ms ease`);
+      el.style.transform = 'translateY(-30px)';
+      el.style.opacity = '0';
+  
+      void el.offsetWidth;
+  
+      el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+  
+      requestAnimationFrame(() => {
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+      });
 
-    ensureInlineBlockIfNeeded(el);
-
-    el.style.transition = 'none';
-    el.style.transform = 'translateY(-30px)';
-    el.style.opacity = '0';
-
-    void el.offsetWidth;
-
-    el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
-
-    requestAnimationFrame(() => {
-      el.style.transform = 'translateY(0)';
-      el.style.opacity = '1';
-    });
+      setTimeout(resolve, duration + 50);
+    })
   },
 
 
@@ -66,38 +70,41 @@ export const textAnimations = {
   slideIn: (el: any, arg: any) => {
   // Sintax: slideIn(direction, distance, duration)
   // Exemplo: slideIn(left, 50px, 800ms)
-    const parts: any = arg ? arg.split(',').map((p: any) => p.trim()) : [];
-    const direction: any = parts[0] || 'left';
-    const distance: any = parts[1] || '30px';
-    const duration: any = toMs(parts[2] || '600ms');
+    return new Promise<void>((resolve) => {
+      const parts: any = arg ? arg.split(',').map((p: any) => p.trim()) : [];
+      const direction: any = parts[0] || 'left';
+      const distance: any = parts[1] || '30px';
+      const duration: number = toMs(parts[2] || '600ms');
 
-    ensureInlineBlockIfNeeded(el);
+      ensureInlineBlockIfNeeded(el);
+      void el.offsetWidth;
+      
+      el.style.opacity = '0';
 
-    el.style.transition = 'none';
-    el.style.opacity = '0';
+      let startTransform: string = '';
+      switch (direction.toLowerCase()) {
+        case 'left':
+          startTransform = `translateX(-${distance})`;
+          break;
+        case 'right':
+          startTransform = `translateX(${distance})`;
+          break;
+        default:
+          console.warn(`[Vectora] Sentido inválida para slideIn: ${direction}`);
+          startTransform = `translateX(-${distance})`;
+      }
 
-    let startTransform: string = '';
-    switch (direction.toLowerCase()) {
-      case 'left':
-        startTransform = `translateX(-${distance})`;
-        break;
-      case 'right':
-        startTransform = `translateX(${distance})`;
-        break;
-      default:
-        console.warn(`[Vectora] Sentido inválida para slideIn: ${direction}`);
-        startTransform = `translateX(-${distance})`;
-    }
+      appendTransition(el, `transform ${startTransform} ${duration}ms ease`);
 
-    el.style.transform = startTransform;
+      void el.offsetWidth;
 
-    void el.offsetWidth;
+      el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
 
-    el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
-
-    requestAnimationFrame(() => {
-      el.style.transform = 'translate(0, 0)';
-      el.style.opacity = '1';
+      requestAnimationFrame(() => {
+        el.style.transform = 'translate(0, 0)';
+        el.style.opacity = '1';
+      });
+      setTimeout(resolve, duration + 50);
     });
   },
 

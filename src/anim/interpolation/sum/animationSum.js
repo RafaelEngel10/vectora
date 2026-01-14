@@ -85,48 +85,9 @@ async function applySumAnimation(animations, element, animationLibrary) {
     return;
   }
 
-  // Obter famílias das animações
-  const families = animations.map(anim => {
-    const cleanName = anim.split('(')[0].trim();
-    return getAnimationFamily(cleanName);
-  });
-
-  // Verificar se são de famílias diferentes
-  const hasMultipleFamilies = new Set(families).size > 1;
-  
-  if (!hasMultipleFamilies) {
-    console.warn('Soma requer animações de famílias diferentes');
-    return;
-  }
-
-  // Agrupar animações por família
-  const byFamily = {
-    [ANIMATION_FAMILIES.VECTOR]: [],
-    [ANIMATION_FAMILIES.SCALAR]: [],
-    [ANIMATION_FAMILIES.ADIMENSIONAL]: [],
-  };
-
-  animations.forEach((anim, index) => {
-    if (families[index]) {
-      byFamily[families[index]].push(anim);
-    }
-  });
-
-  // Calcular resultantes por tipo de grandeza
-  const vectorialResult = byFamily[ANIMATION_FAMILIES.VECTOR].length > 0
-    ? calculateVectoralSum(byFamily[ANIMATION_FAMILIES.VECTOR])
-    : null;
-
-  const scalarResult = byFamily[ANIMATION_FAMILIES.SCALAR].length > 0
-    ? calculateScalarSum(byFamily[ANIMATION_FAMILIES.SCALAR])
-    : null;
-
-  const adimensionalResult = byFamily[ANIMATION_FAMILIES.ADIMENSIONAL].length > 0
-    ? calculateAdimensionalSum(byFamily[ANIMATION_FAMILIES.ADIMENSIONAL])
-    : null;
-
-  // Aqui você combinaria os resultados e executaria a animação final
-  // Por enquanto, executamos cada animação individualmente em paralelo
+  // Executar todas as animações em paralelo
+  // Podem ser de famílias diferentes (ex: fall + slideIn)
+  // ou de subfamílias diferentes dentro da mesma família (ex: fall + slideIn ambas vetoriais)
   const promises = animations.map(anim => {
     const cleanName = anim.split('(')[0].trim();
     const fn = animationLibrary[cleanName];
@@ -134,8 +95,10 @@ async function applySumAnimation(animations, element, animationLibrary) {
     if (fn && typeof fn === 'function') {
       // Extrair argumentos da string de animação
       const match = anim.match(/\(([^)]*)\)/);
-      const args = match ? match[1].split(',').map(a => a.trim()) : [];
-      return fn(element, ...args);
+      const args = match ? match[1] : '';
+      return fn(element, args);
+    } else {
+      console.warn(`Animação '${cleanName}' não encontrada na biblioteca`);
     }
     
     return Promise.resolve();
@@ -145,13 +108,6 @@ async function applySumAnimation(animations, element, animationLibrary) {
   await Promise.all(promises);
 }
 
-/**
- * Processa uma string de animações com operador '++' e determina soma/concatenação
- * @param {string} animationString - String como "fall() ++ slideIn()" 
- * @param {HTMLElement} element - Elemento a animar
- * @param {Object} animationLibrary - Biblioteca de funções de animação
- * @returns {Promise} - Promise que resolve após execução
- */
 async function processCombinedAnimations(animationString, element, animationLibrary) {
   // Parse da string de animações
   const parts = animationString.split('++').map(p => p.trim());
@@ -161,23 +117,28 @@ async function processCombinedAnimations(animationString, element, animationLibr
     return getAnimationFamily(cleanName);
   });
 
-  // Verificar se todas as famílias são iguais (concatenação) ou diferentes (soma)
+  // Verificar se todas as famílias são iguais (concatenação) ou diferentes/subfamílias (soma)
   const allSameFamily = families.every(f => f === families[0]);
 
-  if (allSameFamily) {
-    // Concatenação: executar sequencialmente
+  if (allSameFamily && families[0] === ANIMATION_FAMILIES.VECTOR) {
+    // Caso especial: animações vetoriais podem ter subfamílias diferentes
+    // Nesse caso, é soma (não concatenação)
+    // Para simplificar, sempre executar em paralelo (soma)
+    await applySumAnimation(parts, element, animationLibrary);
+  } else if (allSameFamily) {
+    // Concatenação: executar sequencialmente (mesma família, não vetorial)
     for (const anim of parts) {
       const cleanName = anim.split('(')[0].trim();
       const fn = animationLibrary[cleanName];
       
       if (fn && typeof fn === 'function') {
         const match = anim.match(/\(([^)]*)\)/);
-        const args = match ? match[1].split(',').map(a => a.trim()) : [];
-        await fn(element, ...args);
+        const args = match ? match[1] : '';
+        await fn(element, args);
       }
     }
   } else {
-    // Soma: executar em paralelo
+    // Soma: executar em paralelo (famílias diferentes)
     await applySumAnimation(parts, element, animationLibrary);
   }
 }

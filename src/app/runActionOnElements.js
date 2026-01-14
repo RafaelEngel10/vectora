@@ -10,8 +10,8 @@ import { backgroundImage } from "../../dist/anim/catalog/background/image/backgr
 import { shadowAnimations } from "../../dist/anim/catalog/shadow/shadowAnimations.js";
 import { radiusAnimations } from "../../dist/anim/catalog/radius/radiusAnimations.js";
 import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
-import { filterAnimationFamilies, resolveAnimationCombination } from "../../dist/anim/interpolation/familyFilter.js";
-import { processCombinedAnimations } from "../../dist/anim/interpolation/sum/animationSum.js";
+import { filterAnimationFamilies, resolveAnimationCombination, getAnimationFamily, filterVectorSubfamilies } from "../anim/interpolation/familyFilter.js";
+import { processCombinedAnimations } from "../anim/interpolation/sum/animationSum.js";
 
 let animations;
 
@@ -51,6 +51,11 @@ export async function runActionOnElements(selector, action) {
     const combinationResult = resolveAnimationCombination(action.value);
     macron('log', `Tipo de combinação: ${combinationResult.type}`);
     
+    // Mostrar detalhes adicionais para animações vetoriais
+    if (combinationResult.family === 'vectorial') {
+      macron('debug', `Animações vetoriais detectadas. Sub-famílias: ${combinationResult.subfamilies?.join(', ') || combinationResult.subfamily || 'N/A'}`);
+    }
+    
     if (combinationResult.type === 'concatenation') {
       // Concatenação: executar animações em fila (sequencial)
       for (const el of els) {
@@ -58,7 +63,7 @@ export async function runActionOnElements(selector, action) {
         for (const part of parts) {
           const cleanName = part.split('(')[0].trim();
           
-          // Determinar qual biblioteca usar
+          // Determinar qual biblioteca usar (mesmo switch de antes)
           switch (cleanName) {
             case 'fall': 
             case 'rise':  
@@ -105,20 +110,40 @@ export async function runActionOnElements(selector, action) {
               break;
             default:
               macron('warn', `Sem filtragem para ${cleanName}`);
+              animations = null;
           }
           
-          const fn = animations[cleanName];
-          if (fn && typeof fn === 'function') {
-            const animInfo = parseAnimString(part);
-            await fn(el, animInfo.arg);
+          if (animations) {
+            const fn = animations[cleanName];
+            if (fn && typeof fn === 'function') {
+              const animInfo = parseAnimString(part);
+              await fn(el, animInfo.arg);
+            }
+          } else {
+            macron('warn', `Animação '${cleanName}' não foi reconhecida`);
           }
         }
       }
     } else if (combinationResult.type === 'sum') {
-      // Soma: processar com o módulo de soma
+      // Soma: processar com o módulo de soma (paralelo)
+      // Combinar todas as bibliotecas de animação disponíveis
+      const allAnimations = {
+        ...textAnimations,
+        ...colorAnimations,
+        ...transformAnimations,
+        ...shadowAnimations,
+        ...gapAnimations,
+        ...radiusAnimations,
+        ...backgroundColor,
+        ...backgroundImage
+      };
+      
       for (const el of els) {
-        await processCombinedAnimations(action.value, el, animations);
+        macron('debug', `Executando soma de animações em paralelo para o elemento`);
+        await processCombinedAnimations(action.value, el, allAnimations);
       }
+    } else if (combinationResult.type === 'error') {
+      macron('warn', `Erro ao processar combinação de animações: ${combinationResult.description}`);
     }
     
     return; // Pular a execução padrão
@@ -203,46 +228,130 @@ export async function runActionOnElements(selector, action) {
               macron('warn', `Sem filtragem para ${animationTypes}`)
           }
           macron('debug', `Interpolações no script. Animação em execução: ${part}`);
-          const fn = animations[part];
-        
-          if (
-            (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(part)) ||
-            (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
-            (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'].includes(part))  ||
-            (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
-            (propType === 'gap' && ['bloom', 'stagedBloom'].includes(part)) ||
-            (propType === 'radius' && ['round', 'corner'].includes(part)) ||
-            (propType === 'weight' && ['skinny', 'heavy'].includes(part)) ||  
-            (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) ||
-            (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) 
-            //(propType === 'value' && ['searchValue'].includes(part))
-          ) {
-            await fn(el, animInfo.arg);
+          
+          if (animations) {
+            const fn = animations[part];
+            
+            if (
+              (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(part)) ||
+              (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
+              (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'].includes(part))  ||
+              (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(part)) ||
+              (propType === 'gap' && ['bloom', 'stagedBloom'].includes(part)) ||
+              (propType === 'radius' && ['round', 'corner'].includes(part)) ||
+              (propType === 'weight' && ['skinny', 'heavy'].includes(part)) ||  
+              (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(part)) ||
+              (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(part)) 
+              //(propType === 'value' && ['searchValue'].includes(part))
+            ) {
+              if (fn && typeof fn === 'function') {
+                await fn(el, animInfo.arg);
+              }
+            }
+          } else {
+            macron('warn', `Biblioteca de animações não foi inicializada para ${part}`);
           }
         }
       }
       
-      const fn = animations[animInfo.name];
-
       if (animState.type === 'NONE' || types === 'NONE') {
         macron('debug', `Sem interpolações no script. Animação básica ${animInfo.name}`);
 
-        if (
-          (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(animInfo.name)) ||
-          (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
-          (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'])  ||
-          (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
-          (propType === 'gap' && ['bloom', 'stagedBloom'].includes(animInfo.name)) ||
-          (propType === 'radius' && ['round', 'corner'].includes(animInfo.name)) ||
-          (propType === 'weight' && ['skinny', 'heavy'].includes(animInfo.name)) ||  
-          (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) ||
-          (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) 
-          //(propType === 'value' && ['searchValue'].includes(animInfo.name))
-        ) {
-          await fn(el, animInfo.arg);
-          jk++;
+        // Reinicializar animations para animações básicas
+        switch (animInfo.name) {
+          /* text case */
+          case 'fall': 
+          case 'rise':  
+          case 'fadeIn':  
+          case 'fadeOut':
+          case 'slideIn':
+          case 'slideOut':  
+          case 'shake': 
+          case 'shiver':
+          case 'pop':
+          case 'implode':
+          case 'spin':
+            animations = textAnimations;
+            break;
+          /* color case */
+          case 'paint':
+          case 'fadeColor': 
+          case 'chameleonCamo': 
+          case 'octopusCamo': 
+          case 'liquidFill':
+            if (action.prop.toLowerCase() === 'background.color') {
+              animations = backgroundColor;
+            } else {
+              animations = colorAnimations;
+            }
+            break;
+          /* transform case */
+          case 'rotate':
+          case 'zoomIn':
+          case 'zoomOut':
+          case 'mirror':
+            animations = transformAnimations;
+            break;
+          /* shadow case */
+          case 'surge':
+          case 'fadeDusk':
+          case 'purge':
+            animations = shadowAnimations;
+            break;
+          /* radius case */
+          case 'round':
+          case 'corner':
+            animations = radiusAnimations;
+            break;
+          /* gap case */
+          case 'bloom':
+          case 'stagedBloom':
+            animations = gapAnimations;
+            break;
+          /* brightness case */
+          case 'neon':
+          case 'pillar':
+          case 'halo':
+          case 'fadeLight':
+            // Importar brightnessAnimations se necessário
+            macron('warn', `Animações de brightness ainda não implementadas: ${animInfo.name}`);
+            break;
+          /* weight case */
+          case 'skinny':
+          case 'heavy':
+            // Importar weightAnimations se necessário
+            macron('warn', `Animações de weight ainda não implementadas: ${animInfo.name}`);
+            break;
+          default:
+            macron('warn', `Animação '${animInfo.name}' não foi reconhecida`);
+            animations = null;
+        }
+
+        if (animations) {
+          if (
+            (propType === 'text' && ['fall', 'rise', 'slideIn', 'slideOut', 'fadeIn', 'fadeOut', 'pop', 'implode', 'shake', 'shiver', 'spin'].includes(animInfo.name)) ||
+            (propType === 'color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
+            (propType === 'transform' && ['rotate', 'zoomIn', 'zoomOut', 'mirror'])  ||
+            (propType === 'background.color' && ['paint', 'fadeColor', 'chameleonCamo', 'octopusCamo', 'liquidFill'].includes(animInfo.name)) ||
+            (propType === 'gap' && ['bloom', 'stagedBloom'].includes(animInfo.name)) ||
+            (propType === 'radius' && ['round', 'corner'].includes(animInfo.name)) ||
+            (propType === 'weight' && ['skinny', 'heavy'].includes(animInfo.name)) ||  
+            (propType === 'brightness' && ['neon', 'pillar', 'halo', 'fadeLight'].includes(animInfo.name)) ||
+            (propType === 'shadow' && ['surge', 'purge', 'fadeDusk'].includes(animInfo.name)) 
+            //(propType === 'value' && ['searchValue'].includes(animInfo.name))
+          ) {
+            const fn = animations[animInfo.name];
+            if (fn && typeof fn === 'function') {
+              await fn(el, animInfo.arg);
+              jk++;
+            } else {
+              macron('warn', `Função '${animInfo.name}' não encontrada na biblioteca`);
+            }
+          } else {
+            macron('warn', `animação '${animInfo.name}' não é compatível com a propriedade '${propType}'.`);
+          }
         } else {
-          macron('warn', `animação '${animInfo.name}' não é compatível com a propriedade '${propType}'.`);
+          macron('warn', `Biblioteca de animações não foi inicializada para ${animInfo.name}`);
         }
       } 
     }
