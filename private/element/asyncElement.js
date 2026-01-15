@@ -1,11 +1,6 @@
 import { cmdAsyncEvent } from '../cmd/cmdAsyncEvent.js';
+import { AsyncEvents } from './asyncEvents.js';
 import { macron } from '../../src/console.js';
-
-const selector = '@cmd';
-const rawEventName = 'root';
-const actions = 'message: alert(Comando aceito...)';
-
-asyncElement(selector, rawEventName, actions);
 
 export function asyncElement(selector, rawEventName, actions) {
     const Selector = selector.split('@')[1];
@@ -15,4 +10,8 @@ export function asyncElement(selector, rawEventName, actions) {
         cmdAsyncEvent(actions);
     }
 
+    if (Selector === 'vectora') {
+        macron('log', `Elemento assíncrono ${selector}`);
+        AsyncEvents(selector, rawEventName, actions);
+    }
 }

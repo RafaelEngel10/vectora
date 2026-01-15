@@ -5,7 +5,7 @@
 
     -- declareting ::
 
-        @async {
+        @vectora {
             root.Event {
                 proposeValue(${rejection-animation}) {
                     text: shake(sideways, 0.75px, 600);
@@ -65,7 +65,7 @@
 ## event special functions:
 
     create(initial state, final state, auxiliar function) ---> start at display: none, transits to display: block, while auxiliar function animates, those functions can be 
-    fall() / rise() / etc. Used to create opeennable menus.
+    land() / rise() / etc. Used to create opeennable menus.
 
 
 

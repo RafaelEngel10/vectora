@@ -4,6 +4,12 @@ import { macron }from "../../src/console.js";
 
 export function AsyncEvents(selector, rawEventName, actions) {
   macron('info', `executando AsyncEvents: ${selector}, ${rawEventName}, ${actions}`);
+
+
+  // import async event
+  if (rawEventName.toLowerCase() === 'import') {
+    
+  }
  
   // root async event
   if (rawEventName.toLowerCase() === 'root') {
@@ -18,16 +24,6 @@ export function AsyncEvents(selector, rawEventName, actions) {
     macron('log', `${variables}`);
     return;
   }
-  // attach to elements (delegation not implemented — attach individually)
-  const els = document.querySelectorAll(selector);
-  if (!els || els.length === 0) {
-    macron('log', `nenhum elemento encontrado para bind do evento: ${selector}, ${rawEventName}`);
-    return;
-  }
-  
-  els.forEach(el => {
-    el.addEventListener(rawEventName, handler);
-  });
 
   macron('log', 'AsyncEvents.js foi executado com sucesso!');
 }

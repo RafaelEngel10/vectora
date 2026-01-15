@@ -17,6 +17,11 @@ export function cmdAsyncEvent(actions) {
     const part = parts[1].trim().split('(')[0];
 
     const fn = cmdCommands[part];
-    fn(newParts);
 
+    if (!fn) {
+        macron('error', `Comando não reconhecido: ${part}`);
+        return;
+    }
+
+    fn(newParts);
 }

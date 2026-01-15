@@ -5,4 +5,10 @@ export const cmd = {
 
         console.log(message);
     },
+
+    scan: (arg: string[]) => {
+        const variable: any = arg[1]?.split(')')[0] ?? '';
+
+        return variable;
+    }
 }

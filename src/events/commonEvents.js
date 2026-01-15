@@ -101,6 +101,8 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
       return;
     }
     
+
+    // reveal.onScroll event listener
     if (rawEventName === 'reveal.onScroll') {
       const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
@@ -124,7 +126,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     }
 
 
-
+    
 
 
     

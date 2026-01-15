@@ -10,8 +10,8 @@ Used in conjunction with the Counter (%%), being very similar to a common Vector
 <pre>
 h1 {
     window.onLoad {
-        text: fall() %%5;
-        ?? %%==5: fall();
+        text: land() %%5;
+        ?? %%==5: land();
     };
 }
 </pre>
@@ -21,7 +21,7 @@ h1 {
 <pre> 
 h1 {
     window.onLoad {
-        text: fall() %%5;
+        text: land() %%5;
         ?? %% == 5 {
             text: slideOut();
             color: fadeColor();

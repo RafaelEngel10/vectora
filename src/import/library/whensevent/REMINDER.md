@@ -1,6 +1,6 @@
 ## HOW TO IMPORT:
 
-@async {
+@vectora {
     import {
         whensevent      <!-- A virgula é necessário caso tenha mais de um import -->
     }
@@ -19,3 +19,6 @@
 
 - [ ] when.Checked ==
     Um link ja checado uma vez, realizará uma animação.
+
+- [ ] when.Focused ==
+    Quando o elemento é focado, realiza a animação.

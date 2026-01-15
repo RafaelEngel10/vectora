@@ -1,7 +1,7 @@
 ## HOW TO IMPORT:
 
 <pre> 
-    @async {
+    @vectora {
         import {
             simplify
         }
@@ -10,15 +10,13 @@
 
 ## NEW SIMPLIFIED COMMANDS:
 
--   fade(type, other arguments) ---> fade types = {in, out, color, light, dusk}
+-   fade(type, other arguments) ---> fade **types** = {in, out, color, light, dusk}
 
--   slide(type, other arguments) ---> slide types = {in, out}
+-   slide(type, other arguments) ---> slide **types** = {in, out}
 
--   camo(type, other arguments) ---> camo types = {octopus, chameleon}
+-   camo(type, other arguments) ---> camo **types** = {octopus, chameleon}
 
--   zoom(type, other arguments) ---> zoom types = {in, out}
-
--   
+-   zoom(type, other arguments) ---> zoom **types** = {in, out}   
 
 
 -   val(variable_name) && var(variable_name) ==

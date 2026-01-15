@@ -70,12 +70,12 @@
 - Acima de tudo, o contador (%%) é testado para saber se pode ou não continuar para a animação, depois o símbolo (=>) é o primeiro a ser levado em conta, logo após é levado em conta a soma e concatenação e a concatenação forçada (++, +-), em seguida o delay entre cada animação (--) e por último, mas não menos importante, a atribuição de propriedade (&), a qual sempre é antecedida pelo sinal universal de interpolação (=>);
 
 <pre>
-    fall() ++ slideIn() => &ease-in --600;
+    land() ++ slideIn() => &ease-in --600;
 </pre>
 
 - Através dessa simples soma de animações, é possível deduzir que a interpolação será um vetor diagonal com uma curva suave até o ponto de chegada. Além disso, através do sinal universal de interpolação, pode-se definir uma animação que será executada em sequência, segue o exemplo abaixo:
 
 <pre>
-    fall() ++ slideIn() => &ease-in => slideOut(right,2px,300ms) => --500ms;
+    land() ++ slideIn() => &ease-in => slideOut(right,2px,300ms) => --500ms;
 </pre>
 

@@ -12,7 +12,7 @@ export function filterAnimation(cleanName) {
     let animations;
 
     switch (cleanName) {
-     case 'fall': 
+     case 'land': 
      case 'rise':  
      case 'fadeIn':  
      case 'fadeOut':

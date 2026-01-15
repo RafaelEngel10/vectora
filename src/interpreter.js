@@ -3,7 +3,7 @@
    - <link rel="stylesheet" href="... .vec"> fetch only (host server needed)
    - <script type="module"> inline (without CORS)
    - support for event blocks:
-    #id { window.onLoad { text: fall(600ms); }; }
+    #id { window.onLoad { text: land(600ms); }; }
 */
 
 import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
@@ -115,7 +115,7 @@ import { parseVectora, processVectora } from "./parse.js";
   } 
 
 
-  /********** loader: link[href$=".vec"] fetch (server) + inline <script type="modules"> fallback **********/
+  /********** loader: link[href$=".vec"] fetch (server) + inline <script type="modules"> landback **********/
   async function loadAll() {
     // before: inline scripts
     document.querySelectorAll('script[type="modules"]').forEach(s => {

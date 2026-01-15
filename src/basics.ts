@@ -23,7 +23,7 @@ export function ensureInlineBlockIfNeeded(el: any): void {
 }
 
 export function parseAnimString(s: any): { name: string; arg: string | null } {
-    // exemplo: fall(600ms) ou fall
+    // exemplo: land(600ms) ou land
     const m = s.match(/^([a-zA-Z0-9_-]+)\s*(?:\(([^)]*)\))?$/);
     if (!m) return { name: s, arg: null };
     return { name: m[1], arg: m[2] ? m[2].trim() : null };

@@ -1,7 +1,7 @@
 import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
 
 export const textAnimations = {
-  fall: (el: any, arg: any) => {
+  land: (el: any, arg: any) => {
     return new Promise<void>((resolve) => {
       const duration: number = toMs(arg);
   

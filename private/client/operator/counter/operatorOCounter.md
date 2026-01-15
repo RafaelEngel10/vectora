@@ -11,7 +11,7 @@ To count how many times a animation was called, returning TRUE if count number i
 <pre>
 h1 {
     window.onLoad {
-        text: fall() %%;
+        text: land() %%;
     };
 }
 </pre>
@@ -25,7 +25,7 @@ Return TRUE when count number equals to a specific number:
 <pre>
 h1 {
     window.onLoad {
-        text: fall() %%5;
+        text: land() %%5;
     };
 }
 </pre>
@@ -41,7 +41,7 @@ Return TRUE every time that count number is divisible by a specific number:
 <pre>
 h1 {
     window.onLoad {
-        text: fall() %%x5;
+        text: land() %%x5;
     };
 }
 </pre>

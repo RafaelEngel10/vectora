@@ -1,7 +1,7 @@
 ## HOW TO IMPORT:
 
 <pre>
-    @async {
+    @vectora {
         import {
             cupid
         };
@@ -17,4 +17,4 @@
 - [ ] message == 
     - alert("Digite a mensagem aqui!", duração) ---> cria uma mensagem no HTML que possui uma duração definida.
     
-    - popup("Digite a mensagem aqui!") ---> cria um popup que se mantem até que o usuário feche a janela.
+    - popUp("Digite a mensagem aqui!") ---> cria um popup que se mantem até que o usuário feche a janela.

@@ -1,12 +1,13 @@
 ## HOW TO IMPORT:
 
 <pre> 
-    @async {
+    @vectora {
         import {
             objectorient
         }
     }
 </pre>
+
 
 ## NOVOS COMANDOS:
 
@@ -29,7 +30,7 @@
 ## COMO USAR:
 
 <pre>
-    @async {
+    @vectora {
         stem {
             createObject(--cant-use);
             --cant-use = {

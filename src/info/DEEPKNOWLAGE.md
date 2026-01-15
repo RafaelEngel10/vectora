@@ -22,7 +22,7 @@
 ## Animações Vectora: 
 
 - [x] text ==
-    - fall(duração) ---> animação de queda suave do texto.
+    - land(duração) ---> animação de queda suave do texto.
 
     - rise(duração) ---> animação de subida suave.
 
@@ -128,9 +128,6 @@
 - [ ] hide.onScroll ==
     Assim que escondido pelo scroll, realiza uma animação.
 
-- [ ] onFocus.hold ==
-    Quando o elemento é focado, realiza a animação.
-
 - [ ] onSelection.hold ==
     Quando um elemento é selecionado, realiza a animação.
 
@@ -150,7 +147,7 @@
 
 <pre>exemplo {
     window.onLoad {
-        text: fall() ++ slideIn();
+        text: land() ++ slideIn();
     };
 } </pre>
 
@@ -187,7 +184,7 @@
 
 <pre>exemplo {
     window.onLoad {
-        text: fall() ++ slideIn() => ;
+        text: land() ++ slideIn() => ;
     };
 }</pre>
 
@@ -195,7 +192,7 @@
 
 <pre>exemplo {
     window.onLoad {
-        text: fall() ++ slideIn() => fadeOut();   
+        text: land() ++ slideIn() => fadeOut();   
     };
 }</pre>
 
@@ -205,7 +202,7 @@
 
 <pre>exemplo {
     window.onLoad {
-        text: fall() ++ slideIn() => &ease-in => fadeOut();   
+        text: land() ++ slideIn() => &ease-in => fadeOut();   
     };
 }</pre>
 
@@ -228,10 +225,10 @@
 
 ##  Eventos Assíncronos =
     
-* Eventos assíncronos nada mais são do que eventos que não necessitam de uma condição para ser executado. O melhor exemplo disso é o evento **@async**, o qual é um evento que permite a inicialização de variáveis.
+* Eventos assíncronos nada mais são do que eventos que não necessitam de uma condição para ser executado. O melhor exemplo disso é o evento **@vectora**, o qual é um evento que permite a inicialização de variáveis.
 
 <pre>
-@async {
+@vectora {
     root {
         proposeValue(--deny-text) = fadeColor( #f00, #000, 600);
     };

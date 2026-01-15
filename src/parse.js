@@ -2,6 +2,7 @@ import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapE
 import { macron } from "./console.js";
 import { attachHandlerForEvent } from "./events/commonEvents.js";
 import { AsyncEvents } from "./events/asyncEvents.js";
+import { asyncElement } from "../private/element/asyncElement.js";
 
 /********** parser (stack-safe for nested blocks 1 level) **********/
 export function parseVectora(code) {
@@ -87,9 +88,10 @@ export function processVectora(code) {
   try {
     const blocks = parseVectora(code);
     blocks.forEach(b => {
+      const selector = b.selector.includes('@');
       b.events.forEach(e => {
-        if (b.selector === '@async') {
-          AsyncEvents(b.selector, e.name, e.actions);
+        if (selector) {
+          asyncElement(b.selector, e.name, e.actions);
         } else {
           attachHandlerForEvent(b.selector, e.name, e.actions);
         }

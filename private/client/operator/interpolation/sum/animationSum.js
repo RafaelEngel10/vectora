@@ -28,7 +28,7 @@ function calculateVectoralSum(animations) {
   }
 
   // Aqui você implementaria a lógica de resultante vetorial
-  // Por exemplo: fall() [vertical] + slideIn() [horizontal] = diagonal
+  // Por exemplo: land() [vertical] + slideIn() [horizontal] = diagonal
   result.direction = 'resultant';
 
   return result;
@@ -86,8 +86,8 @@ async function applySumAnimation(animations, element, animationLibrary) {
   }
 
   // Executar todas as animações em paralelo
-  // Podem ser de famílias diferentes (ex: fall + slideIn)
-  // ou de subfamílias diferentes dentro da mesma família (ex: fall + slideIn ambas vetoriais)
+  // Podem ser de famílias diferentes (ex: land + slideIn)
+  // ou de subfamílias diferentes dentro da mesma família (ex: land + slideIn ambas vetoriais)
   const promises = animations.map(anim => {
     const cleanName = anim.split('(')[0].trim();
     const fn = animationLibrary[cleanName];

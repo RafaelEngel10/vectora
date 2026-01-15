@@ -1,6 +1,12 @@
+@vectora {
+    import {
+        whensevent
+    };
+}
+
 h1 {
     window.onLoad {
-        text: fall();
+        text: land();
     };
 
     onSing.click {
@@ -14,7 +20,7 @@ h1 {
 
 h2 {
     window.onLoad {
-        text: fall();
+        text: land();
         brightness: halo();
         background.color: liquidFill();
     };
