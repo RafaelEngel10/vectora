@@ -11,6 +11,7 @@ import { macron }from "../console.js";
 import { filterAnimation } from "../filter/switchFilterAnimation.js";
 import { hasConditionalKeywords, filterKeywordActions } from "../filter/keywordFilters.js";
 import { OperatorFilter } from "../filter/logicOperatorsFilters.js";
+import { asyncElement } from '../../private/element/asyncElement.js'
 
 let animations;
 
@@ -21,7 +22,7 @@ export async function runActionOnElements(selector, action) {
     return;
   }
 
-  // Check if the action contains conditional keywords
+  // Check if action contains conditional keywords
   if (hasConditionalKeywords(action.value)) {
     macron('log', `Detectadas palavras-chave condicionais em: ${action.value}`);
     

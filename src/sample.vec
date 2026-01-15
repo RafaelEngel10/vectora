@@ -1,9 +1,3 @@
-@vectora {
-    import {
-        whensevent
-    };
-}
-
 h1 {
     window.onLoad {
         text: land() %%;
