@@ -29,15 +29,3 @@ export function resetCounter(key) {
   const storageKey = `counter_${key}`;
   localStorage.removeItem(storageKey);
 }
-
-/**
- * Limpa todos os contadores do armazenamento
- */
-export function clearAllCounters() {
-  const keys = Object.keys(localStorage);
-  keys.forEach(key => {
-    if (key.startsWith('counter_')) {
-      localStorage.removeItem(key);
-    }
-  });
-}

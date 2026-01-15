@@ -1,6 +1,7 @@
 import { CounterOperatorHandler } from "../../private/client/operator/counter/operatorPercentageCounter.js";
 import { familyFilter } from "../../private/client/operator/interpolation/familyFilter.js";
 import { tildeReverseHandler } from "../../private/client/operator/reverse/operatorTildeReverse.js";
+import { testCounterCondition, extractCounterOperator } from "../../public/data/storageSearch.js";
 import { macron } from "../console.js";
 
 export function OperatorFilter(el, actions) {
@@ -33,7 +34,9 @@ export function OperatorFilter(el, actions) {
 
         animation = actions.split('(')[0];
 
-        CounterOperatorHandler(animation, actions);
+        /*const result = CounterOperatorHandler(animation, actions);
+        const cenario = testCounterCondition(localStorage.getItem('hash'), extractCounterOperator(actions));
+        localStorage.removeItem('hash');*/
         return true;
     }
 

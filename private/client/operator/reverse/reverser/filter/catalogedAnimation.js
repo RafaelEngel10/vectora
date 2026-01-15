@@ -1,4 +1,4 @@
-import { textAnimations } from "../../../../../../dist/anim/catalog/text/textAnimations.js";
+import { textAnimations } from "../../../../../../dist/src/anim/catalog/text/textAnimations.js";
 import macron from "../../../../../../src/basics.js";
 import { reverseUncatalogedAnimation } from "./uncatalogedAnimation.js";
 

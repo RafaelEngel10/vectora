@@ -1,3 +1,35 @@
-Eu acabei esquecendo de mencionar, mas as animações da família vetorial e apenas dela possuem uma sub-familia que é são a horizontal, vertical e diagonal. Essas sub-familias precisam ser levadas em conta para definir se é soma ou concatenação, e sim elas fizeram falta! 
+Leia code.md
 
-Perdoe-me e crie um filtro de sub-familia e retorna o estado se tem ou não e qual sub familia que pertence. Se tiver uma sub-familia, vai ter um outro filtro que define se as animações possuem subfamilias diferentes ou iguais para fazer a soma/concatenação. Se tiverem subfamilias diferentes é soma! Se tiverem iguais é concatenação! Em seguida altere o que for necessário para que funcione.
+O código presente dentro desse arquivo tem como função parsear uma estrutura específica em um objeto Javascript:
+
+//bloco retornado
+<pre>
+selector: any;
+    events: {
+        name: any;
+        actions: {
+            prop: string;
+            value: string;
+        }[];
+    }[];
+</pre>
+
+//bloco original
+<pre>
+selector {
+    event.trigger {
+        property: value;
+    };
+}
+</pre>
+
+Agora, eu quero que você faça um código que parsear e retorna uma estrutura específica assim:
+
+<pre>
+selector {                     
+    $idade = 10;                    //comandos básicos como variáveis
+    print(idade);                   //output de dados
+    return;                         //retorno
+}
+</pre>
+

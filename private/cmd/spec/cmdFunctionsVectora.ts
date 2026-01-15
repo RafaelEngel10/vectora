@@ -1,19 +1,31 @@
-
 export const cmd = {
-    print: (arg: string[]) => {
-        const message: string = arg[1]?.split(')')[0] ?? '';
-
-        console.log(message);
+    print: (args: string) => {;
+        console.log(args);
     },
 
-    scan: (arg: string[]) => {
-        const variable: any = arg[1]?.split(')')[0] ?? '';
+    scan: (args: string) => {
+        const variable: any = args[1]?.split(')')[0] ?? '';
 
         return variable;
     },
 
-    clear_storage: () => {
+    search_storage: (args: string) => {
+        if (args === '%%') {
+            localStorage.getItem('count_');
+        }
+        localStorage.getItem(args);
+        
+    },
+
+    storage: (args: string) => {
+        const name = args.split(',')[0];
+        const value = args.split(',')[1] || 'estocando vento...';
+
+        localStorage.setItem(`${name}`, value);
+    },
+
+    clear_storage: (args: void) => {
         localStorage.clear();
-        console.log(`Armazenamento local limpado com sucesso!`);
+        console.log('Armazenamento local excluído!');
     }
 }

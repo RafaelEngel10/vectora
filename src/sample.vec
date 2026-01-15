@@ -1,3 +1,7 @@
+@cmd {
+    $idade = 10;
+}
+
 h1 {
     window.onLoad {
         text: land() %%;
@@ -26,8 +30,4 @@ h2 {
     onHold.click {
         text: shake(seesaw, 1.2, 600);
     };
-}
-
-@cmd {
-    message: alert('Hello World!');
 }

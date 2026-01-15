@@ -1,17 +1,7 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
-import { macron } from "./console.js";
-import { attachHandlerForEvent } from "./events/commonEvents.js";
-import { AsyncEvents } from "../global/element/asyncEvents.js";
-import { AsyncTester } from "../global/element/asyncElementTester.js";
-import { parseAsyncElement } from "../global/resolver/asyncParse.js";
-
-
-/********** parser (stack-safe for nested blocks 1 level) **********/
-
 export function parseVectora(code) {
   code = removeComments(code);
   let i = 0, n = code.length, blocks = [];
-  
+
   function skipWhitespace() {
     while (i < n && /\s/.test(code[i])) i++;
   }
@@ -82,30 +72,4 @@ export function parseVectora(code) {
   }
 
   return blocks;
-}
-
-
-/********** process code (blocks -> bind) **********/
-export function processVectora(code) {
-  try {
-    const blocks = parseVectora(code);
-    const asyncBlock = parseAsyncElement(code);
-    
-    blocks.forEach(b => {
-      b.events.forEach(e => {
-        attachHandlerForEvent(b.selector, e.name, e.actions);
-      });
-    });
-    
-    runAsyncTester(asyncBlock);
-    
-  } catch (err) {
-    macron('error', err);
-  }
-}
-
-function runAsyncTester(block) {
-  block.forEach(ab => {
-    AsyncTester(ab.selector, ab.actions);
-  })
 }

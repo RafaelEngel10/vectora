@@ -4,7 +4,7 @@ Esse elemento por ser diferente, não funciona usar o parseVectora comum, alguma
 
 ###### dentro do arquivo .vec
 <pre>
-    @cmd {
+    @cmd:main {
         let idade = 0;
 
         print(`Digite sua idade: `);
@@ -17,6 +17,7 @@ Esse elemento por ser diferente, não funciona usar o parseVectora comum, alguma
 
 > Nesse código, os espaços em branco são ignorados claro, mas a estrutura é completamente diferente do que seria de por exemplo aplicar uma animação a uma tag.
 
+> O recurso :main significa que é uma função principal que vai ser executada.
+
 ---
 
-Altere o parse.js com EXTREMO CUIDADO para adicionar essa feature sem que corrompa toda a estrutura da minha linguagem.

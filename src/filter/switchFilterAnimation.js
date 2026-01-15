@@ -1,12 +1,12 @@
-import { macron } from "../console";
-import { textAnimations } from "../../dist/anim/catalog/text/textAnimations.js";
+import { macron } from "../console.js";
+import { textAnimations } from "../../dist/src/anim/catalog/text/textAnimations.js";
 import { colorAnimations } from "../anim/catalog/color/colorAnimations.js";
-import { transformAnimations } from "../../dist/anim/catalog/transform/transform.js";
-import { backgroundColor } from "../../dist/anim/catalog/background/color/backgroundColor.js";
-import { backgroundImage } from "../../dist/anim/catalog/background/image/backgroundImage.js";
-import { shadowAnimations } from "../../dist/anim/catalog/shadow/shadowAnimations.js";
-import { radiusAnimations } from "../../dist/anim/catalog/radius/radiusAnimations.js";
-import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
+import { transformAnimations } from "../../dist/src/anim/catalog/transform/transform.js";
+import { backgroundColor } from "../../dist/src/anim/catalog/background/color/backgroundColor.js";
+import { backgroundImage } from "../../dist/src/anim/catalog/background/image/backgroundImage.js";
+import { shadowAnimations } from "../../dist/src/anim/catalog/shadow/shadowAnimations.js";
+import { radiusAnimations } from "../../dist/src/anim/catalog/radius/radiusAnimations.js";
+import { gapAnimations } from "../../dist/src/anim/catalog/gap/gapAnimations.js";
 
 export function filterAnimation(cleanName) {
     let animations;

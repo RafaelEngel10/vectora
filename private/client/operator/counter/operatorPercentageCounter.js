@@ -52,7 +52,9 @@ function generateKeyHash(str) {
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash; // Convert to 32bit integer
   }
-  return Math.abs(hash).toString(36);
+
+  const hash_result = Math.abs(hash).toString(36);
+  return hash_result;
 }
 
 /**

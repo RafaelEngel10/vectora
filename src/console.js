@@ -12,5 +12,8 @@ export function macron(type, message) {
         case 'log':
             console.log('[Vectora]', message);
             break;
+        case 'dir':
+            console.dir('[Vectora]', message, { depth: null });
+            break;
     }
 }
