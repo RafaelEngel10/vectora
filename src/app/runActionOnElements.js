@@ -9,8 +9,6 @@ import { gapAnimations } from "../../dist/anim/catalog/gap/gapAnimations.js";
 import { parseAnimString } from "../../dist/basics.js";
 import { macron }from "../console.js";
 import { filterAnimation } from "../filter/switchFilterAnimation.js";
-import { filterAnimationFamilies, resolveAnimationCombination, getAnimationFamily, filterVectorSubfamilies } from "../../private/client/operator/interpolation/familyFilter.js";
-import { processCombinedAnimations } from "../../private/client/operator/interpolation/sum/animationSum.js";
 
 let animations;
 
@@ -47,57 +45,9 @@ export async function runActionOnElements(selector, action) {
     macron('log',`Switch de filtro de animações: ${action.value}`);
     
     // Usar o módulo familyFilter para processar combinações
-    const combinationResult = resolveAnimationCombination(action.value);
-    macron('log', `Tipo de combinação: ${combinationResult.type}`);
+    macron('log', `Tipo de combinação`);
     
     // Mostrar detalhes adicionais para animações vetoriais
-    if (combinationResult.family === 'vectorial') {
-      macron('debug', `Animações vetoriais detectadas. Sub-famílias: ${combinationResult.subfamilies?.join(', ') || combinationResult.subfamily || 'N/A'}`);
-    }
-    
-    if (combinationResult.type === 'concatenation') {
-      // Concatenação: executar animações em fila (sequencial)
-      for (const el of els) {
-        const parts = action.value.split('++').map(p => p.trim());
-        for (const part of parts) {
-          const cleanName = part.split('(')[0].trim();
-          
-          // Determinar qual biblioteca usar (mesmo switch de antes)
-          animations = filterAnimation(cleanName);
-          
-          if (animations) {
-            const fn = animations[cleanName];
-            if (fn && typeof fn === 'function') {
-              const animInfo = parseAnimString(part);
-              await fn(el, animInfo.arg);
-            }
-          } else {
-            macron('warn', `Animação '${cleanName}' não foi reconhecida`);
-          }
-        }
-      }
-    } else if (combinationResult.type === 'sum') {
-      // Soma: processar com o módulo de soma (paralelo)
-      // Combinar todas as bibliotecas de animação disponíveis
-      const allAnimations = {
-        ...textAnimations,
-        ...colorAnimations,
-        ...transformAnimations,
-        ...shadowAnimations,
-        ...gapAnimations,
-        ...radiusAnimations,
-        ...backgroundColor,
-        ...backgroundImage
-      };
-      
-      for (const el of els) {
-        macron('debug', `Executando soma de animações em paralelo para o elemento`);
-        await processCombinedAnimations(action.value, el, allAnimations);
-      }
-    } else if (combinationResult.type === 'error') {
-      macron('warn', `Erro ao processar combinação de animações: ${combinationResult.description}`);
-    }
-    
     return; // Pular a execução padrão
   }
 
@@ -111,11 +61,9 @@ export async function runActionOnElements(selector, action) {
       const animInfo = parseAnimString(anim);
       // Verifica compatibilidade por tipo
       const propType = action.prop.toLowerCase();
-      const animState = animFilter(animInfo.name);
+      const animState = 'NONE';
 
-      types = animState.type;
-
-      if (animState.type !== 'NONE' || types !== 'NONE') {
+      if (animState !== 'NONE') {
 
         const firstAnim = animState.parts[0].split('(')[0];
         const secondAnim = animState.parts[1].split('(')[0];
@@ -154,8 +102,6 @@ export async function runActionOnElements(selector, action) {
           }
         }
       }
-      
-      if (animState.type === 'NONE' || types === 'NONE') {
         macron('debug', `Sem interpolações no script. Animação básica ${animInfo.name}`);
 
         // Reinicializar animations para animações básicas
@@ -187,7 +133,6 @@ export async function runActionOnElements(selector, action) {
         } else {
           macron('warn', `Biblioteca de animações não foi inicializada para ${animInfo.name}`);
         }
-      } 
     }
   }
 

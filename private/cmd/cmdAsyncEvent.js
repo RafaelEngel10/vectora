@@ -1,12 +1,6 @@
 import { macron } from "../../src/console.js";
 import { cmd } from '../../dist/private/cmd/spec/cmdFunctionsVectora.js';
 
-const actions = 'message: log(Comando aceito...)';
-const cmdCommands = cmd;
-
-cmdAsyncEvent(actions);
-
-
 export function cmdAsyncEvent(actions) {
     macron('log', 'Executando cmdAsyncEvent.');
 
