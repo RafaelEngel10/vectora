@@ -6,7 +6,7 @@
 
 h1 {
     window.onLoad {
-        text: land();
+        text: land() %%;
     };
 
     onSing.click {

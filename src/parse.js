@@ -1,7 +1,7 @@
 import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
 import { macron } from "./console.js";
 import { attachHandlerForEvent } from "./events/commonEvents.js";
-import { AsyncEvents } from "./events/asyncEvents.js";
+import { AsyncEvents } from "../private/element/asyncEvents.js";
 import { asyncElement } from "../private/element/asyncElement.js";
 
 /********** parser (stack-safe for nested blocks 1 level) **********/

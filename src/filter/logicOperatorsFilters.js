@@ -3,11 +3,6 @@ import { familyFilter } from "../../private/client/operator/interpolation/family
 import { tildeReverseHandler } from "../../private/client/operator/reverse/operatorTildeReverse.js";
 import { macron } from "../console.js";
 
-let el = <h1></h1>;
-let actions = `~~land(600)`;
-
-OperatorFilter(actions);
-
 export function OperatorFilter(el, actions) {
 
     const action = actions.split('(')[0];
@@ -19,20 +14,28 @@ export function OperatorFilter(el, actions) {
     if (firstOperatorFilter) {
         macron('log', `Executando resolutor para operador lógico REVERSOR (~~).`);
         tildeReverseHandler(el, actions);
+        return true;
     }
 
-
-    const secondOperatorFilter = action.includes('++');
+    // teste de operador lógico SOMA/CONCAT (++)
+    const secondOperatorFilter = actions.includes('++');
     if (secondOperatorFilter) {
         macron('log', `Executando resolutor para operador lógico SOMA/CONCATENAÇÃO (++).`);
         familyFilter(el, actions);
+        return true;
     }
 
 
-    
-    const thirdOperatorFilter = action.includes('%%');
+    // teste de operador lógico CONTADOR (%%)
+    const thirdOperatorFilter = actions.includes('%%');
     if (thirdOperatorFilter) {
         macron('log', `Executando resolutor para operador lógico CONTADOR (%%).`);
-        CounterOperatorHandler();
+
+        animation = actions.split('(')[0];
+
+        CounterOperatorHandler(animation, actions);
+        return true;
     }
+
+    return false;
 }
