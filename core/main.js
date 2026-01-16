@@ -1,9 +1,9 @@
 import { Lexer } from "../dist/core/lexer.js";
 import { Parser } from "../dist/core/parser.js";
 import { Interpreter } from "../dist/core/interpreter.js";
-import { readTxtFile } from "../public/admin/reader.js";
+import { readTxtFile } from "../private/admin/reader.js";
 
-const source = readTxtFile('./core/in/instructor.txt');
+const source = readTxtFile('./private/in/instructor.txt');
 console.log(source);
 
 const lexer = new Lexer(source);
