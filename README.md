@@ -1,6 +1,6 @@
 What is Vectora? 
 --------------
-Vectora is a project of an declarative DSL focused on orchestrating animations, designed specifically for the web-oriented frontend development ecosystem. Its main goal is to provide an expressive and simplified syntax for defining animated behaviors implemented through JavaScript.
+Vectora is a declarative DSL project focused on orchestrating animations, designed specifically for the web-oriented frontend development ecosystem.
 
 What it solves
 --------------
@@ -36,15 +36,21 @@ Add to `index.html`:
 <*script* src="./vectora/src/interpreter.js">
 </pre>
 
-Under the table
+> interpreter is executed on page load
+
+Syntax Breakdown
 ---
 <pre>
-div {                           <--- HTML element/class/id
-    window.onLoad {                             <--- Animation Trigger Event
-        background.color: fadeIn(#fff00, 600ms);                    <--- Property: Animation function
+div {                                                          <--- HTML element/class/id
+    window.onLoad {                                             <--- Animation Trigger Event
+        background.color: fadeIn(#fff00, 600ms);                  <--- Property: Animation function
     };
 }
 </pre>
+
+Design Decisions
+----------------
+Vectora was designed as a DSL because it is a formal system with well-defined rules and symbols that provide clear instructions to the computer. This language has more to offer than just a basic CSS-style declaration. Based on these criteria, it was determined that it could not be anything other than what it already is.
 
 Status
 ------
@@ -60,4 +66,4 @@ Contributing
 4. Open pull request
 
 
-more info about in our site: <---!Work in Progress!--->
+more info about in our site: <---!work in progress!--->
