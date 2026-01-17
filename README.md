@@ -1,40 +1,63 @@
-# What is Vectora? 
+What is Vectora? 
+--------------
+Vectora is a project of an declarative DSL focused on orchestrating animations, designed specifically for the web-oriented frontend development ecosystem. Its main goal is to provide an expressive and simplified syntax for defining animated behaviors implemented through JavaScript.
 
-- Vectora is a project of an declarative DSL focused on orchestrating animations, designed specifically for the web-oriented frontend development ecosystem. Its main goal is to provide an expressive and simplified syntax for defining animated behaviors implemented through JavaScript.
+What it solves
+--------------
+Many JS animations become hard to maintain due to imperative state management and scattered event handlers.  
+Vectora provides a declarative syntax to describe animations in a structured, readable DSL, reducing boilerplate and cognitive load.
 
+Getting Started
+---------------
+***Clone Repository:*** <br>
+git clone https://github.com/RafaelEngel10/vectora.git <br>
+cd vectora <br>
 
-# What is special about Vectora?
+***Install Dependencies:***<br>
+npm install <br>
 
-- Its main feature is to facilitate the use of animations, with a more user-friendly and readable syntax. Furthermore, there are incredible features to be explored that will be explained as the project expands. My goal is to bring more life to a world where most websites are static.
+***Run build:***<br>
+npm run build <br>
 
-- It is worth highlighting that, in addition to its simplified syntax, Vectora is capable of creating new animations by combining pre-made animations, encouraging the use of creativity to contribute new animations to the community.
-
-
-# How to use Vectora?
-
-- In the **.html** file, it is necessary to declare two elements which will be fundamental for linking the Vectora file with the interpreter.
-
+Grammar Example
+-------
+Create `example.vec`:
 <pre>
-    <*link* rel="vectora" href="~~.vec">            -- vectora file link
-    <*script* src="vectora/interpreter.js"></*script*>    -- direct linking to interpreter
-</pre>
-
-- By that, now all you need to do is just to create an file with **.vec** extension.
-
-
-# How to start with Vectora?
-
-- Its syntax is simple and predictable:
-
-<pre>
-element/.class/#id {
-    event.listener {
-        property: animation(instructions); 
+div {
+    window.onLoad {
+        background.color: fadeIn(#fff00, 600ms);
     };
 }
 </pre>
 
-- First, declare the element that will be animated. Then, add the event that will be responsible for activating the animations when its condition equals true. Additionally, specify within the event which property will be animated.
+Add to `index.html`:
+<pre>
+<*link* rel="vectora" href="example.vec">
+<*script* src="./vectora/src/interpreter.js">
+</pre>
+
+Under the table
+---
+<pre>
+div {                           <--- HTML element/class/id
+    window.onLoad {                             <--- Animation Trigger Event
+        background.color: fadeIn(#fff00, 600ms);                    <--- Property: Animation function
+    };
+}
+</pre>
+
+Status
+------
+Current: core DSL and basic animations working  
+In progress: sum and concat animations, executable commands on @cmd tag.  
+Planned: conditional statement, loop while.
+
+Contributing
+------------
+1. Open an issue
+2. Fork and branch
+3. Make changes + tests
+4. Open pull request
 
 
-
+more info about in our site: <---!Work in Progress!--->

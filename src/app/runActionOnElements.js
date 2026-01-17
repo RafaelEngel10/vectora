@@ -81,7 +81,7 @@ export async function runActionOnElements(selector, action) {
  * @param {HTMLElement} element - The element to apply to
  * @param {string} propType - The property type (text, color, transform, etc)
  */
-async function runSingleAction(actionString, element, propType) {
+function runSingleAction(actionString, element, propType) {
   const animInfo = parseAnimString(actionString);
   const propTypeNormalized = propType.toLowerCase();
 
@@ -92,7 +92,7 @@ async function runSingleAction(actionString, element, propType) {
     const fn = animations[cleanAnimName];
     
     if (fn && typeof fn === 'function') {
-      await fn(element, animInfo.arg);
+      fn(element, animInfo.arg);
       macron('debug', `Ação executada: ${animInfo.name} na propriedade ${propTypeNormalized}`);
     } else {
       macron('warn', `Função '${animInfo.name}' não encontrada na biblioteca`);
