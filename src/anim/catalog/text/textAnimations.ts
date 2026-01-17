@@ -2,13 +2,14 @@ import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapE
 
 export const textAnimations = {
   land: (el: any, arg: any) => {
-    const duration: number = toMs(arg);
+    const duration: number = toMs(arg) || 600;
 
     ensureInlineBlockIfNeeded(el);
     
-    appendTransition(el, `transform ${duration}ms ease`);
     el.style.transform = 'translateY(-30px)';
     el.style.opacity = '0';
+    
+    appendTransition(el, `transform ${duration}ms ease`);
 
     void el.offsetWidth;
 
@@ -22,7 +23,7 @@ export const textAnimations = {
 
 
   rise: (el: any, arg: any) => {
-    const duration: number = toMs(arg);
+    const duration: number = toMs(arg) || 600;
     
     ensureInlineBlockIfNeeded(el);
     el.style.transform = 'translateY(30px)';
@@ -37,7 +38,7 @@ export const textAnimations = {
 
 
   fadeIn: (el: any, arg: any) => {
-      const duration = toMs(arg);
+      const duration = toMs(arg) || 600;
     // simple fade
       el.style.opacity = '0';
       void el.offsetWidth;
@@ -47,7 +48,7 @@ export const textAnimations = {
 
 
   fadeOut: (el: any, arg: any) => {
-      const duration: number = toMs(arg);
+      const duration: number = toMs(arg) || 600;
     // simple fade
       el.style.opacity = '1';
       void el.offsetWidth;
@@ -208,23 +209,13 @@ export const textAnimations = {
     let keyframes: string[];
     switch (direction) {
       case 'seesaw':
-        case 'seesaw':
         keyframes = [
           'rotate(0deg)',
-          'rotate(0.625deg)',
-          'rotate(1.25deg)',
-          'rotate(2.5deg)',
-          'rotate(5deg)',
-          'rotate(-0.625deg)',
-          'rotate(-1.25deg)',
-          'rotate(-2.5deg)',
-          'rotate(-5deg)',
           'rotate(3deg)',
-          'rotate(1.5deg)',
-          'rotate(0.75deg)',
           'rotate(-3deg)',
-          'rotate(-1.5deg)',
-          'rotate(-0.75deg)',
+          'rotate(2deg)',
+          'rotate(-2deg)',
+          'rotate(1deg)',
           'rotate(0deg)'
         ];
         break;

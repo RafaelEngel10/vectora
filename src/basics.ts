@@ -48,16 +48,27 @@ export function parseProperties(text: any): any {
 }
 
 
-export function appendTransition(el: HTMLElement, property: string): boolean {
-  const current = el.style.transition;
+export function appendTransition(el: HTMLElement, transition: string): boolean {
+  const current = getComputedStyle(el).transition;
 
-  if (!current || current === 'none') return false;
+  if (!current || current === 'none') {
+    el.style.transition = transition;
+    return true;
+  }
 
-  const transitions = current.split(',').map(t => t.trim()).filter(Boolean);
+  const newProp = transition.split(' ')[0];
 
-  const filtered = transitions.filter(t => !t.startsWith(property));
+  const transitions = current
+    .split(',')
+    .map(t => t.trim())
+    .filter(Boolean);
 
-  filtered.push(`${property}`);
+  const filtered = transitions.filter(t => {
+    const prop = t.split(' ')[0];
+    return prop !== newProp;
+  });
+
+  filtered.push(transition);
 
   el.style.transition = filtered.join(', ');
 
