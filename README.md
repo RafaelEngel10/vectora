@@ -19,38 +19,35 @@ npm install <br>
 ***Run build:***<br>
 npm run build <br>
 
-Grammar Example
--------
+### Grammar Example
+
 Create `example.vec`:
-<pre>
-div {
+```
+h1 {
     window.onLoad {
-        background.color: fadeIn(#fff00, 600ms);
+        text: land(600ms);
     };
 }
-</pre>
+```
 
 Add to `index.html`:
-<pre>
+```
 <*link* rel="vectora" href="example.vec">
 <*script* src="./vectora/src/interpreter.js">
-</pre>
+```
 
-> interpreter is executed on page load
+> EXPECTED OUTPUT -> on window page fully loaded, h1 will fall and land in 600ms. 
+#### More info about it in our documentation.
 
 Syntax Breakdown
 ---
-<pre>
+```
 div {                                                          <--- HTML element/class/id
     window.onLoad {                                             <--- Animation Trigger Event
         background.color: fadeIn(#fff00, 600ms);                  <--- Property: Animation function
     };
 }
-</pre>
-
-Design Decisions
-----------------
-Vectora was designed as a DSL because it is a formal system with well-defined rules and symbols that provide clear instructions to the computer. This language has more to offer than just a basic CSS-style declaration. Based on these criteria, it was determined that it could not be anything other than what it already is.
+```
 
 Status
 ------
@@ -64,6 +61,3 @@ Contributing
 2. Fork and branch
 3. Make changes + tests
 4. Open pull request
-
-
-more info about in our site: <---!work in progress!--->

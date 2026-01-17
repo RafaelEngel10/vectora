@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../../basics.js';
 
 export const backgroundColor = {
   fadeColor: (el: any, arg: any) => {
@@ -7,12 +7,11 @@ export const backgroundColor = {
     const finalColor = parts[1] || '#ffffff';
     const duration: number = toMs(parts[2] || '1000ms');
 
-    el.style.transition = 'none';
     el.style.backgroundColor = initialColor;
 
     void el.offsetWidth;
 
-    el.style.transition = `color ${duration}ms ease-in-out`;
+    appendTransition(el, `color ${duration}ms ease-in-out`);
 
     requestAnimationFrame(() => {
       el.style.backgroundColor = finalColor;
@@ -60,8 +59,6 @@ export const backgroundColor = {
       endPos = '0% 100%';
     } 
 
-    
-    el.style.transition = 'none';
     el.style.backgroundImage = `linear-gradient(${gradientDirection}, ${finalColor} 0%, ${finalColor} 50%, ${initialColor} 50%, ${initialColor} 100%)`;
     el.style.backgroundRepeat = 'no-repeat';
     el.style.backgroundSize = '200% 200%';
@@ -73,7 +70,7 @@ export const backgroundColor = {
     void el.offsetWidth;
 
     const easing = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
-    el.style.transition = `background-position ${duration}ms ${easing}, background-size ${Math.round(duration*0.9)}ms ${easing}`;
+    appendTransition(el, `background-position ${duration}ms ${easing}, background-size ${Math.round(duration*0.9)}ms ${easing}`);
 
     requestAnimationFrame(() => {
       el.style.backgroundPosition = endPos;
@@ -89,8 +86,6 @@ export const backgroundColor = {
       el.style.backgroundClip = prev.bgClip;
       el.style.webkitBackgroundClip = prev.bgClip;
       el.style.webkitTextFillColor = prev.webkitTextFill;
-
-      el.style.transition = 'none';
 
       if (prev.color) {el.style.backgroundColor = prev.color; console.warn('[Vectora] Comando de cor prévia executado');}
     }, duration + 40);
@@ -115,7 +110,7 @@ export const backgroundColor = {
     el.style.webkitBackgroundClip = 'text';
     el.style.backgroundClip = 'text';
     el.style.webkitTextFillColor = 'transparent';
-    el.style.transition = `background-size ${duration}ms ease-in-out`;
+    appendTransition(el, `background-size ${duration}ms ease-in-out`);
 
     void el.offsetWidth;
     requestAnimationFrame(() => {
@@ -149,7 +144,7 @@ export const backgroundColor = {
     el.style.webkitBackgroundClip = 'text';
     el.style.backgroundClip = 'text';
     el.style.webkitTextFillColor = 'transparent';
-    el.style.transition = `background-size ${duration}ms ease-in-out`;
+    appendTransition(el, `background-size ${duration}ms ease-in-out`);
 
     void el.offsetWidth;
     requestAnimationFrame(() => {
@@ -189,9 +184,9 @@ export const backgroundColor = {
     el.style.backgroundClip = 'text';
     el.style.webkitTextFillColor = 'transparent';
 
-    el.style.transition = `
+    appendTransition(el, `
         background-position ${duration}ms ease-in-out
-    `;
+    `);
 
     // força reflow
     void el.offsetWidth;

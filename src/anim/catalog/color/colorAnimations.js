@@ -1,36 +1,26 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from "../../../../dist/basics.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from "../../../../dist/basics.js";
 import { macron }from "../../../console.js";
 
 export const colorAnimations = {
   fadeColor: (el, arg) => {
   // Sintax: fadeColor(initialColor, finalColor, duration)
   // Exemplo: fadeColor(#ff0000, #00ff00, 1.5s)
-  return new Promise ((resolve) => {
     const parts = arg ? arg.split(',').map(p => p.trim()) : [];
     const initialColor = parts[0] || '#000000';
     const finalColor = parts[1] || '#ffffff';
     const duration = toMs(parts[2] || '1000ms');
 
-    el.style.transition = 'none';
     el.style.color = initialColor;
 
     void el.offsetWidth;
 
-    const onEnd = (e) => {
-        if (e.propertyName !== 'gap') return;
-        el.removeEventListener('transitionend', onEnd);
-        resolve();
-    };
-    el.addEventListener('transitionend', onEnd, { once: true });
-
-    el.style.transition = `color ${duration}ms ease-in-out`;
+    appendTransition(el, `color ${duration}ms ease-in-out`);
 
     requestAnimationFrame(() => {
       el.style.color = finalColor;
     });
     
     setTimeout(resolve, duration + 50);
-  });
  },
 
 
@@ -46,7 +36,6 @@ export const colorAnimations = {
     const initialColor = computed;
 
     ensureInlineBlockIfNeeded(el);
-    el.style.transition = 'none';
     void el.offsetWidth; 
 
     const prev = {
@@ -76,8 +65,6 @@ export const colorAnimations = {
       endPos = '0% 100%';
     } 
 
-    
-    el.style.transition = 'none';
     el.style.backgroundImage = `linear-gradient(${gradientDirection}, ${finalColor} 0%, ${finalColor} 50%, ${initialColor} 50%, ${initialColor} 100%)`;
     el.style.backgroundRepeat = 'no-repeat';
     el.style.backgroundSize = '200% 200%';
@@ -89,7 +76,7 @@ export const colorAnimations = {
     void el.offsetWidth;
 
     const easing = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
-    el.style.transition = `background-position ${duration}ms ${easing}, background-size ${Math.round(duration*0.9)}ms ${easing}`;
+     appendTransition(el, `background-position ${duration}ms ${easing}, background-size ${Math.round(duration*0.9)}ms ${easing}`);
 
     requestAnimationFrame(() => {
       el.style.backgroundPosition = endPos;
@@ -106,8 +93,6 @@ export const colorAnimations = {
       el.style.webkitBackgroundClip = prev.bgClip;
       el.style.webkitTextFillColor = prev.webkitTextFill;
 
-      el.style.transition = 'none';
-
       if (prev.color) {el.style.color = prev.color; macron('warn', 'Comando de cor prévia executado');}
     }, duration + 40);
   },
@@ -123,7 +108,6 @@ export const colorAnimations = {
     const duration = toMs(parts[2] || '1200ms');
 
     ensureInlineBlockIfNeeded(el);
-    el.style.transition = 'none';
     void el.offsetWidth; 
 
     el.style.background = `radial-gradient(circle at center, ${finalColor} 0%, ${originalColor} 100%)`;
@@ -133,7 +117,7 @@ export const colorAnimations = {
     el.style.webkitBackgroundClip = 'text';
     el.style.backgroundClip = 'text';
     el.style.webkitTextFillColor = 'transparent';
-    el.style.transition = `background-size ${duration}ms ease-in-out`;
+    appendTransition(el, `background-size ${duration}ms ease-in-out`);
 
     void el.offsetWidth;
     requestAnimationFrame(() => {
@@ -158,7 +142,6 @@ export const colorAnimations = {
     const duration = toMs(parts[2] || '1200ms');
 
     ensureInlineBlockIfNeeded(el);
-    el.style.transition = 'none';
     void el.offsetWidth; 
 
     // initial state
@@ -169,7 +152,7 @@ export const colorAnimations = {
     el.style.webkitBackgroundClip = 'text';
     el.style.backgroundClip = 'text';
     el.style.webkitTextFillColor = 'transparent';
-    el.style.transition = `background-size ${duration}ms ease-in-out`;
+     appendTransition(el, `background-size ${duration}ms ease-in-out`);
 
     void el.offsetWidth;
     requestAnimationFrame(() => {
@@ -193,7 +176,6 @@ export const colorAnimations = {
     const duration = toMs(parts[1] || '1500ms');
 
     ensureInlineBlockIfNeeded(el);
-    el.style.transition = 'none';
     void el.offsetWidth; 
 
     el.style.background = `
@@ -211,9 +193,9 @@ export const colorAnimations = {
     el.style.backgroundClip = 'text';
     el.style.webkitTextFillColor = 'transparent';
 
-    el.style.transition = `
+    appendTransition(el, `
       background-position ${duration}ms ease-in-out
-    `;
+    `);
 
     // força reflow
     void el.offsetWidth;

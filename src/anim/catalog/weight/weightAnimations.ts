@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
 
 export const weightAnimations = {
     skinny: (el: any, args: any) => {
@@ -7,10 +7,9 @@ export const weightAnimations = {
         const duration: number = toMs(parts[1] || '600ms');
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
-        el.style.transition = `font-weight ${duration}ms ease`;
+        appendTransition(el, `font-weight ${duration}ms ease`);
         
         requestAnimationFrame(() => {
             el.style.fontWeight = `${intensity / 10}`;
@@ -23,10 +22,9 @@ export const weightAnimations = {
         const duration: number = toMs(parts[1] || '600ms');
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
-        el.style.transition = `font-weight ${duration}ms ease`;
+        appendTransition(el, `font-weight ${duration}ms ease`);
 
         requestAnimationFrame(() => {
             el.style.fontWeight = `${intensity * 2}`;

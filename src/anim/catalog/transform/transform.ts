@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
 
 export const transformAnimations = {
     // stay rotated
@@ -11,7 +11,6 @@ export const transformAnimations = {
         duration = toMs(duration);
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
         const animationName = `rotateAnimation_${Date.now()}`;
@@ -28,16 +27,16 @@ export const transformAnimations = {
         styleTag.textContent = keyframesCSS;
         document.head.appendChild(styleTag);
 
-        el.style.animation = `${animationName} ${duration}ms ease-in-out forwards`;
+        appendTransition(el, `${animationName} ${duration}ms ease-in-out forwards`);
 
         // When animation ends, apply final transform inline so rotation persists,
         // then remove the generated <style> and the listener.
         const onAnimationEnd = () => {
-        el.style.transform = `rotate(${finalRotation}deg)`;
+        appendTransition(el, `rotate(${finalRotation}deg)`);
         // Clear animation property so element keeps the inline transform
-        el.style.animation = '';
-        if (styleTag.parentNode) styleTag.remove();
-        el.removeEventListener('animationend', onAnimationEnd);
+            el.style.animation = '';
+            if (styleTag.parentNode) styleTag.remove();
+            el.removeEventListener('animationend', onAnimationEnd);
         };
 
         el.addEventListener('animationend', onAnimationEnd);
@@ -45,7 +44,7 @@ export const transformAnimations = {
         // Fallback: if animationend doesn't fire for some reason, cleanup after a bit
         setTimeout(() => {
         if (document.body.contains(styleTag)) {
-            el.style.transform = `rotate(${finalRotation}deg)`;
+            appendTransition(el, `rotate(${finalRotation}deg)`);
             el.style.animation = '';
             styleTag.remove();
             el.removeEventListener('animationend', onAnimationEnd);
@@ -62,14 +61,13 @@ export const transformAnimations = {
         duration = toMs(duration);
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
-        el.style.transform = `scale(0)`;
-        el.style.transition = `transform ${duration}ms ease`;
+        appendTransition(el, `scale(0)`);
+        appendTransition(el, `transform ${duration}ms ease`);
 
         requestAnimationFrame(() => {
-            el.style.transform = `scale(${intensity})`;
+            appendTransition(el, `scale(${intensity})`);
         });
     },
 
@@ -82,14 +80,13 @@ export const transformAnimations = {
         duration = toMs(duration);
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
-        el.style.transform = `scale(0)`;
-        el.style.transition = `transform ${duration}ms ease`;
+        appendTransition(el, `scale(0)`);
+        appendTransition(el, `transform ${duration}ms ease`);
 
         requestAnimationFrame(() => {
-            el.style.transform = `scale(${intensity/2})`;
+            appendTransition(el, `scale(${intensity/2})`);
         });
     },
 
@@ -102,14 +99,13 @@ export const transformAnimations = {
         duration = toMs(duration);
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
-        el.style.transform = `scale(0)`;
-        el.style.transition = `transform ${duration}ms ease`;
+        appendTransition(el, `scale(0)`);
+        appendTransition(el, `transform ${duration}ms ease`);
 
         requestAnimationFrame(() => {
-            el.style.transform = `scale(-${intensity})`;
+            appendTransition(el, `scale(-${intensity})`);
         });
     },
 }

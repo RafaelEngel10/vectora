@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
 
 const e: number = 2.71828;
 
@@ -10,10 +10,9 @@ export const brightness = {
         const duration: number = toMs(parts[2] || '600');
 
         ensureInlineBlockIfNeeded(el);
-        el.style.transition = 'none';
         void el.offsetWidth; 
 
-        el.style.transition = `text-shadow ${duration}ms`;
+        appendTransition(el, `text-shadow ${duration}ms`);
         
         requestAnimationFrame(() => (
             el.style.filter = `brightness(${intensity/e})`,

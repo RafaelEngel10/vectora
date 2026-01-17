@@ -2,82 +2,63 @@ import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapE
 
 export const textAnimations = {
   land: (el: any, arg: any) => {
-    return new Promise<void>((resolve) => {
-      const duration: number = toMs(arg);
-  
-      ensureInlineBlockIfNeeded(el);
-      
-      appendTransition(el, `transform ${duration}ms ease`);
-      el.style.transform = 'translateY(-30px)';
-      el.style.opacity = '0';
-  
-      void el.offsetWidth;
-  
-      el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
-  
-      requestAnimationFrame(() => {
-        el.style.transform = 'translateY(0)';
-        el.style.opacity = '1';
-      });
+    const duration: number = toMs(arg);
 
-      setTimeout(resolve, duration + 50);
-    })
+    ensureInlineBlockIfNeeded(el);
+    
+    appendTransition(el, `transform ${duration}ms ease`);
+    el.style.transform = 'translateY(-30px)';
+    el.style.opacity = '0';
+
+    void el.offsetWidth;
+
+    appendTransition(el,`transform ${duration}ms ease, opacity ${duration}ms ease`);
+
+    requestAnimationFrame(() => {
+      el.style.transform = 'translateY(0)';
+      el.style.opacity = '1';
+    });
   },
 
 
   rise: (el: any, arg: any) => {
-    return new Promise<void>((resolve) => {
-      const duration: number = toMs(arg);
-      
-      ensureInlineBlockIfNeeded(el);
-
-      el.style.transform = 'translateY(30px)';
-      el.style.opacity = '0';
-
-      void el.offsetWidth;
-
-      appendTransition(el,`transform ${duration}ms ease, opacity ${duration}ms ease`);
-
-      requestAnimationFrame(() => {
-        el.style.transform = 'translateY(0)';
-        el.style.opacity = '1';
-      });
-
-      setTimeout(resolve, duration + 50);
-    })
+    const duration: number = toMs(arg);
+    
+    ensureInlineBlockIfNeeded(el);
+    el.style.transform = 'translateY(30px)';
+    el.style.opacity = '0';
+    void el.offsetWidth;
+    appendTransition(el,`transform ${duration}ms ease, opacity ${duration}ms ease`);
+    requestAnimationFrame(() => {
+      el.style.transform = 'translateY(0)';
+      el.style.opacity = '1';
+    });
   },
 
 
   fadeIn: (el: any, arg: any) => {
-    return new Promise<void>((resolve) => {
       const duration = toMs(arg);
     // simple fade
       el.style.opacity = '0';
       void el.offsetWidth;
       appendTransition(el, `opacity ${duration}ms ease`);
       requestAnimationFrame(() => (el.style.opacity = '1'));
-      setTimeout(resolve, duration + 50);
-    })
   },
 
 
   fadeOut: (el: any, arg: any) => {
-    return new Promise<void>((resolve) => {
       const duration: number = toMs(arg);
     // simple fade
       el.style.opacity = '1';
       void el.offsetWidth;
       appendTransition(el, `opacity ${duration}ms ease`);
       requestAnimationFrame(() => (el.style.opacity = '0'));
-      setTimeout(resolve, duration + 50);
-    })
   },
 
 
   slideIn: (el: any, arg: any) => {
   // Sintax: slideIn(direction, distance, duration)
   // Exemplo: slideIn(left, 50px, 800ms)
-    return new Promise<void>((resolve) => {
       const parts: any = arg ? arg.split(',').map((p: any) => p.trim()) : [];
       const direction: any = parts[0] || 'left';
       const distance: any = parts[1] || '30px';
@@ -105,14 +86,12 @@ export const textAnimations = {
 
       void el.offsetWidth;
 
-      el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+      appendTransition(el, `transform ${duration}ms ease, opacity ${duration}ms ease`);
 
       requestAnimationFrame(() => {
         el.style.transform = 'translate(0, 0)';
         el.style.opacity = '1';
       });
-      setTimeout(resolve, duration + 50);
-    });
   },
 
 
@@ -141,11 +120,11 @@ export const textAnimations = {
     }
 
     el.style.transform = startTransform;
-    el.style.transition = 'none';
+    
 
     void el.offsetWidth;
 
-    el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+    appendTransition(el,`transform ${duration}ms ease, opacity ${duration}ms ease`);
     requestAnimationFrame(() => {
       el.style.transform = 'translate(0, 0)';
       el.style.opacity = '0';
@@ -162,13 +141,13 @@ export const textAnimations = {
 
     ensureInlineBlockIfNeeded(el);
 
-    el.style.transition = 'none';
+    
     el.style.transform = `scale(${scale / 0.7691})`;
     el.style.opacity = '0';
 
     void el.offsetWidth;
 
-    el.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1.25, 0.5, 1), opacity ${duration}ms ease`;
+    appendTransition(el,`transform ${duration}ms cubic-bezier(0.25, 1.25, 0.5, 1), opacity ${duration}ms ease`);
 
     requestAnimationFrame(() => {
       el.style.transform = `scale(${scale})`;
@@ -176,7 +155,7 @@ export const textAnimations = {
     });
 
     setTimeout(() => {
-      el.style.transition = `transform ${duration * 0.8}ms ease-out`;
+      appendTransition(el,`transform ${duration * 0.8}ms ease-out`);
       el.style.transform = 'scale(1)';
     }, duration);
   },
@@ -191,13 +170,13 @@ export const textAnimations = {
 
     ensureInlineBlockIfNeeded(el);
 
-    el.style.transition = 'none';
+    
     el.style.transform = `scale(${scale / 7})`;
     el.style.opacity = '0';
 
     void el.offsetWidth;
 
-    el.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1.25, 0.5, 1), opacity ${duration}ms ease`;
+    appendTransition(el,`transform ${duration}ms cubic-bezier(0.25, 1.25, 0.5, 1), opacity ${duration}ms ease`);
 
     requestAnimationFrame(() => {
       el.style.transform = `scale(${scale % 0.65})`;
@@ -205,7 +184,7 @@ export const textAnimations = {
     });
 
     setTimeout(() => {
-      el.style.transition = `transform ${duration * 0.8}ms ease-out`;
+      appendTransition(el,`transform ${duration * 0.8}ms ease-out`);
       el.style.transform = 'scale(1)';
     }, duration);
   },
@@ -222,7 +201,7 @@ export const textAnimations = {
     
     ensureInlineBlockIfNeeded(el);
     el.style.transformOrigin = "center center";
-    el.style.transition = 'none';
+    
     void el.offsetWidth;
 
     // Define o eixo e o padrão de movimento
