@@ -1,5 +1,5 @@
 import { runActionOnElements } from "../app/runActionOnElements.js";
-import { mapEventName } from "../../dist/basics.js";
+import { mapEventName } from "../../basics.js";
 import { macron }from "../console.js";
 
 export function attachHandlerForEvent(selector, rawEventName, actions) {

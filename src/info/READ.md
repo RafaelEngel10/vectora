@@ -54,16 +54,19 @@
 
 > %% -> Contador de gatilhos da animação. Nesse estado ele retorna true para quando o número de vezes repetidas for par.
 
+> :: -> Observador que retorna TRUE cada vez que a função observada for chamada.
+
 > => -> Permite manipular a interpolação resultante da soma/concatenação.
 
 > & -> Aplica uma propriedade à interpolação.
+
+> ~ -> Reverte a animação.
 
 > ?? -> Condicional "SE" If.
 
 > !! -> Condicional "SENÃO" Else.
 
 > !? -> Condicional "SENÃO SE" Else If.
-
 
 ### Precedência e associatividade dos operadores:
 

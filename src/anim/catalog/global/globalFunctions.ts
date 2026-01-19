@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties  } from '../../../../basics.js';
 
 export const global = {
     searchValue: (el: HTMLElement, args: string): void => {

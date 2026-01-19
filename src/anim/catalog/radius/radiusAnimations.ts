@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, appendTransition  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, appendTransition  } from '../../../../basics.js';
 
 export const radiusAnimations = {
     round: (el: any, args: any) => {

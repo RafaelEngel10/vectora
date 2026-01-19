@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../basics.js';
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from '../../../../basics.js';
 
 export const shadowAnimations = {
     surge: (el: any, args: any) => {

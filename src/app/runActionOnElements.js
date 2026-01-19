@@ -6,7 +6,7 @@ import { backgroundImage } from "../../dist/src/anim/catalog/background/image/ba
 import { shadowAnimations } from "../../dist/src/anim/catalog/shadow/shadowAnimations.js";
 import { radiusAnimations } from "../../dist/src/anim/catalog/radius/radiusAnimations.js";
 import { gapAnimations } from "../../dist/src/anim/catalog/gap/gapAnimations.js";
-import { parseAnimString } from "../../dist/src/basics.js";
+import { parseAnimString } from "../../dist/basics.js";
 import { macron }from "../console.js";
 import { filterAnimation } from "../filter/switchFilterAnimation.js";
 import { hasConditionalKeywords, filterKeywordActions } from "../filter/keywordFilters.js";

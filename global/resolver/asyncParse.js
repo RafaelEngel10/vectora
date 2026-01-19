@@ -1,5 +1,5 @@
 import { Warning } from "postcss";
-import { removeComments } from "../../dist/basics";
+import { removeComments } from "../../basics";
 
 export function parseAsyncElement(code) {
   code = removeComments(code);

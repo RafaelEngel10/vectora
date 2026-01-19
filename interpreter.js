@@ -6,7 +6,7 @@
     #id { window.onLoad { text: land(600ms); }; }
 */
 
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./basics.js";
 import { macron } from "./console.js";
 import { parseVectora, processVectora } from "./parse.js";
 

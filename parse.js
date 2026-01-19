@@ -1,9 +1,9 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "../dist/basics.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./basics.js";
 import { macron } from "./console.js";
-import { attachHandlerForEvent } from "./events/commonEvents.js";
-import { AsyncEvents } from "../global/element/asyncEvents.js";
-import { AsyncTester } from "../global/element/asyncElementTester.js";
-import { parseAsyncElement } from "../global/resolver/asyncParse.js";
+import { attachHandlerForEvent } from "./src/events/commonEvents.js";
+import { AsyncEvents } from "./global/element/asyncEvents.js";
+import { AsyncTester } from "./global/element/asyncElementTester.js";
+import { parseAsyncElement } from "./global/resolver/asyncParse.js";
 
 
 /********** parser (stack-safe for nested blocks 1 level) **********/
