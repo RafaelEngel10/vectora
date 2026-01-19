@@ -1,6 +1,6 @@
 import { CounterOperatorHandler } from "../../client/operator/counter/operatorPercentageCounter.js";
 import { familyFilter } from "../../client/operator/interpolation/familyFilter.js";
-import { tildeReverseHandler } from "../../client/operator/reverse/operatorTildeReverse.js";
+import { Reversor } from "../../client/operator/reverse/operatorTildeReverse.js";
 import { testCounterCondition, extractCounterOperator } from "../../public/data/storageSearch.js";
 import { macron } from "../../console.js";
 
