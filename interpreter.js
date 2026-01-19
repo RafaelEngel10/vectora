@@ -1,12 +1,12 @@
 /* interpreter.js
    Runtime simples e resiliente para Vectora (.vec)
    - <link rel="stylesheet" href="... .vec"> fetch only (host server needed)
-   - <script type="module"> inline (without CORS)
+   - <script type="module" src="vectora/interpreter.js"> inline (without CORS)
    - support for event blocks:
     #id { window.onLoad { text: land(600ms); }; }
 */
 
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./basics.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./dist/basics.js";
 import { macron } from "./console.js";
 import { parseVectora, processVectora } from "./parse.js";
 

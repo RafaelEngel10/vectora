@@ -32,17 +32,21 @@
 <pre>
     @vectora {
         stem {
-            createObject(--cant-use);
+            createObject(--cant-use, --cant-use-2);
             --cant-use = {
-                text: shiver(sideways, 15px, 600);
+                text: shake(sideways, 15px, 600);
                 color: fadeColor(#f00, #000, 300);
+            };
+            --cant-use-2 = {
+                text: shiver(22px, 300);
+                color: fadeColor( #f00, #000, 300);
             };
         };
     }
 
     h1 {
         onSing.click {
-            value: searchObject(--cant-use);        <!-- Usa as duas propriedades presentes no objeto -->
+            value: searchObject(--cant-use);        <!-- Usa todas as propriedades presentes no objeto -->
         };
         onDbl.click {
             value: searchObject(--cant-use.text);       <!-- Usa apenas a propriedade de texto no objeto -->

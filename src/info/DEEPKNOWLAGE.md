@@ -4,6 +4,8 @@
 
 - color: ; ---> propriedade referente a cor do elemento.
 
+- background.color ---> propriedade para cores em containeres.
+
 - transform: ; ---> propriedade geral que mantém o efeitos finais de animações.
 
 - radius: ; ---> propriedade referente ao raio de curvatura de um elemento.
@@ -14,7 +16,9 @@
 
 - brightness: ; ---> propriedade referente a claridade de um elemento.
 
-- shadow: ; ---> propriedade referente a simulação de sombra de um elemento.
+- shadow: ; ---> propriedade referente a simulação de sombra de um container.
+
+- text.shadow: ; ---> propriedade de sombra específica para textos.
 
 - value: ; ---> propriedade de valor (Explicação mais detalhada na seção de "Eventos assíncronos").
 
@@ -116,6 +120,9 @@
 - [x] reveal.onScroll ==
     Realiza a animação assim que for revelado pelo scroll lateral da página.
 
+- [x] hide.onScroll ==
+    Assim que escondido pelo scroll, realiza uma animação.
+
 - [x] onSing.click == 
     Executa a animação ao clicar uma vez em cima do elemento.
 
@@ -125,12 +132,9 @@
 - [x] onHold.click ==
     Executa a animação com o segurar de um clique.
 
-- [ ] hide.onScroll ==
-    Assim que escondido pelo scroll, realiza uma animação.
-
-- [ ] onSelection.hold ==
+- [x] onSelection.click ==
     Quando um elemento é selecionado, realiza a animação.
-
+####DONE####
 
 ##  Soma e Concatenação de Animações =
 
@@ -219,7 +223,6 @@
         text: slideIn +- rise() => --1000ms;
     };
 } </pre>
-
 
 
 

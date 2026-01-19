@@ -75,6 +75,10 @@ export async function runActionOnElements(selector, action) {
   });
 }
 
+
+
+
+
 /**
  * Executes a single action on an element
  * @param {string} actionString - The action string (animation name and args)
@@ -101,6 +105,10 @@ function runSingleAction(actionString, element, propType) {
     macron('warn', `animação '${animInfo.name}' não é compatível com a propriedade '${propTypeNormalized}'.`);
   }
 }
+
+
+
+
 
 /**
  * Processes multiple animations on a single element
@@ -134,6 +142,10 @@ async function processAnimationsOnElement(element, anims, propType) {
   }
 }
 
+
+
+
+
 /**
  * Checks if an animation is compatible with a property type
  * @param {string} propType - The property type
@@ -165,6 +177,8 @@ function isAnimationCompatible(propType, animationName) {
   const compatibleAnims = propTypeMap[propType] || [];
   return compatibleAnims.includes(animationName);
 }
+
+
 
 
 function returnClearString(cleanName) {

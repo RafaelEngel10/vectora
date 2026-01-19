@@ -20,7 +20,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
 
 
     // onSing.click event listener
-    if (rawEventName.toLowerCase() === 'onsing.click') {
+    if (rawEventName === 'onSing.click') {
       const els = document.querySelectorAll(selector);
       if (!els.length) return macron('error', 'Nenhum elemento para onSing.click!');
 
@@ -36,7 +36,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
 
 
     // onDbl.click event listener
-    if (rawEventName.toLowerCase() === 'ondbl.click') {
+    if (rawEventName === 'onDbl.click') {
     const els = document.querySelectorAll(selector);
     if (!els.length) return macron('error', 'Nenhum elemento para onDbl.click!');
 
@@ -52,7 +52,7 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
 
 
     // onHold.click event listener
-    if (rawEventName.toLowerCase() === 'onhold.click') {
+    if (rawEventName === 'onHold.click') {
       const els = document.querySelectorAll(selector);
       if (!els.length) return macron('error', `Nenhum elemento para ${rawEventName}`);
       els.style.userSelect = "none";
@@ -105,18 +105,18 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     // reveal.onScroll event listener
     if (rawEventName === 'reveal.onScroll') {
       const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        for (const a of actions) {
-          runActionOnElements(selector, a);
+        entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          for (const a of actions) {
+            runActionOnElements(selector, a);
+          }
+          // remove o observador após o primeiro disparo 
+          obs.unobserve(entry.target);
         }
-        // remove o observador após o primeiro disparo 
-        obs.unobserve(entry.target);
-      }
+        });
+      }, {
+        threshold: 0.05 // 5% visível já ativa
       });
-    }, {
-      threshold: 0.05 // 5% visível já ativa
-    });
 
       const els = document.querySelectorAll(selector);
       els.forEach(el => observer.observe(el));
@@ -126,7 +126,50 @@ export function attachHandlerForEvent(selector, rawEventName, actions) {
     }
 
 
-    
+    // hide.onScroll event listener
+    if (rawEventName === 'hide.onScroll') {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            for (const a of actions) {
+              runActionOnElements(selector, a);
+            }
+            obs.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.05
+      });
+
+      const els = document.querySelectorAll(selector);
+      els.forEach(el => observer.observe(el));
+
+      macron('debug', `Ativado hide.onScroll para ${selector}`);
+      return;
+    }
+
+
+
+    // onSelection.click event listener
+    if (rawEventName === 'onSelection.click') {
+      let hasSelection = false;
+
+      document.addEventListener('selectionchange', () => {
+        const selection = window.getSelection();
+        hasSelection = selection && selection.toString().trim().length > 0;
+
+        if (!hasSelection) return;
+
+        for (const a of actions) {
+          runActionOnElements(selector, a);
+        }
+
+        macron('debug', `Ativado onSelection.click para ${selector}`);
+        hasSelection = false;
+      });
+
+      return;
+    }
 
 
     
