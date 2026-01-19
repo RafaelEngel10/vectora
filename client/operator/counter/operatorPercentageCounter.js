@@ -1,7 +1,7 @@
 
 
-import { incrementCounter } from '../../../../public/data/storageCount.js';
-import { testCounterCondition, validateCounterOperator, extractCounterOperator } from '../../../../public/data/storageSearch.js';
+import { incrementCounter } from '../../../public/data/storageCount.js';
+import { testCounterCondition, validateCounterOperator, extractCounterOperator } from '../../../public/data/storageSearch.js';
 
 /**
  * Handler do operador contador (%%)

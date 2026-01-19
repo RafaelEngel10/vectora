@@ -1,6 +1,6 @@
 import { cmdAsyncEvent } from '../../private/cmd/cmdAsyncEvent.js';
 import { AsyncEvents } from './asyncEvents.js';
-import { macron } from '../../src/console.js';
+import { macron } from '../../console.js';
 
 export function AsyncTester(selector, actions) {
     const Selector = selector.split('@')[1];

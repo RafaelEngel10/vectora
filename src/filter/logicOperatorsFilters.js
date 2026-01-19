@@ -1,8 +1,8 @@
-import { CounterOperatorHandler } from "../../private/client/operator/counter/operatorPercentageCounter.js";
-import { familyFilter } from "../../private/client/operator/interpolation/familyFilter.js";
-import { tildeReverseHandler } from "../../private/client/operator/reverse/operatorTildeReverse.js";
+import { CounterOperatorHandler } from "../../client/operator/counter/operatorPercentageCounter.js";
+import { familyFilter } from "../../client/operator/interpolation/familyFilter.js";
+import { tildeReverseHandler } from "../../client/operator/reverse/operatorTildeReverse.js";
 import { testCounterCondition, extractCounterOperator } from "../../public/data/storageSearch.js";
-import { macron } from "../console.js";
+import { macron } from "../../console.js";
 
 export function OperatorFilter(el, actions) {
 

@@ -1,6 +1,6 @@
-import { handleElseStatement, handleIfElseChain } from "../../private/client/keyword/condition/operatorExclamationMarkElseStatement.js";
-import { handleElseIfStatement, handleIfElseIfChain } from "../../private/client/keyword/condition/operatorInterrobangElseIfStatement.js";
-import { macron } from "../console.js";
+import { handleElseStatement, handleIfElseChain } from "../../client/keyword/condition/operatorExclamationMarkElseStatement.js";
+import { handleElseIfStatement, handleIfElseIfChain } from "../../client/keyword/condition/operatorInterrobangElseIfStatement.js";
+import { macron } from "../../console.js";
 
 /**
  * Detects and processes Vectora conditional keywords (??, !!, !?)

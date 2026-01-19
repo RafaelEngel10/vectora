@@ -1,6 +1,6 @@
 import { runActionOnElements } from "../../src/app/runActionOnElements.js";
 import { mapEventName } from "../../basics.js";
-import { macron }from "../../src/console.js";
+import { macron }from "../../console.js";
 
 export function AsyncEvents(selector, rawEventName, actions) {
   macron('info', `executando AsyncEvents: ${selector}, ${rawEventName}, ${actions}`);

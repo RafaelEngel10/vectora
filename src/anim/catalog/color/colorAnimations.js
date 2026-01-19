@@ -1,5 +1,5 @@
 import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties, appendTransition  } from "../../../../basics.js";
-import { macron }from "../../../console.js";
+import { macron }from "../../../../console.js";
 
 export const colorAnimations = {
   fadeColor: (el, arg) => {

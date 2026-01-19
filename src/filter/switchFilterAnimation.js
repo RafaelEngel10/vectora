@@ -1,4 +1,4 @@
-import { macron } from "../console.js";
+import { macron } from "../../console.js";
 import { textAnimations } from "../../dist/src/anim/catalog/text/textAnimations.js";
 import { colorAnimations } from "../anim/catalog/color/colorAnimations.js";
 import { transformAnimations } from "../../dist/src/anim/catalog/transform/transform.js";

@@ -1,6 +1,6 @@
-import { macron } from "../../src/console.js";
+import { macron } from "../../console.js";
 import { cmd } from '../../dist/private/cmd/spec/cmdFunctionsVectora.js';
-import { between } from "../../src/strings.js";
+import { between } from "../../strings.js";
 import { appendToFile } from '../admin/writer.js';
 
 export function cmdAsyncEvent(actions) {
