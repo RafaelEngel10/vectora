@@ -9,23 +9,30 @@ export function OperatorFilter(el, actions) {
     const action = actions.split('(')[0];
     let animation = '';
     let arg = '';
-
-    // teste de operador lógico REVERSOR (~~)
-    const firstOperatorFilter = action.includes('~');
-    if (firstOperatorFilter) {
-        macron('log', `Executando resolutor para operador lógico REVERSOR (~).`);
-        tildeReverseHandler(el, actions);
-        return true;
-    }
-
+    
     // teste de operador lógico SOMA/CONCAT (++)
-    const secondOperatorFilter = actions.includes('++');
-    if (secondOperatorFilter) {
+    const firstOperatorFilter = actions.includes('++');
+    if (firstOperatorFilter) {
         macron('log', `Executando resolutor para operador lógico SOMA/CONCATENAÇÃO (++).`);
         familyFilter(el, actions);
         return true;
     }
 
+    // teste de operador lógico CONCAT INDUZIDA (+-)
+    const filter = actions.includes('+-'); 
+    if (filter) {
+        macron('log', `Executando resolutor para operador lógico CONCATENAÇÃO INDUZIDA (+-).`);
+        familyFilter(el, actions);
+        return true;
+    }
+
+    // teste de operador lógico REVERSOR (~~)
+    const secondOperatorFilter = action.includes('~');
+    if (secondOperatorFilter) {
+        macron('log', `Executando resolutor para operador lógico REVERSOR (~).`);
+        tildeReverseHandler(el, actions);
+        return true;
+    }
 
     // teste de operador lógico CONTADOR (%%)
     const thirdOperatorFilter = actions.includes('%%');

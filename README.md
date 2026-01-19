@@ -51,8 +51,8 @@ div {                                                          <--- HTML element
 
 Status
 ------
-Current: core DSL and basic animations working  
-In progress: sum and concat animations, executable commands on @cmd tag.  
+Current: core DSL, basic animations working and concat animations. 
+In progress: sum animations, executable commands on @cmd tag.  
 Planned: conditional statement, loop while.
 
 Contributing

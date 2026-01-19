@@ -32,27 +32,43 @@ export const textAnimations = {
 
   rise: (el: any, arg: any) => {
     return new Promise<void>(resolve => {
-    const duration: number = toMs(arg) || 600;
-    
-    ensureInlineBlockIfNeeded(el);
-    el.style.transform = 'translateY(30px)';
-    el.style.opacity = '0';
-    void el.offsetWidth;
-    appendTransition(el,`transform ${duration}ms ease, opacity ${duration}ms ease`);
+      const duration = toMs(arg) || 600;
 
-    const onEnd = () => {
+      ensureInlineBlockIfNeeded(el);
+
+      el.style.transform = 'translateY(30px)';
+      el.style.opacity = '0';
+
+      void el.offsetWidth;
+
+      appendTransition(el, `transform ${duration}ms ease, opacity ${duration}ms ease`);
+
+      let finished = false;
+
+      const finish = () => {
+        if (finished) return;
+        finished = true;
         el.removeEventListener('transitionend', onEnd);
         resolve();
       };
-    el.addEventListener('transitionend', onEnd);
 
-    requestAnimationFrame(() => {
-      el.style.transform = 'translateY(0)';
-      el.style.opacity = '1';
+      const onEnd = (e: TransitionEvent) => {
+        if (e.propertyName === 'opacity') {
+          finish();
+        }
+      };
+
+      el.addEventListener('transitionend', onEnd);
+
+      // Fallback de segurança
+      setTimeout(finish, duration + 50);
+
+      requestAnimationFrame(() => {
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+      });
     });
-    })
   },
-
 
   fadeIn: (el: any, arg: any) => {
     return new Promise<void>(resolve => {  
@@ -101,9 +117,10 @@ export const textAnimations = {
 
       ensureInlineBlockIfNeeded(el);
 
-      let startTransform = direction === 'right'
-        ? `translateX(${distance})`
-        : `translateX(-${distance})`;
+      const startTransform =
+        direction === 'right'
+          ? `translateX(${distance})`
+          : `translateX(-${distance})`;
 
       el.style.opacity = '0';
       el.style.transform = startTransform;
@@ -112,12 +129,25 @@ export const textAnimations = {
 
       appendTransition(el, `transform ${duration}ms ease, opacity ${duration}ms ease`);
 
-      const onEnd = () => {
+      let finished = false;
+
+      const finish = () => {
+        if (finished) return;
+        finished = true;
         el.removeEventListener('transitionend', onEnd);
         resolve();
       };
 
+      const onEnd = (e: TransitionEvent) => {
+        if (e.propertyName === 'opacity') {
+          finish();
+        }
+      };
+
       el.addEventListener('transitionend', onEnd);
+
+      // Fallback de segurança
+      setTimeout(finish, duration + 50);
 
       requestAnimationFrame(() => {
         el.style.transform = 'translateX(0)';

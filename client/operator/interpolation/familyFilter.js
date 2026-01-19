@@ -103,8 +103,12 @@ export function familyFilter(el, actions) {
   }
 
   i = 0;
+  if (actions.includes('+-')) {
+    const objConcat = new (new Interpolation('CONCAT').Concat)(el, fullAnimatio[i], fullAnimatio[i + 1]);
+    objConcat.concatFunctions();
+  }
+
   if (animationFamily[i + 1] === animationFamily[i] && ((!animationSubFamily[i + 1] && !animationSubFamily[i]) || (animationSubFamily[i + 1] === animationSubFamily[i]))) {
-    console.log(animation, fullAnimatio);
     const objConcat = new (new Interpolation('CONCAT').Concat)(el, fullAnimatio[i], fullAnimatio[i + 1]);
     objConcat.concatFunctions();
   } 
@@ -114,7 +118,7 @@ export function familyFilter(el, actions) {
       const objSum = new (new Interpolation('SUM').Sum)(el, fullAnimatio[i + 1], fullAnimatio[i]);
       objSum.sumFunctions();
     } 
-    else {
+    else {            // quando o programa não consegue tomar uma decisão a cerca dos outros condicionais
       const objConcat = new (new Interpolation('CONCAT').Concat)(el, fullAnimatio[i + 1], fullAnimatio[i]);
       objConcat.concatFunctions();
     }

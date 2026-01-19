@@ -41,16 +41,16 @@ export class Interpolation {
         }
 
         async concatFunctions() {
-          console.log(this.el instanceof Element);
           const waitingList = [this.fun1, this.fun2];
           for (let i = 0; i < waitingList.length; i++) {
             const waiter = waitingList[i];
             const animations = filterAnimation(waiter);
             const fn = animations[waiter];
 
-            console.log(`${fn}`);
 
-            await fn(this.el, this.args[i]); 
+            const result = await fn(this.el, this.args[i]); 
+
+            console.log(`${waiter}, ${result instanceof Promise}`)
           }
         }
       }
