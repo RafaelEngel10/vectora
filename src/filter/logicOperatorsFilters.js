@@ -11,9 +11,9 @@ export function OperatorFilter(el, actions) {
     let arg = '';
 
     // teste de operador lógico REVERSOR (~~)
-    const firstOperatorFilter = action.includes('~~');
+    const firstOperatorFilter = action.includes('~');
     if (firstOperatorFilter) {
-        macron('log', `Executando resolutor para operador lógico REVERSOR (~~).`);
+        macron('log', `Executando resolutor para operador lógico REVERSOR (~).`);
         tildeReverseHandler(el, actions);
         return true;
     }

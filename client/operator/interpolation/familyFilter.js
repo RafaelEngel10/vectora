@@ -1,3 +1,5 @@
+import { Interpolation } from './sum-concat/operatorPlusPlus.js'
+
 export const ANIMATION_FAMILIES = {
   VECTOR: 'vectorial',
   SCALAR: 'scalar',
@@ -75,10 +77,46 @@ const VECTOR_SUBFAMILY_MAP = {
 };
 
 
+
 export function familyFilter(el, actions) {
-  const actionsList = actions.split('++');
-  for (const action of actionsList) {
-    const animationFamily = ANIMATION_FAMILY_MAP[action];
-    
+  let actionsList = actions.split('++').map(action => action.trim());
+  if (actionsList.length === 1) {
+    actionsList = actions.split('+-').map(action => action.trim());
+  }
+
+  let i = 0;
+  let animationFamily = [];
+  let animationSubFamily = [];
+  let animation = [];
+  let fullAnimatio = [];
+  
+  for (let action of actionsList) {
+    animation[i] = action.trim().split('(')[0];
+    fullAnimatio[i] = action.trim();
+
+    animationFamily[i] = ANIMATION_FAMILY_MAP[animation[i]];
+
+    if (ANIMATION_FAMILY_MAP[animation[i]] === ANIMATION_FAMILIES.VECTOR) {
+      animationSubFamily[i] = VECTOR_SUBFAMILY_MAP[animation[i]];
+    }
+    i++;
+  }
+
+  i = 0;
+  if (animationFamily[i + 1] === animationFamily[i] && ((!animationSubFamily[i + 1] && !animationSubFamily[i]) || (animationSubFamily[i + 1] === animationSubFamily[i]))) {
+    console.log(animation, fullAnimatio);
+    const objConcat = new (new Interpolation('CONCAT').Concat)(el, fullAnimatio[i], fullAnimatio[i + 1]);
+    objConcat.concatFunctions();
+  } 
+  else if (animationFamily[i + 1] !== animationFamily[i]) {
+    // verificar subfamília
+    if (animationSubFamily[i + 1] !== animationSubFamily[i]) {
+      const objSum = new (new Interpolation('SUM').Sum)(el, fullAnimatio[i + 1], fullAnimatio[i]);
+      objSum.sumFunctions();
+    } 
+    else {
+      const objConcat = new (new Interpolation('CONCAT').Concat)(el, fullAnimatio[i + 1], fullAnimatio[i]);
+      objConcat.concatFunctions();
+    }
   }
 }

@@ -28,7 +28,7 @@ export async function runActionOnElements(selector, action) {
     for (const el of els) {
       // Create an executor function for animations within conditions
       const executeAnimationAction = async (actionString, element) => {
-        await runSingleAction(actionString.trim(), element, action.prop);
+        runSingleAction(actionString.trim(), element, action.prop);
       };
 
       // Process the conditional keywords
@@ -37,10 +37,13 @@ export async function runActionOnElements(selector, action) {
     return;
   }
 
-  const verification = action.value.includes('++') || action.value.includes('~~') || action.value.includes('%%');
+  const verification = action.value.includes('++') || action.value.includes('+-') || action.value.includes('~~') || action.value.includes('%%');
   if (verification) {
     macron('log', `Operadores lógicos detectados em: ${selector}, ${action.value}`);
-    OperatorFilter(selector, action.value);
+    for (const el of els) {
+      OperatorFilter(el, action.value);
+    }
+    return;
   }
 
   // Original animation processing for non-conditional actions
@@ -62,7 +65,7 @@ export async function runActionOnElements(selector, action) {
   if (current.trim()) anims.push(current.trim());
   
   for (const el of els) {
-    await processAnimationsOnElement(el, anims, action.prop);
+    processAnimationsOnElement(el, anims, action.prop);
   }
 
   window.addEventListener('reveal.onScroll', (e) => {
@@ -116,7 +119,7 @@ function runSingleAction(actionString, element, propType) {
  * @param {Array} anims - Array of animation strings
  * @param {string} propType - The property type
  */
-async function processAnimationsOnElement(element, anims, propType) {
+function processAnimationsOnElement(element, anims, propType) {
   const propTypeNormalized = propType.toLowerCase();
 
   for (const anim of anims) {
@@ -128,7 +131,7 @@ async function processAnimationsOnElement(element, anims, propType) {
       if (isAnimationCompatible(propTypeNormalized, cleanAnimName)) {
         const fn = animations[cleanAnimName];
         if (fn && typeof fn === 'function') {
-          await fn(element, animInfo.arg);
+          fn(element, animInfo.arg);
           macron('debug', `Sem interpolações no script. Animação básica ${cleanAnimName}`);
         } else {
           macron('warn', `Função '${animInfo.name}' não encontrada na biblioteca`);

@@ -2,7 +2,7 @@
   "compilerOptions": {
     // Diretórios
     "rootDirs": ["src"],
-    "outDir": "dist",
+    "outDir": "../dist",
 
     // Modo estrito
     "strict": true,
@@ -31,6 +31,6 @@
     "allowImportingTsExtensions": false
   },
 
-  "include": ["src/**/*.ts", "private/**/*.ts", "public/**/*.ts", "core/**/*.ts", "core/main.js", "basics.ts"],
+  "include": ["../src/**/*.ts", "../private/**/*.ts", "../public/**/*.ts", "../core/**/*.ts", "../core/main.js", "../basics.ts"],
   "exclude": ["node_modules", "dist"]
 }

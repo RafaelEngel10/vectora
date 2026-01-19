@@ -1,4 +1,4 @@
-import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./basics.js";
+import { removeComments, toMs, ensureInlineBlockIfNeeded, parseAnimString,  mapEventName, parseProperties } from "./dist/basics.js";
 import { macron } from "./console.js";
 import { attachHandlerForEvent } from "./src/events/commonEvents.js";
 import { AsyncEvents } from "./global/element/asyncEvents.js";

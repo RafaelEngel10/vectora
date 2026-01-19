@@ -15,5 +15,11 @@ export function macron(type, message) {
         case 'dir':
             console.dir('[Vectora]', message, { depth: null });
             break;
+        case 'info':
+            console.info('[Vectora]', message);
+            break;
+        default:
+            console.error('[Vectora] Escolha um tipo de mensagem válido.');
+            break;
     }
 }
