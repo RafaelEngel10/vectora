@@ -85,6 +85,61 @@ export const triggerEvents: Record<string, (cb: (targets?: HTMLElement[]) => voi
     });
   },
 
+  // trigger que ativa quando o usuário seleciona texto dentro dos elementos correspondentes
+  "onSelection.click": (cb, elements) => {
+    let lastMatch: Set<HTMLElement> | null = null;
+
+    document.addEventListener("selectionchange", () => {
+      const selection = document.getSelection();
+      if (!selection || selection.rangeCount === 0) {
+        lastMatch = null;
+        return;
+      }
+
+      const text = selection.toString().trim();
+      if (!text) {
+        lastMatch = null;
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const matched: HTMLElement[] = [];
+
+      for (const el of elements) {
+        try {
+          if (range.intersectsNode(el)) {
+            matched.push(el);
+          }
+        } catch (e) {
+          // fallback: testa se os nós de âncora/alcance estão dentro do elemento
+          const anchor = selection.anchorNode;
+          const focus = selection.focusNode;
+          if ((anchor && el.contains(anchor)) || (focus && el.contains(focus))) {
+            matched.push(el);
+          }
+        }
+      }
+
+      if (matched.length === 0) {
+        lastMatch = null;
+        return;
+      }
+
+      // evita chamadas repetidas idênticas
+      const matchedSet = new Set(matched);
+      let isSame = false;
+      if (lastMatch && lastMatch.size === matchedSet.size) {
+        isSame = true;
+        for (const m of matchedSet) if (!lastMatch.has(m)) { isSame = false; break; }
+      }
+
+      if (!isSame) {
+        lastMatch = matchedSet;
+        cb(matched);
+      }
+    });
+  },
+
   // trigger que ativa com o scroll da página - reveal: quando o elemento entra na viewport
   "reveal.onScroll": (cb, elements) => {
     if (!elements || elements.length === 0) return;

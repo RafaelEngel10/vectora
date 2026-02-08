@@ -160,7 +160,7 @@ export const textAnimations = {
   slideOut: (el: any, arg: any) => {
     return new Promise<void>(resolve => {
       const parts = arg ? arg.split(',').map((p: any) => p.trim()) : [];
-      const direction = parts[0] || 'right';
+      const direction = parts[0] || 'left';
       const distance = parts[1] || '30px';
       const duration = toMs(parts[2] || '600ms');
 

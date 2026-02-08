@@ -9,7 +9,8 @@ export type TokenType =
   | "RPAREN"
   | "COLON"
   | "SEMICOLON"
-  | "COMMA";
+  | "COMMA"
+  | "OPERATOR";
 
 
 // Estrutura básica de um token
@@ -74,6 +75,19 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
+    // operadores '++' e '+-'
+    if (char === "+") {
+      const next = input[i + 1];
+      if (next === "+") {
+        tokens.push({ type: "OPERATOR", value: "++" });
+        i += 2;
+        continue;
+      } else if (next === "-") {
+        tokens.push({ type: "OPERATOR", value: "+-"});
+        i += 2;
+        continue;
+      }
+    }
 
     if (char && /\d/.test(char)) {
       let value = "";

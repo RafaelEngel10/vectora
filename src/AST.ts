@@ -2,34 +2,48 @@ import { Token, TokenType, lexer } from "./lexer";
 import { AnimationName } from "./catalog/text/textAnimations";
 
 // AST raiz
+// nó principal
 interface ProgramNode {
   type: "Program";
   rules: RuleNode[];
 }
 
+// nó de regra
 interface RuleNode {
   type: "Rule";
   selector: string;
   triggers: TriggerNode[];
 }
 
+// nó de trigger
 interface TriggerNode {
   type: "Trigger";
   name: string;
   statements: StatementNode[];
 }
 
+// nó de declaração
 interface StatementNode {
   type: "Statement";
   property: string;
-  action: ActionNode;
+  action: ActionExpr;
 }
 
+// nó de ação
 type ActionNode = {
   type: "Action";
   name: AnimationName;
   args: (string | number)[];
 };
+
+// nó de sequência de ações
+type ActionSequenceNode = {
+  type: "ActionSequence";
+  parts: ActionNode[];
+  operators: string[];
+};
+
+type ActionExpr = ActionNode | ActionSequenceNode;
 
 export function parser(tokens: Token[]): ProgramNode {
   let i = 0;
@@ -115,14 +129,28 @@ export function parser(tokens: Token[]): ProgramNode {
 
     consume("COLON", "Esperado ':' após propriedade");
 
-    const action = parseAction();
+    // Parse a primeira ação
+    const firstAction = parseAction();
+
+    const parts: ActionNode[] = [firstAction];
+    const operators: string[] = [];
+
+    // Enquanto houver operadores (ex: '++'), consome e lê próxima ação
+    while (current() && current()!.type === "OPERATOR") {
+      const op = consume("OPERATOR", "Esperado operador").value!;
+      operators.push(op);
+      const nextAction = parseAction();
+      parts.push(nextAction);
+    }
 
     consume("SEMICOLON", "Esperado ';' no fim da declaração");
+
+    const actionExpr: ActionExpr = parts.length > 1 ? { type: "ActionSequence", parts, operators } : (parts[0] as ActionNode);
 
     return {
       type: "Statement",
       property: propertyToken.value!,
-      action,
+      action: actionExpr,
     };
   }
 
@@ -134,9 +162,19 @@ export function parser(tokens: Token[]): ProgramNode {
 
     consume("LPAREN", "Esperado '(' após ação");
 
+    // aceita parênteses vazios: func()
+    if (current() && current()!.type === "RPAREN") {
+      consume("RPAREN", "Esperado ')' após argumentos");
+      return {
+        type: "Action",
+        name: actionToken.value as AnimationName,
+        args: [],
+      };
+    }
+
     const args: (string | number)[] = [];
 
-    // Lê o primeiro argumento
+    // Lê o primeiro argumento (se houver)
     let argToken = current();
     if (argToken) {
       if (argToken.type === "NUMBER") {

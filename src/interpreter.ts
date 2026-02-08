@@ -22,7 +22,7 @@ type TriggerNode = {
 type StatementNode = {
   type: "Statement";
   property: string;
-  action: ActionNode;
+  action: ActionExpr;
 };
 
 type ActionNode = {
@@ -31,8 +31,16 @@ type ActionNode = {
   args: (string | number)[];
 };
 
+type ActionSequenceNode = {
+  type: "ActionSequence";
+  parts: ActionNode[];
+  operators: string[];
+};
+
+type ActionExpr = ActionNode | ActionSequenceNode;
+
 // registra o trigger 
-const triggerRegistry: Record<string, (cb: (targets?: HTMLElement[]) => void, elements: NodeListOf<HTMLElement>) => void> = triggerEvents;
+const triggerRegistry: Record<string, (cb: (targets?: HTMLElement[]) => any, elements: NodeListOf<HTMLElement>) => void> = triggerEvents;
 
 let animations = textAnimations;
 
@@ -64,7 +72,7 @@ export function interpret(ast: ProgramNode) {
       }
 
       // Registra o trigger; o callback pode receber um array opcional de elementos-alvo
-      triggerFn((targets?: HTMLElement[]) => {
+      triggerFn(async (targets?: HTMLElement[]) => {
         console.log("⚡ Trigger disparado:", trigger.name);
 
         const runElements = targets && targets.length ? targets : Array.from(elements);
@@ -73,22 +81,32 @@ export function interpret(ast: ProgramNode) {
         for (const element of runElements) {
           for (const statement of trigger.statements) {
 
-            const action = statement.action;
-            const animationFn = animations[action.name];
-            
-            // Recombina argumentos em uma string separada por vírgula
-            const argsStr = action.args.join(",");
-            console.log("🎬 Executando animação:", action.name, "com argumentos:", argsStr);
+            const actionExpr = statement.action;
 
-            if (!animationFn) {
-              throw new Error(`Animação não encontrada: ${action.name}`);
+            // Se for uma ação simples
+            if ((actionExpr as any).type === "Action") {
+              const action = actionExpr as any as { type: string; name: string; args: (string | number)[] };
+              const animationFn = (animations as any)[action.name as any];
+              const argsStr = action.args.join(",");
+
+              console.log("[Vectora] Executando animação:", action.name, "com argumentos:", argsStr);
+
+              if (!animationFn) throw new Error(`Animação não encontrada: ${action.name}`);
+
+              await animationFn(element, argsStr);
+            } else if ((actionExpr as any).type === "ActionSequence") {
+              const seq = actionExpr as any as { type: string; parts: any[]; operators: string[] };
+              // Atualmente só implementamos '++' como concatenação (sequencial)
+              for (let idx = 0; idx < seq.parts.length; idx++) {
+                const part = seq.parts[idx];
+                const animationFn = (animations as any)[part.name as any];
+                const argsStr = part.args.join(",");
+                console.log("🎬 Executando (seq) animação:", part.name, "com argumentos:", argsStr);
+                if (!animationFn) throw new Error(`Animação não encontrada: ${part.name}`);
+                // '++' => aguarda cada animação terminar antes de continuar
+                await animationFn(element, argsStr);
+              }
             }
-
-            // Executa animação catalogada passando os argumentos como string
-            animationFn(
-              element,
-              argsStr,
-            );
           }
         }
       }, elements);
