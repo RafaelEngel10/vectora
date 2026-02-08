@@ -8,7 +8,8 @@ export type TokenType =
   | "LPAREN"
   | "RPAREN"
   | "COLON"
-  | "SEMICOLON";
+  | "SEMICOLON"
+  | "COMMA";
 
 
 // Estrutura básica de um token
@@ -26,7 +27,7 @@ export function lexer(input: string): Token[] {
     const char = input[i];
 
     // Ignora espaços, tabs e quebras de linha
-    if (/\s/.test(char)) {
+    if (char && /\s/.test(char)) {
       i++;
       continue;
     }
@@ -67,12 +68,18 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
+    if (char === ",") {
+      tokens.push({ type: "COMMA" });
+      i++;
+      continue;
+    }
 
-    if (/\d/.test(char)) {
+
+    if (char && /\d/.test(char)) {
       let value = "";
 
       // Continua lendo enquanto for número
-      while (/\d/.test(input[i])) {
+      while (input[i] && /\d/.test(input[i] as string)) {
         value += input[i];
         i++;
       }
@@ -81,11 +88,11 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
-    if (/[a-zA-Z_.#]/.test(char)) {
+    if (char && /[a-zA-Z_.#]/.test(char)) {
       let value = "";
 
       // Permite letras, números, ponto, underscore e #
-      while (/[a-zA-Z0-9_.#]/.test(input[i])) {
+      while (input[i] && /[a-zA-Z0-9_.#]/.test(input[i] as string)) {
         value += input[i];
         i++;
       }

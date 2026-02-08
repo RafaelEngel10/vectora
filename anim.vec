@@ -1,0 +1,5 @@
+h1 {
+    reveal.onScroll {
+        text: land(600ms);
+    };
+}

@@ -31,8 +31,6 @@ type ActionNode = {
   args: (string | number)[];
 };
 
-
-
 export function parser(tokens: Token[]): ProgramNode {
   let i = 0;
 
@@ -72,7 +70,7 @@ export function parser(tokens: Token[]): ProgramNode {
 
     const triggers: TriggerNode[] = [];
 
-    while (current().type !== "RBRACE") {
+    while (current() && current()!.type !== "RBRACE") {
       triggers.push(parseTrigger());
     }
 
@@ -95,7 +93,7 @@ export function parser(tokens: Token[]): ProgramNode {
 
     const statements: StatementNode[] = [];
 
-    while (current().type !== "RBRACE") {
+    while (current() && current()!.type !== "RBRACE") {
       statements.push(parseStatement());
     }
 
@@ -136,23 +134,47 @@ export function parser(tokens: Token[]): ProgramNode {
 
     consume("LPAREN", "Esperado '(' após ação");
 
-    const numberToken = consume(
-      "NUMBER",
-      "Esperado número de duração"
-    );
+    const args: (string | number)[] = [];
 
-    const unitToken = consume(
-      "UNIT",
-      "Esperado unidade de tempo (ms ou s)"
-    );
+    // Lê o primeiro argumento
+    let argToken = current();
+    if (argToken) {
+      if (argToken.type === "NUMBER") {
+        args.push(Number(consume("NUMBER", "Esperado número").value));
+      } else if (argToken.type === "IDENT") {
+        args.push(consume("IDENT", "Esperado identificador").value!);
+      }
+    }
 
-    consume("RPAREN", "Esperado ')' após duração");
+    // Lê argumentos adicionais separados por vírgula
+    while (current() && current()!.type === "COMMA") {
+      consume("COMMA", "Esperado ','");
+      argToken = current();
+      
+      if (argToken) {
+        if (argToken.type === "NUMBER") {
+          args.push(Number(consume("NUMBER", "Esperado número").value));
+        } else if (argToken.type === "IDENT") {
+          args.push(consume("IDENT", "Esperado identificador").value!);
+        }
+      }
+    }
+
+    // Se temos unidade de tempo no fim, concatena com o último argumento
+    if (current() && current()!.type === "UNIT") {
+      const unit = consume("UNIT", "Esperado unidade").value;
+      if (args.length > 0) {
+        const lastArg = args[args.length - 1];
+        args[args.length - 1] = `${lastArg}${unit}`;
+      }
+    }
+
+    consume("RPAREN", "Esperado ')' após argumentos");
 
     return {
       type: "Action",
       name: actionToken.value as AnimationName,
-      duration: Number(numberToken.value),
-      unit: unitToken.value!,
+      args,
     };
   }
 
