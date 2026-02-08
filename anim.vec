@@ -1,9 +1,6 @@
 h1 {
-    reveal.onScroll {
-        text: slideIn() ++ slideOut();
-    };
-
     onSing.click {
-        text: shake();
+        text: shiver();
+        color: fadeColor( #f00, #000, 600ms);
     };
 }

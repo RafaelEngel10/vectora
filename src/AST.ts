@@ -1,5 +1,4 @@
 import { Token, TokenType, lexer } from "./lexer";
-import { AnimationName } from "./catalog/text/textAnimations";
 
 // AST raiz
 // nó principal
@@ -32,7 +31,7 @@ interface StatementNode {
 // nó de ação
 type ActionNode = {
   type: "Action";
-  name: AnimationName;
+  name: string;
   args: (string | number)[];
 };
 
@@ -77,7 +76,7 @@ export function parser(tokens: Token[]): ProgramNode {
   function parseRule(): RuleNode {
     const selectorToken = consume(
       "IDENT",
-      "Esperado seletor (h1, .class, #id)"
+      "Esperado seletor (tag, .class, #id)"
     );
 
     consume("LBRACE", "Esperado '{' após seletor");
@@ -100,7 +99,7 @@ export function parser(tokens: Token[]): ProgramNode {
   function parseTrigger(): TriggerNode {
     const nameToken = consume(
       "IDENT",
-      "Esperado nome do trigger (ex: window.onLoad)"
+      "Esperado nome do trigger event."
     );
 
     consume("LBRACE", "Esperado '{' após trigger");
@@ -124,7 +123,7 @@ export function parser(tokens: Token[]): ProgramNode {
   function parseStatement(): StatementNode {
     const propertyToken = consume(
       "IDENT",
-      "Esperado nome da propriedade"
+      "Esperado nome de uma propriedade"
     );
 
     consume("COLON", "Esperado ':' após propriedade");
@@ -167,7 +166,7 @@ export function parser(tokens: Token[]): ProgramNode {
       consume("RPAREN", "Esperado ')' após argumentos");
       return {
         type: "Action",
-        name: actionToken.value as AnimationName,
+        name: actionToken.value as string,
         args: [],
       };
     }
@@ -211,7 +210,7 @@ export function parser(tokens: Token[]): ProgramNode {
 
     return {
       type: "Action",
-      name: actionToken.value as AnimationName,
+      name: actionToken.value as string,
       args,
     };
   }
