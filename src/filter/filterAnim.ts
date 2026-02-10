@@ -1,14 +1,20 @@
-import { textAnimations } from "../catalog/text/textAnimations";
-import { colorAnimations } from "../catalog/color/colorAnimations";
-import { transformAnimations } from "../catalog/transform/transform";
-import { gapAnimations } from "../catalog/gap/gapAnimations";
-import { radiusAnimations } from "../catalog/radius/radiusAnimations";
-import { shadowAnimations } from "../catalog/shadow/shadowAnimations";
-import { backgroundColor } from "../catalog/background/color/backgroundColor";
+import { textAnimations } from "../catalog/text/textAnimations.js";
+import { colorAnimations } from "../catalog/color/colorAnimations.js";
+import { transformAnimations } from "../catalog/transform/transform.js";
+import { gapAnimations } from "../catalog/gap/gapAnimations.js";
+import { radiusAnimations } from "../catalog/radius/radiusAnimations.js";
+import { shadowAnimations } from "../catalog/shadow/shadowAnimations.js";
+import { backgroundColor } from "../catalog/background/color/backgroundColor.js";
+import { getAnimationMetadata, AnimationMetadata } from "./animationMetadata.js";
+
+export interface AnimationResult {
+  fn: (el: HTMLElement, args: string) => Promise<void>;
+  metadata: AnimationMetadata | null;
+}
 
 // Retorna o objeto de animações que contém `animName`.
 // Ordem de checagem: color -> text -> fallback (text)
-export function filterAnim(animName: string) {
+function filterAnimObject(animName: string) {
   if (animName in textAnimations) return textAnimations as any;
   if (animName in colorAnimations) return colorAnimations as any;
   if (animName in transformAnimations) return transformAnimations as any;
@@ -17,4 +23,20 @@ export function filterAnim(animName: string) {
   if (animName in shadowAnimations) return shadowAnimations as any;
   if (animName in backgroundColor) return backgroundColor as any;
   return textAnimations as any;
+}
+
+/**
+ * Retorna a função de animação e seus metadados
+ * @param animName Nome da animação
+ * @returns Objeto com função de animação e metadados
+ */
+export function filterAnim(animName: string): AnimationResult {
+  const animObject = filterAnimObject(animName);
+  const animFn = animObject[animName];
+  const metadata = getAnimationMetadata(animName);
+  
+  return {
+    fn: animFn,
+    metadata: metadata
+  };
 }

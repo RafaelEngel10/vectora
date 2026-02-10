@@ -1,4 +1,4 @@
-import { Token, TokenType, lexer } from "./lexer";
+import { Token, TokenType, lexer } from "./lexer.js";
 
 // AST raiz
 // nó principal

@@ -89,6 +89,12 @@ export function lexer(input: string): Token[] {
       }
     }
 
+    // operador de reversão '~'
+    if (char === "~") {
+      tokens.push({ type: "OPERATOR", value: "~"});
+      continue;
+    }
+
     if (char && /\d/.test(char)) {
       let value = "";
 

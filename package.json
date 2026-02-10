@@ -5,7 +5,7 @@
   "scripts": {
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
-    "build": "npm run build:ts",
+    "build": "node scripts/fix-import-extensions.cjs && npm run build:ts",
     "dev": "npm run watch:ts"
   },
   "devDependencies": {
