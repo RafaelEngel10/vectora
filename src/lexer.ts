@@ -111,13 +111,13 @@ export function lexer(input: string): Token[] {
     if (char && /[a-zA-Z_.#]/.test(char)) {
       let value = "";
 
-      // Permite letras, números, ponto, underscore e #
+      // permite letras, números, ponto, underscore e #
       while (input[i] && /[a-zA-Z0-9_.#]/.test(input[i] as string)) {
         value += input[i];
         i++;
       }
 
-      // Detecta unidade (tempo, tamanho, ângulo, etc)
+      // lista de unidades aceitadas pelo lexer (maior causa dos erros de "caractere inesperado")
       if (["ms", "s", "px", "%", "em", "rem", "vh", "vw", "pt", "cm", "mm", "in", "pc", "deg", "rad", "turn", "vh", "vw"].includes(value)) {
         tokens.push({ type: "UNIT", value });
       } else {
