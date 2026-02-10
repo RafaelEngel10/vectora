@@ -10,7 +10,8 @@ export type TokenType =
   | "COLON"
   | "SEMICOLON"
   | "COMMA"
-  | "OPERATOR";
+  | "OPERATOR"
+  | "ARROW";
 
 
 // Estrutura básica de um token
@@ -75,6 +76,36 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
+    // operador "=>" para manipulação de interpolação
+    if (char === "=" && input[i + 1] === ">") {
+      tokens.push({ type: "ARROW", value: "=>" });
+      i += 2;
+      continue;
+    }
+    
+    // operador de reversão '~'
+    if (char === "~") {
+      tokens.push({ type: "OPERATOR", value: "~"});
+      i++;
+      continue;
+    }
+
+    // Hex color ou operador de soma induzida '#'
+    if (char === "#") {
+      // Verifica se é uma cor hex (#fff, #ffffff, etc)
+      const hexMatch = input.slice(i).match(/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?/);
+      if (hexMatch) {
+        tokens.push({ type: "IDENT", value: hexMatch[0] });
+        i += hexMatch[0].length;
+        continue;
+      }
+      
+      // Caso contrário, é um operador
+      tokens.push({ type: "OPERATOR", value: "#"});
+      i++;
+      continue;
+    }
+
     // operadores '++' e '+-'
     if (char === "+") {
       const next = input[i + 1];
@@ -89,11 +120,6 @@ export function lexer(input: string): Token[] {
       }
     }
 
-    // operador de reversão '~'
-    if (char === "~") {
-      tokens.push({ type: "OPERATOR", value: "~"});
-      continue;
-    }
 
     if (char && /\d/.test(char)) {
       let value = "";

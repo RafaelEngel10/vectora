@@ -36,6 +36,7 @@ type ActionSequenceNode = {
   type: "ActionSequence";
   parts: ActionNode[];
   operators: string[];
+  finalActions?: ActionNode[];
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode;
@@ -84,15 +85,15 @@ function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): Ac
   return groups;
 }
 
-/**
- * Executa uma sequência de animações
- * 
- * SOMA: Os vetores de transformação são combinados matematicamente
- *       land (vertical) + slideIn (horizontal) = diagonal movement
- * 
- * CONCATENAÇÃO: As animações são executadas sequencialmente
- */
-async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[]) {
+///
+///Executa uma sequência de animações
+///
+///SOMA: Os vetores de transformação são combinados matematicamente
+///      land (vertical) + slideIn (horizontal) = diagonal movement
+///
+///CONCATENAÇÃO: As animações são executadas sequencialmente
+///
+async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[]) {
   console.log("[Vectora] Iniciando sequência de animações com", parts.length, "parte(s)");
 
   // Agrupa animações que devem ser somadas
@@ -169,8 +170,26 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
       });
     }
   }
+
+  // Executa as ações finais após a sequência terminar (manipulação de interpolação)
+  if (finalActions && finalActions.length > 0) {
+    for (const finalAction of finalActions) {
+      console.log("[Vectora] Executando ação final (manipulação de interpolação):", finalAction.name);
+      const animResult = filterAnim(finalAction.name as string);
+      const animationFn = animResult.fn;
+      const argsStr = finalAction.args.join(",");
+
+      if (!animationFn) {
+        throw new Error(`[Vectora] Animação final não encontrada: ${finalAction.name}`);
+      }
+
+      await Promise.resolve(animationFn(element, argsStr));
+    }
+  }
 }
 
+/// função principal de interpretação do AST
+/// percorre o AST e registra os triggers, associonando-os aos elementos selecionados e executa as animações
 export function interpret(ast: ProgramNode) {
   console.log("[Vectora] Iniciando interpretação de", ast.rules.length, "regra(s)");
   
@@ -233,9 +252,9 @@ export function interpret(ast: ProgramNode) {
             } 
             /// caso seja uma sequência de animações (soma/concatenação)
             else if ((actionExpr as any).type === "ActionSequence") {                         
-              const seq = actionExpr as any as { type: string; parts: any[]; operators: string[] };
+              const seq = actionExpr as any as { type: string; parts: any[]; operators: string[]; finalActions?: any[] };
               // Cada sequência deve rodar de forma sequencial, mas a sequência inteira pode rodar em paralelo com outras statements
-              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators));
+              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions));
             }
           }
 

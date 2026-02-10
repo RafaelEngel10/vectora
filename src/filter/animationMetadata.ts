@@ -378,11 +378,7 @@ export function canConcatenate(singularity1: AnimationSingularity, singularity2:
 /// 3. Se famílias são diferentes → SOMA
 /// 4. Se ambas são Vetorial com subfamílias diferentes → SOMA
 /// 5. Caso contrário → CONCATENAÇÃO
-export function getOperationType(
-  anim1: string,
-  anim2: string,
-  operator: string = "++"
-): "soma" | "concatenacao" {
+export function getOperationType(anim1: string, anim2: string, operator: string = "++"): "soma" | "concatenacao" {
   const meta1 = getAnimationMetadata(anim1);
   const meta2 = getAnimationMetadata(anim2);
 
@@ -391,8 +387,14 @@ export function getOperationType(
     return "concatenacao";
   }
 
-  // Se operador é '+-', sempre concatenação (até mesmo se singularidades não permitem)
-  // Neste caso, usa-se soma forçada implicitamente via operador
+  // Se operador é '#', sempre SOMA induzida (soma forçada)
+  // Nota: A soma induzida é não recomendada, pois os resultados podem ser imprevisíveis
+  if (operator === "#") {
+    console.warn(`[Vectora] Induzindo SOMA entre [${anim1}] e [${anim2}]`);
+    return "soma";
+  }
+
+  // Se operador é '+-', sempre concatenação (força concatenação mesmo com diferentes famílias)
   if (operator === "+-") {
     return "concatenacao";
   }

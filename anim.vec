@@ -1,6 +1,6 @@
 h1 {
     DOMContent.onLoad {
-        text: slideIn(left, 30px, 600ms) ++ land(600ms) +- slideOut(left, 30px, 600ms);   
-        color: fadeColor( #f00, #000, 600ms); 
+        text: slideIn(left, 30px, 600ms) ++ land(600ms) => slideOut() => fadeIn();   
+        color: fadeColor(#f00, #000, 600ms);
     };
 }
