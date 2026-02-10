@@ -1,5 +1,5 @@
 h1 {
     DOMContent.onLoad {
-        text: slideIn() ++ slideOut();    
+        text: slideIn(left, 30px, 600ms) ++ land(600ms) +- slideOut(left, 30px, 600ms) +- fadeIn(600ms);    
     };
 }
