@@ -117,8 +117,8 @@ export function lexer(input: string): Token[] {
         i++;
       }
 
-      // Detecta unidade (tempo, tamanho, etc)
-      if (["ms", "s", "px", "%", "em", "rem", "vh", "vw", "pt", "cm", "mm", "in", "pc"].includes(value)) {
+      // Detecta unidade (tempo, tamanho, ângulo, etc)
+      if (["ms", "s", "px", "%", "em", "rem", "vh", "vw", "pt", "cm", "mm", "in", "pc", "deg", "rad", "turn", "vh", "vw"].includes(value)) {
         tokens.push({ type: "UNIT", value });
       } else {
         tokens.push({ type: "IDENT", value });
