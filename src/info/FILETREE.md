@@ -1,76 +1,50 @@
 # File Tree: vectora
 
-**Generated:** 12/15/2025, 7:41:40 AM
-**Root Path:** `c:\Users\Usuario\Documents\rafael\projeto\vectora`
+**Generated:** 2/8/2026, 4:12:19 AM
+**Root Path:** `c:\Users\Usuario\Documents\rafael\projeto\bah\vectora`
 
 ```
+├── 📁 dependencies
+├── 📁 examples
+│   ├── 📄 anim.vec
+│   ├── 🌐 index.html
+│   └── 🎨 styles.css
+├── 📁 import
+│   ├── 📁 library
+│   │   ├── 📁 cupid
+│   │   │   └── 📝 REMINDER.md
+│   │   ├── 📁 limits
+│   │   │   ├── 📁 request
+│   │   │   │   └── 📄 requestActions.js
+│   │   │   └── 📝 REMINDER.md
+│   │   ├── 📁 objectorient
+│   │   │   └── 📝 REMINDER.md
+│   │   ├── 📁 simplify
+│   │   │   └── 📝 REMINDER.md
+│   │   └── 📁 whensevent
+│   │       └── 📝 REMINDER.md
+│   └── 📝 REMINDER.md
 ├── 📁 src
-│   ├── 📁 anim
-│   │   ├── 📁 catalog
-│   │   │   ├── 📁 brightness
-│   │   │   ├── 📁 color
-│   │   │   │   ├── 📄 colorAnimations.js
-│   │   │   │   └── 📄 colorAnimations.ts
-│   │   │   ├── 📁 gap
-│   │   │   ├── 📁 radius
-│   │   │   ├── 📁 shadow
-│   │   │   ├── 📁 text
-│   │   │   │   └── 📄 textAnimations.ts
-│   │   │   ├── 📁 value
-│   │   │   │   └── 📄 valueActions.ts
-│   │   │   └── 📁 weight
-│   │   ├── 📁 interpolation
-│   │   │   ├── 📁 concatenation
-│   │   │   │   ├── 📁 common
-│   │   │   │   │   ├── 📄 concatenation.coffee
-│   │   │   │   │   └── 📄 concatenation.js
-│   │   │   │   └── 📁 induce
-│   │   │   │       └── 📄 induce.js
-│   │   │   ├── 📁 sum
-│   │   │   │   ├── 📄 sum.coffee
-│   │   │   │   └── 📄 sum.js
-│   │   │   └── 📄 filter.ts
-│   │   └── 📁 reverse
-│   │       └── 📄 reverseAnimations.js
-│   ├── 📁 app
-│   │   └── 📄 runActionOnElements.js
+│   ├── 📁 catalog
+│   │   └── 📁 text
+│   │       └── 📄 textAnimations.ts
 │   ├── 📁 events
-│   │   ├── 📄 asyncEvents.js
-│   │   └── 📄 commonEvents.js
-│   ├── 📁 import
-│   │   ├── 📁 library
-│   │   │   ├── 📁 cupid
-│   │   │   │   ├── 📁 message
-│   │   │   │   └── 📝 REMINDER.md
-│   │   │   ├── 📁 limits
-│   │   │   │   ├── 📁 request
-│   │   │   │   │   └── 📄 requestActions.js
-│   │   │   │   └── 📝 REMINDER.md
-│   │   │   ├── 📁 objectorient
-│   │   │   │   └── 📝 REMINDER.md
-│   │   │   ├── 📁 simplify
-│   │   │   │   └── 📝 REMINDER.md
-│   │   │   └── 📁 whensevent
-│   │   │       └── 📝 REMINDER.md
-│   │   └── 📝 REMINDER.md
+│   │   └── 📄 triggerEvents.ts
+│   ├── 📁 extras
+│   │   ├── 📄 basics.ts
+│   │   └── 📄 console.js
 │   ├── 📁 info
 │   │   ├── 📝 DEEPKNOWLAGE.md
-│   │   ├── 📝 EXTENSIONS.md
-│   │   ├── 📝 FILETREE.md
+│   │   ├── 📝 READ.md
 │   │   └── 📝 REMINDER.md
-│   ├── 📁 syntaxes
-│   │   ├── ⚙️ vectora-themes.json
-│   │   └── ⚙️ vectora.tmLanguage.json
-│   ├── 📄 basics.ts
-│   ├── 📄 console.js
-│   ├── 📄 interpreter.js
-│   ├── 📄 parse.js
-│   └── 📄 styles.vec
+│   ├── 📄 AST.ts
+│   ├── 📄 interpreter.ts
+│   ├── 📄 lexer.ts
+│   └── 📄 runtime.ts
 ├── ⚙️ .gitignore
-├── 📝 READ.md
 ├── 📝 README.md
-├── 📝 REMINDER.md
-├── ⚙️ language-configuration.json
+├── 📄 anim.vec
+├── 🌐 index.html
 ├── ⚙️ package-lock.json
 ├── ⚙️ package.json
 └── ⚙️ tsconfig.json
