@@ -8,9 +8,9 @@
     "strict": true,
 
     // Target moderno
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "target": "ES2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
 
     // Interop com Node e libs modernas
     "esModuleInterop": true,

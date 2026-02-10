@@ -1,6 +1,5 @@
 h1 {
-    onSing.click {
-        text: shiver();
-        color: fadeColor( #f00, #000, 600ms);
+    DOMContent.onLoad {
+        text: slideIn() ++ slideOut();    
     };
 }

@@ -1,6 +1,6 @@
-import { lexer } from "./lexer";
-import { parser } from "./AST";
-import { interpret } from "./interpreter";
+import { lexer } from "./lexer.js";
+import { parser } from "./AST.js";
+import { interpret } from "./interpreter.js";
 
 async function loadVectoraFiles() {
   // find all vectora link
