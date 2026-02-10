@@ -98,8 +98,8 @@ export function lexer(input: string): Token[] {
     if (char && /\d/.test(char)) {
       let value = "";
 
-      // Continua lendo enquanto for número
-      while (input[i] && /\d/.test(input[i] as string)) {
+      // Continua lendo enquanto for número ou ponto (para decimais como 1.2)
+      while (input[i] && /[\d.]/.test(input[i] as string)) {
         value += input[i];
         i++;
       }
@@ -117,8 +117,8 @@ export function lexer(input: string): Token[] {
         i++;
       }
 
-      // Detecta unidade de tempo
-      if (value === "ms" || value === "s") {
+      // Detecta unidade (tempo, tamanho, ângulo, etc)
+      if (["ms", "s", "px", "%", "em", "rem", "vh", "vw", "pt", "cm", "mm", "in", "pc", "deg", "rad", "turn", "vh", "vw"].includes(value)) {
         tokens.push({ type: "UNIT", value });
       } else {
         tokens.push({ type: "IDENT", value });

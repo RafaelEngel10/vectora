@@ -177,7 +177,14 @@ export function parser(tokens: Token[]): ProgramNode {
     let argToken = current();
     if (argToken) {
       if (argToken.type === "NUMBER") {
-        args.push(Number(consume("NUMBER", "Esperado número").value));
+        let value = Number(consume("NUMBER", "Esperado número").value);
+        // Se o próximo token é uma unidade, concatena
+        if (current() && current()!.type === "UNIT") {
+          const unit = consume("UNIT", "Esperado unidade").value!;
+          args.push(`${value}${unit}`);
+        } else {
+          args.push(value);
+        }
       } else if (argToken.type === "IDENT") {
         args.push(consume("IDENT", "Esperado identificador").value!);
       }
@@ -190,19 +197,17 @@ export function parser(tokens: Token[]): ProgramNode {
       
       if (argToken) {
         if (argToken.type === "NUMBER") {
-          args.push(Number(consume("NUMBER", "Esperado número").value));
+          let value = Number(consume("NUMBER", "Esperado número").value);
+          // Se o próximo token é uma unidade, concatena
+          if (current() && current()!.type === "UNIT") {
+            const unit = consume("UNIT", "Esperado unidade").value!;
+            args.push(`${value}${unit}`);
+          } else {
+            args.push(value);
+          }
         } else if (argToken.type === "IDENT") {
           args.push(consume("IDENT", "Esperado identificador").value!);
         }
-      }
-    }
-
-    // Se temos unidade de tempo no fim, concatena com o último argumento
-    if (current() && current()!.type === "UNIT") {
-      const unit = consume("UNIT", "Esperado unidade").value;
-      if (args.length > 0) {
-        const lastArg = args[args.length - 1];
-        args[args.length - 1] = `${lastArg}${unit}`;
       }
     }
 
