@@ -1,6 +1,7 @@
 import { triggerEvents } from "./events/triggerEvents.js";
 import { filterAnim } from "./filter/filterAnim.js";
-import { getOperationType, getAnimationMetadata, sumVectors, vectorToCssTransform, TransformVector, CssTransformFinal } from "./filter/animationMetadata.js";
+import { getOperationType, getAnimationMetadata, isAnimationValidForProperty, sumVectors, vectorToCssTransform, TransformVector, CssTransformFinal } from "./filter/animationMetadata.js";
+import { reverseAnimation } from "./reverser/catalogedAnims.js";
 
 // Tipagem mínima baseada no AST que você já tem
 type ProgramNode = {
@@ -36,6 +37,7 @@ type ActionSequenceNode = {
   type: "ActionSequence";
   parts: ActionNode[];
   operators: string[];
+  finalActions?: ActionNode[];
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode;
@@ -84,15 +86,15 @@ function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): Ac
   return groups;
 }
 
-/**
- * Executa uma sequência de animações
- * 
- * SOMA: Os vetores de transformação são combinados matematicamente
- *       land (vertical) + slideIn (horizontal) = diagonal movement
- * 
- * CONCATENAÇÃO: As animações são executadas sequencialmente
- */
-async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[]) {
+///
+///Executa uma sequência de animações
+///
+///SOMA: Os vetores de transformação são combinados matematicamente
+///      land (vertical) + slideIn (horizontal) = diagonal movement
+///
+///CONCATENAÇÃO: As animações são executadas sequencialmente
+///
+async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[]) {
   console.log("[Vectora] Iniciando sequência de animações com", parts.length, "parte(s)");
 
   // Agrupa animações que devem ser somadas
@@ -106,18 +108,30 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
       // Grupo com uma única animação: executa normalmente
       const part = group[0];
       if (!part) continue;
+      
+      if (part.name.includes('~')) {
+        const result = reverseAnimation(part.name);
+        const argsStr = part.args.join(",");
 
-      const animResult = filterAnim(part.name as string);
-      const animationFn = animResult.fn;
-      const argsStr = part.args.join(",");
+        if (!result) {
+          throw new Error(`[Vectora] Animação não encontrada: ${part.name}`);
+        }
 
-      console.log(`[Vectora] Executando animação "${part.name}"`);
+        await Promise.resolve(result(element, argsStr));
+      } 
+      else {
+        const animResult = filterAnim(part.name as string);
+        const animationFn = animResult.fn;
+        const argsStr = part.args.join(",");
 
-      if (!animationFn) {
-        throw new Error(`[Vectora] Animação não encontrada: ${part.name}`);
+        if (!animationFn) {
+          throw new Error(`[Vectora] Animação não encontrada: ${part.name}`);
+        }
+
+        await Promise.resolve(animationFn(element, argsStr));
       }
 
-      await Promise.resolve(animationFn(element, argsStr));
+      console.log(`[Vectora] Executando animação "${part.name}"`);
     } 
     else {
       // Grupo com múltiplas animações: SOMA dos vetores
@@ -169,8 +183,26 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
       });
     }
   }
+
+  // Executa as ações finais após a sequência terminar (manipulação de interpolação)
+  if (finalActions && finalActions.length > 0) {
+    for (const finalAction of finalActions) {
+      console.log("[Vectora] Executando ação final (manipulação de interpolação):", finalAction.name);
+      const animResult = filterAnim(finalAction.name as string);
+      const animationFn = animResult.fn;
+      const argsStr = finalAction.args.join(",");
+
+      if (!animationFn) {
+        throw new Error(`[Vectora] Animação final não encontrada: ${finalAction.name}`);
+      }
+
+      await Promise.resolve(animationFn(element, argsStr));
+    }
+  }
 }
 
+/// função principal de interpretação do AST
+/// percorre o AST e registra os triggers, associonando-os aos elementos selecionados e executa as animações
 export function interpret(ast: ProgramNode) {
   console.log("[Vectora] Iniciando interpretação de", ast.rules.length, "regra(s)");
   
@@ -214,28 +246,68 @@ export function interpret(ast: ProgramNode) {
 
           for (const statement of trigger.statements) {
             const actionExpr = statement.action;
+            const property = statement.property;
 
             /// caso seja uma animação comum
             if ((actionExpr as any).type === "Action") {
               const action = actionExpr as any as { type: string; name: string; args: (string | number)[] };
-              statementPromises.push((async () => {
-                const animResult = filterAnim(action.name as string);
-                const animationFn = animResult.fn;
-                const argsStr = action.args.join(",");
+              
+              // Valida se a animação é compatível com a propriedade
+              const animName = action.name.startsWith("~") ? action.name.slice(1) : action.name;
+              if (!isAnimationValidForProperty(animName, property)) {
+                throw new Error(`[Vectora] Erro: A propriedade '${property}' não pode receber a animação '${animName}'. Animações compatíveis com '${property}' devem ser específicas dessa propriedade.`);
+              }
 
-                console.log("[Vectora] Executando animação:", action.name, "com argumentos:", argsStr);
+              if (action.name.startsWith("~")) {
+                statementPromises.push((async () => {
+                  const animResult = reverseAnimation(action.name);
+                  const argsStr = action.args.join(",");
 
-                if (!animationFn) throw new Error(`[Vectora] Animação não encontrada: ${action.name}`);
+                  console.log("[Vectora] Executando inverso de animação:", action.name, "\nCom argumentos:", argsStr);
 
-                // Pode retornar uma Promise ou não; normalizamos com Promise.resolve
-                return await Promise.resolve(animationFn(element, argsStr));
-              })());
+                  if (!animResult) throw new Error(`[Vectora] Animação não encontrada para: ${action.name}`);
+
+                  return await Promise.resolve(animResult(element, argsStr));
+                })());
+              } else {
+                statementPromises.push((async () => {
+                  const animResult = filterAnim(action.name as string);
+                  const animationFn = animResult.fn;
+                  const argsStr = action.args.join(",");
+  
+                  console.log("[Vectora] Executando animação:", action.name, "\nCom argumentos:", argsStr);
+  
+                  if (!animationFn) throw new Error(`[Vectora] Animação não encontrada: ${action.name}`);
+  
+                  // possibilidade de retorno de uma Promise; normalizamos com Promise.resolve
+                  return await Promise.resolve(animationFn(element, argsStr));
+                })());
+              }
             } 
             /// caso seja uma sequência de animações (soma/concatenação)
             else if ((actionExpr as any).type === "ActionSequence") {                         
-              const seq = actionExpr as any as { type: string; parts: any[]; operators: string[] };
+              const seq = actionExpr as any as { type: string; parts: any[]; operators: string[]; finalActions?: any[] };
+              
+              // Valida todas as animações na sequência
+              for (const part of seq.parts) {
+                const animName = part.name.startsWith("~") ? part.name.slice(1) : part.name;
+                if (!isAnimationValidForProperty(animName, property)) {
+                  throw new Error(`[Vectora] Erro: A propriedade '${property}' não pode receber a animação '${animName}'. Animações compatíveis com '${property}' devem ser específicas dessa propriedade.`);
+                }
+              }
+              
+              // Valida as ações finais também
+              if (seq.finalActions) {
+                for (const finalAction of seq.finalActions) {
+                  const animName = finalAction.name.startsWith("~") ? finalAction.name.slice(1) : finalAction.name;
+                  if (!isAnimationValidForProperty(animName, property)) {
+                    throw new Error(`[Vectora] Erro: A propriedade '${property}' não pode receber a animação '${animName}' (ação final). Animações compatíveis com '${property}' devem ser específicas dessa propriedade.`);
+                  }
+                }
+              }
+
               // Cada sequência deve rodar de forma sequencial, mas a sequência inteira pode rodar em paralelo com outras statements
-              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators));
+              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions));
             }
           }
 

@@ -40,9 +40,10 @@ type ActionSequenceNode = {
   type: "ActionSequence";
   parts: ActionNode[];
   operators: string[];
+  finalActions?: ActionNode[] | undefined;
 };
 
-type ActionExpr = ActionNode | ActionSequenceNode;
+type ActionExpr = ActionNode | ActionSequenceNode | undefined;
 
 export function parser(tokens: Token[]): ProgramNode {
   let i = 0;
@@ -142,9 +143,34 @@ export function parser(tokens: Token[]): ProgramNode {
       parts.push(nextAction);
     }
 
+    const finalActions: ActionNode[] = [];
+
+    // Verifica se há múltiplos "=>" (manipulação de interpolação)
+    while (current() && current()!.type === "ARROW") {
+      consume("ARROW", "Esperado '=>'");
+      
+      // Verifica se há uma ação final ou apenas modificador
+      if (current() && current()!.type !== "SEMICOLON") {
+        finalActions.push(parseAction());
+      }
+    }
+
     consume("SEMICOLON", "Esperado ';' no fim da declaração");
 
-    const actionExpr: ActionExpr = parts.length > 1 ? { type: "ActionSequence", parts, operators } : (parts[0] as ActionNode);
+    let actionExpr: ActionExpr;
+    if (parts.length > 1) {
+      const sequenceNode: ActionSequenceNode = { 
+        type: "ActionSequence", 
+        parts, 
+        operators
+      };
+      if (finalActions.length > 0) {
+        sequenceNode.finalActions = finalActions;
+      }
+      actionExpr = sequenceNode;
+    } else {
+      actionExpr = parts[0] as ActionNode;
+    }
 
     return {
       type: "Statement",
@@ -154,10 +180,18 @@ export function parser(tokens: Token[]): ProgramNode {
   }
 
   function parseAction(): ActionNode {
+    // Verifica se há um operador unário (~, #) antes da ação
+    let unaryOp = "";
+    if (current() && current()!.type === "OPERATOR" && (current()!.value === "~" || current()!.value === "#")) {
+      unaryOp = consume("OPERATOR", "Esperado operador").value!;
+    }
+
     const actionToken = consume(
       "IDENT",
       "Esperado nome da ação"
     );
+
+    const actionName = unaryOp + actionToken.value;
 
     consume("LPAREN", "Esperado '(' após ação");
 
@@ -166,7 +200,7 @@ export function parser(tokens: Token[]): ProgramNode {
       consume("RPAREN", "Esperado ')' após argumentos");
       return {
         type: "Action",
-        name: actionToken.value as string,
+        name: actionName,
         args: [],
       };
     }
@@ -215,7 +249,7 @@ export function parser(tokens: Token[]): ProgramNode {
 
     return {
       type: "Action",
-      name: actionToken.value as string,
+      name: actionName,
       args,
     };
   }

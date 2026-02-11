@@ -10,7 +10,8 @@ export type TokenType =
   | "COLON"
   | "SEMICOLON"
   | "COMMA"
-  | "OPERATOR";
+  | "OPERATOR"
+  | "ARROW";
 
 
 // Estrutura básica de um token
@@ -26,6 +27,31 @@ export function lexer(input: string): Token[] {
   // Percorre o texto caractere por caractere
   while (i < input.length) {
     const char = input[i];
+
+    // Ignora comentários de linha única "//"
+    if (char === "/" && input[i + 1] === "/") {
+      // Pula até o final da linha
+      i += 2;
+      while (i < input.length && input[i] !== "\n") {
+        i++;
+      }
+      i++; // pula o '\n'
+      continue;
+    }
+
+    // Ignora comentários de múltiplas linhas "/**/"
+    if (char === "/" && input[i + 1] === "*") {
+      i += 2;
+      // Procura pelo fechamento "*/"
+      while (i < input.length - 1) {
+        if (input[i] === "*" && input[i + 1] === "/") {
+          i += 2; // pula "*/"
+          break;
+        }
+        i++;
+      }
+      continue;
+    }
 
     // Ignora espaços, tabs e quebras de linha
     if (char && /\s/.test(char)) {
@@ -75,6 +101,44 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
+    // operador "=>" para manipulação de interpolação
+    if (char === "=" && input[i + 1] === ">") {
+      tokens.push({ type: "ARROW", value: "=>" });
+      i += 2;
+      continue;
+    }
+    
+    // operador de reversão '~'
+    if (char === "~") {
+      tokens.push({ type: "OPERATOR", value: "~"});
+      i++;
+      continue;
+    }
+
+    // Hex color ou operador de soma induzida '#'
+    if (char === "#") {
+      // Verifica se é uma cor hex (#fff, #ffffff, etc)
+      const hexMatch = input.slice(i).match(/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?/);
+      if (hexMatch) {
+        tokens.push({ type: "IDENT", value: hexMatch[0] });
+        i += hexMatch[0].length;
+        continue;
+      }
+
+      const idMatch = input.slice(i).match(/^#([a-zA-Z_-][a-zA-Z0-9_-]*)/);
+
+      if (idMatch) {
+        tokens.push({ type: "IDENT", value: idMatch[0] });
+        i += idMatch[0].length;
+        continue;
+      }
+      
+      // Caso contrário, é um operador
+      tokens.push({ type: "OPERATOR", value: "#"});
+      i++;
+      continue;
+    }
+
     // operadores '++' e '+-'
     if (char === "+") {
       const next = input[i + 1];
@@ -89,11 +153,6 @@ export function lexer(input: string): Token[] {
       }
     }
 
-    // operador de reversão '~'
-    if (char === "~") {
-      tokens.push({ type: "OPERATOR", value: "~"});
-      continue;
-    }
 
     if (char && /\d/.test(char)) {
       let value = "";
@@ -111,13 +170,13 @@ export function lexer(input: string): Token[] {
     if (char && /[a-zA-Z_.#]/.test(char)) {
       let value = "";
 
-      // Permite letras, números, ponto, underscore e #
+      // permite letras, números, ponto, underscore e #
       while (input[i] && /[a-zA-Z0-9_.#]/.test(input[i] as string)) {
         value += input[i];
         i++;
       }
 
-      // Detecta unidade (tempo, tamanho, ângulo, etc)
+      // lista de unidades aceitadas pelo lexer (maior causa dos erros de "caractere inesperado")
       if (["ms", "s", "px", "%", "em", "rem", "vh", "vw", "pt", "cm", "mm", "in", "pc", "deg", "rad", "turn", "vh", "vw"].includes(value)) {
         tokens.push({ type: "UNIT", value });
       } else {

@@ -198,10 +198,24 @@ A concatenação de animações de famílias diferentes em uma é feita através
     };
 } </pre>
 
+### !! NÃO RECOMENDADO !! Soma Induzida =
+
+A soma induzida de animações de famílias iguais é reconhecida através de um símbolo universal. Não é recomendado seu uso pois os resultados podem ser imprevisíveis.
+
+> O símbolo de soma induzida é: #
+
+```
+exemplo {
+    window.onLoad {
+        text: slideIn() # slideOut();
+    };
+}
+``` 
+> Saida esperada é uma animação suave de ida sem volta, sem pausas como acontece naturalmente com a concatenação
 
 ## Manipulação de Interpolação =
 
-Uma interpolação nada mais é que o resultado obtido da soma/concatenação de duas ou mais animações. Suas propriedades podem ser livremente manipulados, bastando apenas seguir uma síntaxe indicadora.
+Uma interpolação nada mais é que o resultado obtido da soma/concatenação de duas ou mais animações. Suas propriedades podem ser livremente manipulados, bastando apenas seguir uma síntaxe indicadora utilizando o simbolo "=>".
 
 <pre>exemplo {
     window.onLoad {
@@ -209,7 +223,7 @@ Uma interpolação nada mais é que o resultado obtido da soma/concatenação de
     };
 }</pre>
 
-- Sendo assim, com o indicador ( => ) é possível definir qual será a animação que vai executar ao final da interpolação:
+- Sendo assim, com o indicador "=>" é possível definir qual será a animação que vai executar ao final da interpolação:
 
 <pre>exemplo {
     window.onLoad {
@@ -219,7 +233,7 @@ Uma interpolação nada mais é que o resultado obtido da soma/concatenação de
 
 * Ao final da interpolação, em sequência, a animação de fadeOut será executada.
 
-- Além disso, é possível definir propriedades à interpolação, através do símbolo de (&). Sendo necessário o juste da posição de propriedade para antes de qualquer animação.
+- Além disso, é possível definir propriedades à interpolação, através do símbolo "&". Sendo necessário o juste da posição de propriedade para antes de qualquer animação.
 
 <pre>exemplo {
     window.onLoad {
@@ -235,11 +249,24 @@ Através de um símbolo especial, é possível definir o intervalo de tempo entr
 
 > Reforçando que o símbolo é o (--)
 
-<pre>exemplo {
+```
+exemplo {
     window.onLoad {
         text: slideIn +- rise() => --1000ms;
     };
-} </pre>
+} 
+```
+
+Outros exemplo seria fazendo uma concatenação com a interpolação e aplicando o delay entre a interpolação e a animação.
+
+```
+exemplo {
+    window.onLoad {
+        text: land() ++ slideIn() => slideIn() => --1000ms;         
+        // 1 segundo de delay entre a interpolação (land() ++ slideIn()) e o slideIn()
+    };
+}
+```
 
 
 ## Inversor =

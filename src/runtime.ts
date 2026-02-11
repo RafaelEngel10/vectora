@@ -15,9 +15,8 @@ async function loadVectoraFiles() {
     }
 
     const source = await response.text();
-    console.log("[Vectora] Código carregado:", source);
 
-    // Pipeline completo
+    // pipeline completo
     try {
       const tokens = lexer(source);
       console.log("[Vectora] Tokens gerados:", tokens);
@@ -26,7 +25,7 @@ async function loadVectoraFiles() {
       console.log("[Vectora] AST gerada:", ast);
       
       interpret(ast);
-      console.log("[Vectora] Interpretação completa!");
+      console.info("[Vectora] Terminado a execução do arquivo.");
     } catch (error) {
       console.error("[Vectora] Erro no pipeline Vectora:", error);
       throw error;

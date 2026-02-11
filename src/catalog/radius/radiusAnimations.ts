@@ -20,7 +20,7 @@ export const radiusAnimations = {
 
     corner: (el: any, args: any) => {
         const parts = args ? args.split(',').map((p: any) => p.trim()) : [];
-        const specific: string = parts[0] || 'all';
+        const specific: string = parts[0] || 'except-bottom-right';
         const round: number = parseFloat(parts[1] || '15');
         const duration: number = toMs(parts[2] || '600ms');
 

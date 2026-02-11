@@ -6,7 +6,11 @@ export const triggerEvents: Record<string, (cb: (targets?: HTMLElement[]) => voi
       console.log("📄 Documento já está carregado, executando callback imediatamente");
       cb();
     } else {
-      window.addEventListener("load", () => cb());
+      const loadHandler = () => {
+        window.removeEventListener("load", loadHandler);
+        cb();
+      };
+      window.addEventListener("load", loadHandler);
     }
   },
 
@@ -15,7 +19,11 @@ export const triggerEvents: Record<string, (cb: (targets?: HTMLElement[]) => voi
     if (document.readyState === "interactive" || document.readyState === "complete") {
       cb();
     } else {
-      window.addEventListener("DOMContentLoaded", () => cb());
+      const contentLoadedHandler = () => {
+        window.removeEventListener("DOMContentLoaded", contentLoadedHandler);
+        cb();
+      };
+      window.addEventListener("DOMContentLoaded", contentLoadedHandler);
     }
   },
 
