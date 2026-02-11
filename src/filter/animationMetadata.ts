@@ -1,6 +1,7 @@
 export type AnimationFamily = "vetorial" | "escalar" | "adimensional";
 export type VectorSubfamily = "horizontal" | "vertical" | "diagonal" | null;
 export type AnimationSingularity = "entrada" | "saída" | "indefinida";
+export type AnimationProperty = "text" | "color" | "background.color" | "transform" | "radius" | "gap" | "weight" | "brightness" | "shadow" | "text.shadow";
 
 /// 
 /// Vetor de transformação de uma animação (componentes de movimento)
@@ -24,6 +25,7 @@ export interface AnimationMetadata {
   subfamily?: VectorSubfamily; // apenas para animações vetoriais
   singularity: AnimationSingularity; // entrada, saída ou indefinida
   vector: TransformVector; // efeito de transformação
+  property: AnimationProperty; // qual propriedade pode usar esta animação
 }
 
 /// 
@@ -41,13 +43,15 @@ export const animationMetadata: Record<string, AnimationMetadata> = {
     family: "vetorial", 
     subfamily: "vertical",
     singularity: "entrada",
-    vector: { translateY: -30 }
+    vector: { translateY: -30 },
+    property: "text"
   },
   rise: { 
     family: "vetorial", 
     subfamily: "vertical",
     singularity: "entrada",
-    vector: { translateY: 30 }
+    vector: { translateY: 30 },
+    property: "text"
   },
 
   // TEXT ANIMATIONS - Vetorial Horizontal
@@ -55,115 +59,135 @@ export const animationMetadata: Record<string, AnimationMetadata> = {
     family: "vetorial", 
     subfamily: "horizontal",
     singularity: "entrada",
-    vector: { translateX: -30 } 
+    vector: { translateX: -30 },
+    property: "text"
   },
   slideOut: { 
     family: "vetorial", 
     subfamily: "horizontal",
     singularity: "saída",
-    vector: { translateX: 30 } 
+    vector: { translateX: 30 },
+    property: "text"
   },
 
   // TEXT ANIMATIONS - Escalar (opacidade)
   fadeIn: { 
     family: "escalar",
     singularity: "entrada",
-    vector: { opacity: 0 } 
+    vector: { opacity: 0 },
+    property: "text"
   },
   fadeOut: { 
     family: "escalar",
     singularity: "saída",
-    vector: { opacity: 1 }
+    vector: { opacity: 1 },
+    property: "text"
   },
   pop: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: { scaleX: 0.5, scaleY: 0.5 } 
+    vector: { scaleX: 0.5, scaleY: 0.5 },
+    property: "text"
   },
   implode: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: { scaleX: 2, scaleY: 2 } 
+    vector: { scaleX: 2, scaleY: 2 },
+    property: "text"
   },
 
   // TEXT ANIMATIONS - Adimensional (tremulação/agitação)
   shiver: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {} 
+    vector: {},
+    property: "text"
   },
   shake: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {} 
+    vector: {},
+    property: "text"
   },
 
   // TEXT ANIMATIONS - Vetorial Diagonal
   spin: { 
     family: "escalar", 
     singularity: "indefinida",
-    vector: { rotateZ: 360 }
+    vector: { rotateZ: 360 },
+    property: "text"
   },
 
   // COLOR ANIMATIONS - Adimensional
   fadeColor: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "color"
   },
   chameleonCamo: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "color"
   },
   octopusCamo: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "color"
   },
   paint: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "color"
   },
   liquidFill: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "color"
   },
 
   // TRANSFORM ANIMATIONS - Vetorial Diagonal / Escalar
   rotate: { 
     family: "escalar", 
     singularity: "indefinida",
-    vector: { rotateZ: 180 }
+    vector: { rotateZ: 180 },
+    property: "transform"
   },
   zoomIn: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: { scaleX: 0.8, scaleY: 0.8 } 
+    vector: { scaleX: 0.8, scaleY: 0.8 },
+    property: "transform"
   },
   zoomOut: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: { scaleX: 1.2, scaleY: 1.2 } 
+    vector: { scaleX: 1.2, scaleY: 1.2 },
+    property: "transform"
   },
   mirror: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: { scaleX: -1 } 
+    vector: { scaleX: -1 },
+    property: "transform"
   },
 
   // RADIUS ANIMATIONS - Adimensional
   round: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "radius"
   },
   corner: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "radius"
   },
 
   // GAP ANIMATIONS - Vetorial Horizontal
@@ -171,47 +195,55 @@ export const animationMetadata: Record<string, AnimationMetadata> = {
     family: "vetorial", 
     subfamily: "horizontal",
     singularity: "indefinida",
-    vector: {} // espaçamento, não é movimento do elemento
+    vector: {},
+    property: "gap"
   },
   stagedBloom: { 
     family: "vetorial", 
     subfamily: "horizontal",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "gap"
   },
 
   // WEIGHT ANIMATIONS - Escalar
   skinny: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "weight"
   },
   heavy: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "weight"
   },
 
   // BRIGHTNESS ANIMATIONS - Adimensional
   halo: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "brightness"
   },
   fadeLight: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "brightness"
   },
   neon: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "brightness"
   },
   pillar: { 
     family: "adimensional",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "brightness"
   },
 
   // SHADOW ANIMATIONS
@@ -219,18 +251,21 @@ export const animationMetadata: Record<string, AnimationMetadata> = {
     family: "vetorial", 
     subfamily: "horizontal",
     singularity: "indefinida",
-    vector: {} // não é movimento do elemento
+    vector: {},
+    property: "shadow"
   },
   fadeDusk: { 
     family: "escalar",
     singularity: "indefinida",
-    vector: {} // fade, não movimento
+    vector: {},
+    property: "shadow"
   },
   purge: { 
     family: "vetorial", 
     subfamily: "diagonal",
     singularity: "indefinida",
-    vector: {}
+    vector: {},
+    property: "shadow"
   },
 };
 
@@ -240,9 +275,17 @@ export function getAnimationMetadata(animName: string): AnimationMetadata | null
   return animationMetadata[animName] || null;
 }
 
+/// Valida se uma animação é compatível com a propriedade CSS indicada
+/// Retorna true se a animação pode ser usada com a propriedade, false caso contrário
+export function isAnimationValidForProperty(animName: string, property: string): boolean {
+  const metadata = getAnimationMetadata(animName);
+  if (!metadata) {
+    return false; // Animação desconhecida
+  }
+  return metadata.property === property;
+}
 
-/// Soma dois vetores de transformação
-/// Exemplo: vec1 = {translateX: 100, translateY: 0}, vec2 = {translateX: 0, translateY: 50}
+
 /// Resultado: {translateX: 100, translateY: 50}
 export function sumVectors(v1: TransformVector, v2: TransformVector): TransformVector {
   const result: TransformVector = {};

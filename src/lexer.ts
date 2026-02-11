@@ -28,6 +28,31 @@ export function lexer(input: string): Token[] {
   while (i < input.length) {
     const char = input[i];
 
+    // Ignora comentários de linha única "//"
+    if (char === "/" && input[i + 1] === "/") {
+      // Pula até o final da linha
+      i += 2;
+      while (i < input.length && input[i] !== "\n") {
+        i++;
+      }
+      i++; // pula o '\n'
+      continue;
+    }
+
+    // Ignora comentários de múltiplas linhas "/**/"
+    if (char === "/" && input[i + 1] === "*") {
+      i += 2;
+      // Procura pelo fechamento "*/"
+      while (i < input.length - 1) {
+        if (input[i] === "*" && input[i + 1] === "/") {
+          i += 2; // pula "*/"
+          break;
+        }
+        i++;
+      }
+      continue;
+    }
+
     // Ignora espaços, tabs e quebras de linha
     if (char && /\s/.test(char)) {
       i++;
