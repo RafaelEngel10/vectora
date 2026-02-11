@@ -4,3 +4,17 @@ h1 {
         color: fadeColor(#f00, #000, 600ms);
     };
 }
+
+// Usando "div > div" para selecionar apenas a div filha de outra div
+// Evita seleção múltipla e repeição de animações
+.parent {
+    DOMContent.onLoad {
+        text: land();
+    };
+}
+
+#child {
+    DOMContent.onLoad {
+        radius: round();
+    };
+}

@@ -124,6 +124,14 @@ export function lexer(input: string): Token[] {
         i += hexMatch[0].length;
         continue;
       }
+
+      const idMatch = input.slice(i).match(/^#([a-zA-Z_-][a-zA-Z0-9_-]*)/);
+
+      if (idMatch) {
+        tokens.push({ type: "IDENT", value: idMatch[0] });
+        i += idMatch[0].length;
+        continue;
+      }
       
       // Caso contrário, é um operador
       tokens.push({ type: "OPERATOR", value: "#"});

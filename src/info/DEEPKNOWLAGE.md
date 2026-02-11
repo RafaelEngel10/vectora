@@ -249,11 +249,24 @@ Através de um símbolo especial, é possível definir o intervalo de tempo entr
 
 > Reforçando que o símbolo é o (--)
 
-<pre>exemplo {
+```
+exemplo {
     window.onLoad {
         text: slideIn +- rise() => --1000ms;
     };
-} </pre>
+} 
+```
+
+Outros exemplo seria fazendo uma concatenação com a interpolação e aplicando o delay entre a interpolação e a animação.
+
+```
+exemplo {
+    window.onLoad {
+        text: land() ++ slideIn() => slideIn() => --1000ms;         
+        // 1 segundo de delay entre a interpolação (land() ++ slideIn()) e o slideIn()
+    };
+}
+```
 
 
 ## Inversor =
