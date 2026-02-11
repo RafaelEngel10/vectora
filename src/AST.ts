@@ -180,10 +180,18 @@ export function parser(tokens: Token[]): ProgramNode {
   }
 
   function parseAction(): ActionNode {
+    // Verifica se há um operador unário (~, #) antes da ação
+    let unaryOp = "";
+    if (current() && current()!.type === "OPERATOR" && (current()!.value === "~" || current()!.value === "#")) {
+      unaryOp = consume("OPERATOR", "Esperado operador").value!;
+    }
+
     const actionToken = consume(
       "IDENT",
       "Esperado nome da ação"
     );
+
+    const actionName = unaryOp + actionToken.value;
 
     consume("LPAREN", "Esperado '(' após ação");
 
@@ -192,7 +200,7 @@ export function parser(tokens: Token[]): ProgramNode {
       consume("RPAREN", "Esperado ')' após argumentos");
       return {
         type: "Action",
-        name: actionToken.value as string,
+        name: actionName,
         args: [],
       };
     }
@@ -241,7 +249,7 @@ export function parser(tokens: Token[]): ProgramNode {
 
     return {
       type: "Action",
-      name: actionToken.value as string,
+      name: actionName,
       args,
     };
   }
