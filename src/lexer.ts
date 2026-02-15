@@ -11,7 +11,8 @@ export type TokenType =
   | "SEMICOLON"
   | "COMMA"
   | "OPERATOR"
-  | "ARROW";
+  | "ARROW"
+  | "DELAY";
 
 
 // Estrutura básica de um token
@@ -106,6 +107,20 @@ export function lexer(input: string): Token[] {
       tokens.push({ type: "ARROW", value: "=>" });
       i += 2;
       continue;
+    }
+
+    // delay "--" seguido de número e unidade (ex: --1000ms)
+    if (char === "-" && input[i + 1] === "-") {
+      // Verifica se logo após "--" há um número e unidade
+      const delayMatch = input.slice(i).match(/^--(\d+(?:\.\d+)?)(ms|s)(?=\s|;|}|=>|$)/);
+      if (delayMatch) {
+        const fullMatch = delayMatch[0];
+        const value = delayMatch[1];
+        const unit = delayMatch[2];
+        tokens.push({ type: "DELAY", value: `${value}${unit}` });
+        i += fullMatch.length;
+        continue;
+      }
     }
     
     // operador de reversão '~'

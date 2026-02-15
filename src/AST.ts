@@ -41,6 +41,8 @@ type ActionSequenceNode = {
   parts: ActionNode[];
   operators: string[];
   finalActions?: ActionNode[] | undefined;
+  delays?: (number | null)[]; // delays entre ações (em ms), null significa sem delay
+  finalDelayMs?: number; // delay antes de executar ações finais
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode | undefined;
@@ -134,24 +136,62 @@ export function parser(tokens: Token[]): ProgramNode {
 
     const parts: ActionNode[] = [firstAction];
     const operators: string[] = [];
+    const delays: (number | null)[] = [];
 
     // Enquanto houver operadores (ex: '++'), consome e lê próxima ação
     while (current() && current()!.type === "OPERATOR") {
       const op = consume("OPERATOR", "Esperado operador").value!;
       operators.push(op);
+      
+      // Verifica se há um delay antes da próxima ação
+      let delay: number | null = null;
+      if (current() && current()!.type === "DELAY") {
+        const delayToken = consume("DELAY", "Esperado delay").value!;
+        // Parseia "1000ms" ou "1s" para millisegundos
+        const match = delayToken.match(/^(\d+(?:\.\d+)?)(ms|s)$/);
+        if (match && match[1]) {
+          let value = parseFloat(match[1]);
+          const unit = match[2] || "ms";
+          delay = unit === "s" ? value * 1000 : value;
+        }
+      }
+      delays.push(delay);
+      
       const nextAction = parseAction();
       parts.push(nextAction);
     }
 
     const finalActions: ActionNode[] = [];
+    let finalDelay: number | null = null;
 
     // Verifica se há múltiplos "=>" (manipulação de interpolação)
     while (current() && current()!.type === "ARROW") {
       consume("ARROW", "Esperado '=>'");
       
-      // Verifica se há uma ação final ou apenas modificador
-      if (current() && current()!.type !== "SEMICOLON") {
+      // Se há delay logo após =>, parseá-lo
+      if (current() && current()!.type === "DELAY") {
+        const delayToken = consume("DELAY", "Esperado delay").value!;
+        const match = delayToken.match(/^(\d+(?:\.\d+)?)(ms|s)$/);
+        if (match && match[1]) {
+          let value = parseFloat(match[1]);
+          const unit = match[2] || "ms";
+          finalDelay = unit === "s" ? value * 1000 : value;
+        }
+      }
+      // Se há uma ação final (diferente de ; DELAY)
+      else if (current() && current()!.type !== "SEMICOLON" && current()!.type !== "DELAY") {
         finalActions.push(parseAction());
+        
+        // Verifica se há delay APÓS a ação final
+        if (current() && current()!.type === "DELAY") {
+          const delayToken = consume("DELAY", "Esperado delay").value!;
+          const match = delayToken.match(/^(\d+(?:\.\d+)?)(ms|s)$/);
+          if (match && match[1]) {
+            let value = parseFloat(match[1]);
+            const unit = match[2] || "ms";
+            finalDelay = unit === "s" ? value * 1000 : value;
+          }
+        }
       }
     }
 
@@ -164,8 +204,14 @@ export function parser(tokens: Token[]): ProgramNode {
         parts, 
         operators
       };
+      if (delays.length > 0) {
+        sequenceNode.delays = delays;
+      }
       if (finalActions.length > 0) {
         sequenceNode.finalActions = finalActions;
+        if (finalDelay !== null) {
+          sequenceNode.finalDelayMs = finalDelay;
+        }
       }
       actionExpr = sequenceNode;
     } else {

@@ -1,6 +1,7 @@
 h1 {
     DOMContent.onLoad {
-        text: land() ++ slideIn() =>;
+        text: slideIn() ++ slideOut();
+        // não houve um delay de 1s entre o slideIn e slideOut!!!!!
         color: fadeColor(#f00, #000, 600ms);
     };
 }

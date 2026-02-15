@@ -245,17 +245,19 @@ Uma interpolação nada mais é que o resultado obtido da soma/concatenação de
 
 ## Intervalos na Execução = 
 
-Através de um símbolo especial, é possível definir o intervalo de tempo entre a execução da primeira e segunda animação concatenada, sendo necessário colocar o valor em ms (milissegundos).
+Através de um símbolo especial, é possível definir o intervalo de tempo entre a execução da primeira e segunda animação CONCATENADA, sendo necessário colocar um valor númerico. O número só é aceito se ele estiver colado com o "--". Se houver espaços em branco entre ele e o número, dá erro!
 
 > Reforçando que o símbolo é o (--)
 
 ```
 exemplo {
     window.onLoad {
-        text: slideIn +- rise() => --1000ms;
+        text: slideIn +- ~rise() => --1000ms;
     };
 } 
 ```
+
+> "~" representa o símbolo inversor, rise() é uma animação de entrada e seu inverso se torna uma animação de saída.
 
 Outros exemplo seria fazendo uma concatenação com a interpolação e aplicando o delay entre a interpolação e a animação.
 
