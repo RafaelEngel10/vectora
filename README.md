@@ -51,9 +51,9 @@ div {                                                          <--- HTML element
 
 Status
 ------
-Current: sum/concat animations, induced concat animations, .<br   >
-In progress: interpolation manipulation, properties, concat manual delay.  
-Planned: inversor, counter statement, identifier.
+✅ Current: sum/concat animations, interpolation manipulation, concat manual delay, inversor.<br   >
+🏗️ In progress: interpolation properties, precedence and multiples sums/concats. <br > 
+📜 Planned: counter statement, identifier, async elements, async events.
 
 Contributing
 ------------

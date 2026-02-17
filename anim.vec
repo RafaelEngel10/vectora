@@ -20,7 +20,8 @@ h2 {
 */
 
 // ainda não há a opção de colocar o infixo ">" para selecionar apenas as childs dentro de um seletor
-// é necessário sua atribuição ao código
+// também não há como utilizar a expressão "," para adicionar mais de um seletor
+// é necessário suas atribuições ao código
 .parent {
     DOMContent.onLoad {
         text: ~slideOut() ++ ~slideIn();

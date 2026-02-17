@@ -2,6 +2,7 @@ import { appendTransition, ensureInlineBlockIfNeeded, toMs } from "../extras/bas
 import { textAnimations } from "../catalog/text/textAnimations.js";
 import { colorAnimations } from "../catalog/color/colorAnimations.js";
 import { transformAnimations } from "../catalog/transform/transform.js";
+import { handleUncataloged } from "./handleUncataloged.js";
 
 const fadeOut = textAnimations.fadeOut;
 const fadeIn = textAnimations.fadeIn;
@@ -28,6 +29,7 @@ export function reverseAnimation(anim: any) {
     if (anim == 'chameleonCamo') return octopus;
     if (anim == 'zoomOut') return zoomIn;
     if (anim == 'zoomIn') return zoomOut;
+    // if (anim) return handleUncataloged(anim);
 }
 
 export const reverseCatalog = {
