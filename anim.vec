@@ -1,7 +1,11 @@
 h1 {
     DOMContent.onLoad {
         // erro que fazia o delay depois do sinal "=>" não funcionar resolvido!
-        text: rise() +- slideOut() => --1000ms;
+        // proxima etapa -> operador de aplicação de propriedades "&"
+        //text: rise() +- slideOut() => --1000ms => &ease-in-out;
+        // aplicar propriedades a interpolações de concatenação não faz muita diferença
+        // agora aceita funções como steps() e cubix
+        text: rise() ++ slideIn() => &transition:ease-in-out;
         color: fadeColor(#f00, #000, 600ms);
     };
 }
@@ -24,7 +28,7 @@ h2 {
 // é necessário suas atribuições ao código
 .parent {
     DOMContent.onLoad {
-        text: ~slideOut() ++ ~slideIn();
+        text: rise();
         // concatenação de animações revertidas funcionando!
     };
 }

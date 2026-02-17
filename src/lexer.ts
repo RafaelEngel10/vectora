@@ -12,7 +12,9 @@ export type TokenType =
   | "COMMA"
   | "OPERATOR"
   | "ARROW"
-  | "DELAY";
+  | "DELAY"
+  | "PROPERTY"
+  | "PROPERTY-TYPE";
 
 
 // Estrutura básica de um token
@@ -102,12 +104,14 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
+
     // operador "=>" para manipulação de interpolação
     if (char === "=" && input[i + 1] === ">") {
       tokens.push({ type: "ARROW", value: "=>" });
       i += 2;
       continue;
     }
+
 
     // delay "--" seguido de número e unidade (ex: --1000ms)
     if (char === "-" && input[i + 1] === "-") {
@@ -122,6 +126,30 @@ export function lexer(input: string): Token[] {
         continue;
       }
     }
+
+
+    // se for o símbolo de propriedade "&", retorna apenas o valor de propriedade (ex: ease-in-out)
+    if (char === "&") {
+      // Match apenas transition ou animation
+      const match = input.slice(i).match(/^&(transition|animation):([a-zA-Z0-9_\-,\s()]+)/);
+
+      if (match) {
+        const [fullMatch, type, value] = match;
+        tokens.push({ type: "PROPERTY-TYPE", value: type! });
+        tokens.push({ type: "PROPERTY", value: value!.trim() });
+        i += fullMatch.length;
+        continue;
+      }
+
+      // Caso não seja transition/animation, assume easing simples
+      const easingMatch = input.slice(i).match(/^&([a-zA-Z_][a-zA-Z0-9_-]*(\([^)]*\))?)/);
+      if (easingMatch) {
+        tokens.push({ type: "PROPERTY", value: easingMatch[1]! });
+        i += easingMatch[0].length;
+        continue;
+      }
+    }
+
     
     // operador de reversão '~'
     if (char === "~") {
@@ -129,6 +157,7 @@ export function lexer(input: string): Token[] {
       i++;
       continue;
     }
+
 
     // Hex color ou operador de soma induzida '#'
     if (char === "#") {

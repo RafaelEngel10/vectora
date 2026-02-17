@@ -40,9 +40,11 @@ type ActionSequenceNode = {
   type: "ActionSequence";
   parts: ActionNode[];
   operators: string[];
-  finalActions?: ActionNode[] | undefined;
-  delays?: (number | null)[]; // delays entre ações (em ms), null significa sem delay
-  finalDelayMs?: number; // delay antes de executar ações finais
+  finalActions?: ActionNode[] | undefined;  // ação final (depois de "=>")
+  delays?: (number | null)[];               // delays entre ações (em ms), null significa sem delay
+  finalDelayMs?: number;                    // delay antes de executar ações finais
+  propertiesType?: string[] | string;               // tipos de propriedades (animation e transition)
+  properties?: string[] | string;                        // propriedades de interpolação
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode | undefined;
@@ -137,6 +139,8 @@ export function parser(tokens: Token[]): ProgramNode {
     const parts: ActionNode[] = [firstAction];
     const operators: string[] = [];
     const delays: (number | null)[] = [];
+    let propertyNew: string = "";
+    let typeNew: string = "";
 
     // Enquanto houver operadores (ex: '++'), consome e lê próxima ação
     while (current() && current()!.type === "OPERATOR") {
@@ -177,9 +181,21 @@ export function parser(tokens: Token[]): ProgramNode {
           const unit = match[2] || "ms";
           finalDelay = unit === "s" ? value * 1000 : value;
         }
+        // gastei trinta minutos procurando o erro, e era pq tava faltando ISSO no final
+        // mais que CU
+        delays.push(finalDelay); 
+      } 
+
+      // Se há uma propriedade (&ease-in-out ou com tipagem de propriedade ex: &transition:ease-in-out)
+      if (current() && current()!.type === "PROPERTY-TYPE") {
+        typeNew = consume("PROPERTY-TYPE", "Esperado tipo de propriedade").value!;
+      }
+      if (current() && current()!.type === "PROPERTY") {
+        propertyNew = consume("PROPERTY", "Esperado propriedade").value!;
       }
       // Se há uma ação final (diferente de ; DELAY)
-      else if (current() && current()!.type !== "SEMICOLON" && current()!.type !== "DELAY") {
+      else if (current() && current()!.type !== "SEMICOLON" && current()!.type !== "DELAY" && current()!.type !== "PROPERTY")
+      {
         finalActions.push(parseAction());
         
         // Verifica se há delay APÓS a ação final
@@ -191,11 +207,9 @@ export function parser(tokens: Token[]): ProgramNode {
             const unit = match[2] || "ms";
             finalDelay = unit === "s" ? value * 1000 : value;
           }
+          delays.push(finalDelay);
         }
       }
-      // gastei trinta minutos procurando o erro, e era pq tava faltando ISSO no final
-      // mais que CU
-      delays.push(finalDelay);  
     }
 
     consume("SEMICOLON", "Esperado ';' no fim da declaração");
@@ -207,6 +221,7 @@ export function parser(tokens: Token[]): ProgramNode {
         parts, 
         operators
       };
+
       if (delays.length > 0) {
         sequenceNode.delays = delays;
       }
@@ -215,6 +230,18 @@ export function parser(tokens: Token[]): ProgramNode {
         if (finalDelay !== null) {
           sequenceNode.finalDelayMs = finalDelay;
         }
+        if (propertyNew !== "") {
+          sequenceNode.properties = propertyNew;
+        }
+        if (typeNew !== "") {
+          sequenceNode.propertiesType = typeNew;
+        }
+      }
+      if (propertyNew !== "") {
+        sequenceNode.properties = propertyNew;
+      }
+      if (typeNew !== "") {
+        sequenceNode.propertiesType = typeNew;
       }
       actionExpr = sequenceNode;
     } else {
