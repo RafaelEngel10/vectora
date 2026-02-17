@@ -51,8 +51,8 @@ div {                                                          <--- HTML element
 
 Status
 ------
-✅ Current: sum/concat animations, interpolation manipulation, concat manual delay, inversor.<br   >
-🏗️ In progress: interpolation properties, precedence and multiples sums/concats. <br > 
+✅ Current: sum/concat animations, interpolation manipulation and properties, concat manual delay, inversor.<br   >
+🏗️ In progress: precedence and multiples sums/concats, uncataloged reverse animations. <br > 
 📜 Planned: counter statement, identifier, async elements, async events.
 
 Contributing
