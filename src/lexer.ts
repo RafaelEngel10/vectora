@@ -126,7 +126,7 @@ export function lexer(input: string): Token[] {
 
     // se for o símbolo de propriedade "&", retorna apenas o valor de propriedade (ex: ease-in-out)
     if (char === "&") {
-      const easingMatch = input.slice(i).match(/^&([a-zA-Z_][a-zA-Z0-9_-]*)/);
+      const easingMatch = input.slice(i).match(/^&([a-zA-Z_][a-zA-Z0-9_-]*(\([^)]*\))?)/);
       if (easingMatch) {
         tokens.push({ type: "PROPERTY", value: `${easingMatch[1]}` });
         i += easingMatch[0].length;
