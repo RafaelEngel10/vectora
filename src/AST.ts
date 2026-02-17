@@ -169,7 +169,7 @@ export function parser(tokens: Token[]): ProgramNode {
       consume("ARROW", "Esperado '=>'");
       
       // Se há delay logo após =>, parseá-lo
-      if (current() && current()!.type === "DELAY") {
+      if (current() && current()!.type === 'DELAY') {
         const delayToken = consume("DELAY", "Esperado delay").value!;
         const match = delayToken.match(/^(\d+(?:\.\d+)?)(ms|s)$/);
         if (match && match[1]) {
@@ -193,6 +193,9 @@ export function parser(tokens: Token[]): ProgramNode {
           }
         }
       }
+      // gastei trinta minutos procurando o erro, e era pq tava faltando ISSO no final
+      // mais que CU
+      delays.push(finalDelay);  
     }
 
     consume("SEMICOLON", "Esperado ';' no fim da declaração");
