@@ -43,7 +43,8 @@ type ActionSequenceNode = {
   finalActions?: ActionNode[] | undefined;  // ação final (depois de "=>")
   delays?: (number | null)[];               // delays entre ações (em ms), null significa sem delay
   finalDelayMs?: number;                    // delay antes de executar ações finais
-  properties?: string;                        // propriedades de interpolação
+  propertiesType?: string[] | string;               // tipos de propriedades (animation e transition)
+  properties?: string[] | string;                        // propriedades de interpolação
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode | undefined;
@@ -139,6 +140,7 @@ export function parser(tokens: Token[]): ProgramNode {
     const operators: string[] = [];
     const delays: (number | null)[] = [];
     let propertyNew: string = "";
+    let typeNew: string = "";
 
     // Enquanto houver operadores (ex: '++'), consome e lê próxima ação
     while (current() && current()!.type === "OPERATOR") {
@@ -183,10 +185,13 @@ export function parser(tokens: Token[]): ProgramNode {
         // mais que CU
         delays.push(finalDelay); 
       } 
-      // Se há uma propriedade (&ease-in-out)
-      else if (current() && current()!.type === "PROPERTY") {
-        const propertyToken = consume("PROPERTY", "Esperado propriedade").value!;
-        propertyNew = propertyToken;
+
+      // Se há uma propriedade (&ease-in-out ou com tipagem de propriedade ex: &transition:ease-in-out)
+      if (current() && current()!.type === "PROPERTY-TYPE") {
+        typeNew = consume("PROPERTY-TYPE", "Esperado tipo de propriedade").value!;
+      }
+      if (current() && current()!.type === "PROPERTY") {
+        propertyNew = consume("PROPERTY", "Esperado propriedade").value!;
       }
       // Se há uma ação final (diferente de ; DELAY)
       else if (current() && current()!.type !== "SEMICOLON" && current()!.type !== "DELAY" && current()!.type !== "PROPERTY")
@@ -228,9 +233,15 @@ export function parser(tokens: Token[]): ProgramNode {
         if (propertyNew !== "") {
           sequenceNode.properties = propertyNew;
         }
+        if (typeNew !== "") {
+          sequenceNode.propertiesType = typeNew;
+        }
       }
       if (propertyNew !== "") {
         sequenceNode.properties = propertyNew;
+      }
+      if (typeNew !== "") {
+        sequenceNode.propertiesType = typeNew;
       }
       actionExpr = sequenceNode;
     } else {

@@ -98,8 +98,9 @@ function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): Ac
 ///
 ///CONCATENAÇÃO: As animações são executadas sequencialmente com delays opcionais
 ///
-async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number, property?: string) {
+async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number, property?: string, propertyType?: string) {
   const NewProp = property ?? "linear";
+  const NewPropType = propertyType ?? false;
   console.log("[Vectora] Iniciando sequência de animações com", parts.length, "parte(s)");
 
   // Agrupa animações que devem ser somadas
@@ -313,6 +314,7 @@ export function interpret(ast: ProgramNode) {
                 delays?: (number | null)[];
                 finalDelayMs?: number;
                 properties?: string;
+                propertiesType?: string;
               };
               
               // Valida todas as animações na sequência
@@ -334,7 +336,7 @@ export function interpret(ast: ProgramNode) {
               }
 
               // Cada sequência deve rodar de forma sequencial, mas a sequência inteira pode rodar em paralelo com outras statements
-              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs, seq.properties));
+              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs, seq.properties, seq.propertiesType));
             }
           }
 
