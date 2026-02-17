@@ -237,7 +237,15 @@ Uma interpolação nada mais é que o resultado obtido da soma/concatenação de
 
 <pre>exemplo {
     window.onLoad {
-        text: land() ++ slideIn() => &ease-in => fadeOut();   
+        text: land() ++ slideIn() => &ease-in;   
+    };
+}</pre>
+
+- Definir propriedades para certas interpolações dentro de uma interpolação geral é feita usando o o princípio de leitura do interpretador, que é da esquerda para a direita.
+
+<pre>exemplo {
+    window.onLoad {
+        text: land() ++ slideIn() => &ease-in => fadeOut() => &ease-out;   
     };
 }</pre>
 
@@ -289,7 +297,7 @@ exemplo {
 ```
 exemplo {
     window.onLoad {
-        color: slideIn() ++ ~land();
+        color: ~fadeColor();
         <!-- Inverso da fadeColor não é catalogada! -->
     };
 }

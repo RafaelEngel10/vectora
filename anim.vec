@@ -4,8 +4,8 @@ h1 {
         // proxima etapa -> operador de aplicação de propriedades "&"
         //text: rise() +- slideOut() => --1000ms => &ease-in-out;
         // aplicar propriedades a interpolações de concatenação não faz muita diferença
-        // agora aceita funções como steps() e cubix
-        text: rise() ++ slideIn() => &transition:ease-in-out;
+        // agora aceita funções como steps() e cubix()
+        text: rise() ++ slideIn() => &steps(500, start);
         color: fadeColor(#f00, #000, 600ms);
     };
 }
@@ -14,11 +14,10 @@ h1 {
 /*
 h2 {
     DOMContent.onLoad {
-        text: (slideIn() ++ rise()) ++ slideIn();
-        // faz a soma das três funções, sendo o output esperado, uma animação na diagonal mais próxima do eixo horizontal 
-        // ou seja 
-        // uma animação de entrada na diagonal, com ângulo de 22,5° em relação ao eixo horizontal
-        // pois a terceira função a ser somada é horizontal, então a interpolação se aproxima mais do eixo horizontal 
+        text: rise() ++ slideIn() ++ slideIn() => &ease-in-out;
+        // aqui a soma leva em conta apenas os pixeis, resultado (-60px, 30px)
+        // ao colocar a precedência, a soma leva em conta apenas o ângulo (22.5° graus)
+        // text: (rise() ++ slideIn()) ++ slideIn() => &ease-in-out;
     };
 }
 */
@@ -28,8 +27,10 @@ h2 {
 // é necessário suas atribuições ao código
 .parent {
     DOMContent.onLoad {
-        text: rise();
-        // concatenação de animações revertidas funcionando!
+        text: rise() ++ slideIn() => &ease-in-out;
+        // aqui a soma leva em conta apenas os pixeis, resultado (-60px, 30px)
+        // ao colocar a precedência, a soma leva em conta apenas o ângulo (22.5° graus)
+        // text: (rise() ++ slideIn()) ++ slideIn() => &ease-in-out;
     };
 }
 
