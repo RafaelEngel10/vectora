@@ -38,6 +38,8 @@ type ActionSequenceNode = {
   parts: ActionNode[];
   operators: string[];
   finalActions?: ActionNode[];
+  delays?: (number | null)[];
+  finalDelayMs?: number;
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode;
@@ -92,17 +94,24 @@ function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): Ac
 ///SOMA: Os vetores de transformação são combinados matematicamente
 ///      land (vertical) + slideIn (horizontal) = diagonal movement
 ///
-///CONCATENAÇÃO: As animações são executadas sequencialmente
+///CONCATENAÇÃO: As animações são executadas sequencialmente com delays opcionais
 ///
-async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[]) {
+async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number) {
   console.log("[Vectora] Iniciando sequência de animações com", parts.length, "parte(s)");
 
   // Agrupa animações que devem ser somadas
   const groups = groupAnimationsForSumming(parts, operators);
 
   // Executa cada grupo sequencialmente
-  for (const group of groups) {
+  for (let groupIdx = 0; groupIdx < groups.length; groupIdx++) {
+    const group = groups[groupIdx];
     if (!group || group.length === 0) continue;
+    
+    // Aplica delay se houver (delay vem antes da ação)
+    if (delays && delays[groupIdx] !== undefined && delays[groupIdx] !== null) {
+      console.log(`[Vectora] Aguardando ${delays[groupIdx]}ms antes de executar grupo ${groupIdx + 1}`);
+      await new Promise(resolve => setTimeout(resolve, delays[groupIdx]!));
+    }
     
     if (group.length === 1) {
       // Grupo com uma única animação: executa normalmente
@@ -182,6 +191,12 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
         }, totalDuration + 50);
       });
     }
+  }
+
+  // Aplica delay antes das ações finais se houver
+  if (finalDelayMs !== undefined && finalDelayMs !== null && finalDelayMs > 0) {
+    console.log(`[Vectora] Aguardando ${finalDelayMs}ms antes de executar ações finais`);
+    await new Promise(resolve => setTimeout(resolve, finalDelayMs));
   }
 
   // Executa as ações finais após a sequência terminar (manipulação de interpolação)
@@ -286,7 +301,14 @@ export function interpret(ast: ProgramNode) {
             } 
             /// caso seja uma sequência de animações (soma/concatenação)
             else if ((actionExpr as any).type === "ActionSequence") {                         
-              const seq = actionExpr as any as { type: string; parts: any[]; operators: string[]; finalActions?: any[] };
+              const seq = actionExpr as any as { 
+                type: string; 
+                parts: any[]; 
+                operators: string[]; 
+                finalActions?: any[];
+                delays?: (number | null)[];
+                finalDelayMs?: number;
+              };
               
               // Valida todas as animações na sequência
               for (const part of seq.parts) {
@@ -307,7 +329,7 @@ export function interpret(ast: ProgramNode) {
               }
 
               // Cada sequência deve rodar de forma sequencial, mas a sequência inteira pode rodar em paralelo com outras statements
-              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions));
+              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs));
             }
           }
 

@@ -1,15 +1,30 @@
 h1 {
     DOMContent.onLoad {
-        text: land() ++ slideIn() =>;
+        // erro que fazia o delay depois do sinal "=>" não funcionar resolvido!
+        text: rise() +- slideOut() => --1000ms;
         color: fadeColor(#f00, #000, 600ms);
     };
 }
 
-// Usando "div > div" para selecionar apenas a div filha de outra div
-// Evita seleção múltipla e repeição de animações
+// próxima coisa a se fazer!
+/*
+h2 {
+    DOMContent.onLoad {
+        text: (slideIn() ++ rise()) ++ slideIn();
+        // faz a soma das três funções, sendo o output esperado, uma animação na diagonal mais próxima do eixo horizontal 
+        // ou seja 
+        // uma animação de entrada na diagonal, com ângulo de 22,5° em relação ao eixo horizontal
+        // pois a terceira função a ser somada é horizontal, então a interpolação se aproxima mais do eixo horizontal 
+    };
+}
+*/
+
+// ainda não há a opção de colocar o infixo ">" para selecionar apenas as childs dentro de um seletor
+// é necessário sua atribuição ao código
 .parent {
     DOMContent.onLoad {
-        text: land();
+        text: ~slideOut() ++ ~slideIn();
+        // concatenação de animações revertidas funcionando!
     };
 }
 
