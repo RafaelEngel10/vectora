@@ -40,6 +40,8 @@ type ActionSequenceNode = {
   finalActions?: ActionNode[];
   delays?: (number | null)[];
   finalDelayMs?: number;
+  properties?: (string | null)[];
+  property?: string;
 };
 
 type ActionExpr = ActionNode | ActionSequenceNode;
@@ -96,7 +98,8 @@ function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): Ac
 ///
 ///CONCATENAÇÃO: As animações são executadas sequencialmente com delays opcionais
 ///
-async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number) {
+async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number, property?: string) {
+  const NewProp = property ?? "linear";
   console.log("[Vectora] Iniciando sequência de animações com", parts.length, "parte(s)");
 
   // Agrupa animações que devem ser somadas
@@ -112,6 +115,7 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
       console.log(`[Vectora] Aguardando ${delays[groupIdx]}ms antes de executar grupo ${groupIdx + 1}`);
       await new Promise(resolve => setTimeout(resolve, delays[groupIdx]!));
     }
+    console.log(`[Vectora] Aplicando propriedade ${NewProp} à interpolação`);
     
     if (group.length === 1) {
       // Grupo com uma única animação: executa normalmente
@@ -173,8 +177,8 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
         // Força reflow para garantir que a transição seja aplicada
         void element.offsetWidth;
         
-        // Passo 2: Ativa transição e anima para posição FINAL (0, 0 - estado neutro)
-        element.style.transition = `transform ${totalDuration}ms ease-in-out`;
+        // Passo 2: Ativa transição e anima para posição FINAL
+        element.style.transition = `transform ${totalDuration}ms ${NewProp}`;
         element.style.transform = 'none';
 
         const onEnd = () => {
@@ -308,6 +312,7 @@ export function interpret(ast: ProgramNode) {
                 finalActions?: any[];
                 delays?: (number | null)[];
                 finalDelayMs?: number;
+                properties?: string;
               };
               
               // Valida todas as animações na sequência
@@ -329,7 +334,7 @@ export function interpret(ast: ProgramNode) {
               }
 
               // Cada sequência deve rodar de forma sequencial, mas a sequência inteira pode rodar em paralelo com outras statements
-              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs));
+              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs, seq.properties));
             }
           }
 

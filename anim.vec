@@ -1,7 +1,8 @@
 h1 {
     DOMContent.onLoad {
         // erro que fazia o delay depois do sinal "=>" não funcionar resolvido!
-        text: rise() +- slideOut() => --1000ms;
+        // proxima etapa -> operador de aplicação de propriedades "&"
+        text: rise() +- slideOut() => --1000ms => &ease-in-out;
         color: fadeColor(#f00, #000, 600ms);
     };
 }

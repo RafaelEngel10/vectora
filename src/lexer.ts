@@ -12,7 +12,8 @@ export type TokenType =
   | "COMMA"
   | "OPERATOR"
   | "ARROW"
-  | "DELAY";
+  | "DELAY"
+  | "PROPERTY";
 
 
 // Estrutura básica de um token
@@ -122,6 +123,17 @@ export function lexer(input: string): Token[] {
         continue;
       }
     }
+
+    // se for o símbolo de propriedade "&", retorna apenas o valor de propriedade (ex: ease-in-out)
+    if (char === "&") {
+      const easingMatch = input.slice(i).match(/^&([a-zA-Z_][a-zA-Z0-9_-]*)/);
+      if (easingMatch) {
+        tokens.push({ type: "PROPERTY", value: `${easingMatch[1]}` });
+        i += easingMatch[0].length;
+        continue;
+      }
+    }
+
     
     // operador de reversão '~'
     if (char === "~") {
