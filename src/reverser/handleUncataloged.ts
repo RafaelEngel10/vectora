@@ -1,4 +1,3 @@
-
-export function handleUncataloged(anim: any): Object {  
-    return Object;
+export function handleUncataloged(anim: string): Function {  
+    return Function;
 }

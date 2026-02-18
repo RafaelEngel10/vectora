@@ -94,7 +94,7 @@ export const triggerEvents: Record<string, (cb: (targets?: HTMLElement[]) => voi
   },
 
   // trigger que ativa quando o usuário seleciona texto dentro dos elementos correspondentes
-  "onSelection.click": (cb, elements) => {
+  "onSelect.click": (cb, elements) => {
     let lastMatch: Set<HTMLElement> | null = null;
 
     document.addEventListener("selectionchange", () => {

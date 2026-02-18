@@ -5,7 +5,7 @@ h1 {
         //text: rise() +- slideOut() => --1000ms => &ease-in-out;
         // aplicar propriedades a interpolações de concatenação não faz muita diferença
         // agora aceita funções como steps() e cubix()
-        text: rise() ++ slideIn() => &steps(500, start);
+        text: rise() +- ~slideIn() => &ease-in-out;
         color: fadeColor(#f00, #000, 600ms);
     };
 }
@@ -27,7 +27,7 @@ h2 {
 // é necessário suas atribuições ao código
 .parent {
     DOMContent.onLoad {
-        text: rise() ++ slideIn() => &ease-in-out;
+        text: rise() ++ rise() => &ease-in-out;
         // aqui a soma leva em conta apenas os pixeis, resultado (-60px, 30px)
         // ao colocar a precedência, a soma leva em conta apenas o ângulo (22.5° graus)
         // text: (rise() ++ slideIn()) ++ slideIn() => &ease-in-out;
@@ -37,5 +37,6 @@ h2 {
 #child {
     DOMContent.onLoad {
         radius: round();
+        shadow: surge() +- purge() => --700ms;
     };
 }

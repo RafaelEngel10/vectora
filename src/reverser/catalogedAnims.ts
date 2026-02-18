@@ -3,7 +3,9 @@ import { textAnimations } from "../catalog/text/textAnimations.js";
 import { colorAnimations } from "../catalog/color/colorAnimations.js";
 import { transformAnimations } from "../catalog/transform/transform.js";
 import { handleUncataloged } from "./handleUncataloged.js";
+import { ArrowFunction } from "typescript";
 
+/// cadeia de funções com as animações
 const fadeOut = textAnimations.fadeOut;
 const fadeIn = textAnimations.fadeIn;
 const slideIn = textAnimations.slideIn; 
@@ -15,8 +17,18 @@ const chameleon = colorAnimations.chameleonCamo;
 const zoomIn = transformAnimations.zoomIn;
 const zoomOut = transformAnimations.zoomOut;
 
-export function reverseAnimation(anim: any) {
-    anim = anim.split('~')[1];
+/// função de reversão de animações catalogadas
+export function reverseAnimation(anim: string): Function {
+    // retira o operador '~'
+    anim = anim.split('~')[1] ?? '';
+
+    // tratamento em caso de falta de conteúdo
+    if (!anim || anim === '') {
+        console.error(`[Vectora] Sem valor próprio para parâmetro ---> ${anim}`);
+        return () => {};
+    }
+
+    // cadeia de ifs para animações catalogadas
     if (anim == 'land') return reverseCatalog.fall;
     if (anim == 'rise') return reverseCatalog.hook;
     if (anim == 'fadeIn') return fadeOut;
@@ -29,10 +41,14 @@ export function reverseAnimation(anim: any) {
     if (anim == 'chameleonCamo') return octopus;
     if (anim == 'zoomOut') return zoomIn;
     if (anim == 'zoomIn') return zoomOut;
-    // if (anim) return handleUncataloged(anim);
+    else console.error(`[Vectora] Inverso de animação não foi catalogado ---> ${anim}`);
+    // else return handleUncataloged(anim);
+
+    // return básico só de sacanagem
+    return () => { };
 }
 
-export const reverseCatalog = {
+const reverseCatalog = {
     fall: (el: HTMLElement, args: any) => {
         return new Promise<void>(resolve => {
             const duration: number = toMs(args) || 600;

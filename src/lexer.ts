@@ -181,8 +181,15 @@ export function lexer(input: string): Token[] {
       tokens.push({ type: "OPERATOR", value: "#"});
       i++;
       continue;
-    }
+    } 
 
+
+    // operador '±', é só o '+-' diferente
+    if (char === "±") {
+      tokens.push({ type: "OPERATOR", value: "+-" });
+      i++;
+      continue;
+    }
     // operadores '++' e '+-'
     if (char === "+") {
       const next = input[i + 1];
