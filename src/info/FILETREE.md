@@ -1,17 +1,13 @@
 # File Tree: vectora
 
-**Generated:** 2/8/2026, 4:12:19 AM
-**Root Path:** `c:\Users\Usuario\Documents\rafael\projeto\bah\vectora`
+**Generated:** 2/17/2026, 9:33:53 AM
+**Root Path:** `c:\Users\Usuario\Documents\rafael\projeto\vectora`
 
 ```
-├── 📁 dependencies
-├── 📁 examples
-│   ├── 📄 anim.vec
-│   ├── 🌐 index.html
-│   └── 🎨 styles.css
 ├── 📁 import
 │   ├── 📁 library
 │   │   ├── 📁 cupid
+│   │   │   ├── 📁 message
 │   │   │   └── 📝 REMINDER.md
 │   │   ├── 📁 limits
 │   │   │   ├── 📁 request
@@ -24,29 +20,65 @@
 │   │   └── 📁 whensevent
 │   │       └── 📝 REMINDER.md
 │   └── 📝 REMINDER.md
+├── 📁 scripts
+│   └── 📄 fix-import-extensions.cjs
 ├── 📁 src
+│   ├── 📁 assets
+│   │   ├── 📁 images
+│   │   │   └── 🖼️ plano_cartesiano_setas.png
+│   │   └── 📄 objective.vec
 │   ├── 📁 catalog
-│   │   └── 📁 text
-│   │       └── 📄 textAnimations.ts
+│   │   ├── 📁 background
+│   │   │   ├── 📁 color
+│   │   │   │   └── 📄 backgroundColor.ts
+│   │   │   └── 📁 image
+│   │   │       └── 📄 backgroundImage.ts
+│   │   ├── 📁 brightness
+│   │   │   └── 📄 brightnessAnimations.ts
+│   │   ├── 📁 color
+│   │   │   └── 📄 colorAnimations.ts
+│   │   ├── 📁 gap
+│   │   │   └── 📄 gapAnimations.ts
+│   │   ├── 📁 global
+│   │   │   └── 📄 globalFunctions.ts
+│   │   ├── 📁 radius
+│   │   │   └── 📄 radiusAnimations.ts
+│   │   ├── 📁 shadow
+│   │   │   └── 📄 shadowAnimations.ts
+│   │   ├── 📁 text
+│   │   │   └── 📄 textAnimations.ts
+│   │   ├── 📁 transform
+│   │   │   └── 📄 transform.ts
+│   │   └── 📁 weight
+│   │       └── 📄 weightAnimations.ts
 │   ├── 📁 events
 │   │   └── 📄 triggerEvents.ts
 │   ├── 📁 extras
 │   │   ├── 📄 basics.ts
 │   │   └── 📄 console.js
+│   ├── 📁 filter
+│   │   ├── 📄 animationMetadata.ts
+│   │   └── 📄 filterAnim.ts
 │   ├── 📁 info
+│   │   ├── 📝 CARACTERES.md
 │   │   ├── 📝 DEEPKNOWLAGE.md
-│   │   ├── 📝 READ.md
 │   │   └── 📝 REMINDER.md
+│   ├── 📁 reverser
+│   │   ├── 📄 catalogedAnims.ts
+│   │   └── 📄 handleUncataloged.ts
 │   ├── 📄 AST.ts
 │   ├── 📄 interpreter.ts
 │   ├── 📄 lexer.ts
 │   └── 📄 runtime.ts
+├── 📁 test
+│   └── 📁 main
 ├── ⚙️ .gitignore
 ├── 📝 README.md
 ├── 📄 anim.vec
 ├── 🌐 index.html
 ├── ⚙️ package-lock.json
 ├── ⚙️ package.json
+├── 🎨 styles.css
 └── ⚙️ tsconfig.json
 ```
 

@@ -372,6 +372,8 @@ export const textAnimations = {
         frame++;
         if (frame < keyframes.length) {
           setTimeout(() => requestAnimationFrame(applyFrame), frameDuration);
+        } else {
+          resolve();
         }
       };
 

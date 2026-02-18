@@ -49,12 +49,8 @@ type ActionExpr = ActionNode | ActionSequenceNode;
 // registra o trigger 
 const triggerRegistry: Record<string, (cb: (targets?: HTMLElement[]) => any, elements: NodeListOf<HTMLElement>) => void> = triggerEvents;
 
-// animations are selected dynamically via `filterAnim` based on action name
-
-/**
- * Agrupa animações consecutivas que devem ser somadas
- * Retorna grupos de animações onde cada grupo deve ter seus vetores somados
- */
+// Agrupa animações consecutivas que devem ser somadas
+// Retorna grupos de animações onde cada grupo deve ter seus vetores somados
 function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): ActionNode[][] {
   if (parts.length === 0) return [];
 
@@ -90,17 +86,11 @@ function groupAnimationsForSumming(parts: ActionNode[], operators: string[]): Ac
   return groups;
 }
 
-///
-///Executa uma sequência de animações
-///
-///SOMA: Os vetores de transformação são combinados matematicamente
-///      land (vertical) + slideIn (horizontal) = diagonal movement
-///
-///CONCATENAÇÃO: As animações são executadas sequencialmente com delays opcionais
-///
-async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number, property?: string, propertyType?: string) {
+//////Executa uma sequência de animações
+//SOMA: Os vetores de transformação são combinados matematicamente
+//CONCATENAÇÃO: As animações são executadas sequencialmente com delays opcionais
+async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[], operators: string[], finalActions?: ActionNode[], delays?: (number | null)[], finalDelayMs?: number, property?: string) {
   const NewProp = property ?? "linear";
-  const NewPropType = propertyType ?? false;
   console.log("[Vectora] Iniciando sequência de animações com", parts.length, "parte(s)");
 
   // Agrupa animações que devem ser somadas
@@ -144,7 +134,7 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
 
         await Promise.resolve(animationFn(element, argsStr));
       }
-
+      
       console.log(`[Vectora] Executando animação "${part.name}"`);
     } 
     else {
@@ -158,10 +148,26 @@ async function executeAnimationSequence(element: HTMLElement, parts: ActionNode[
 
       for (const part of group) {
         if (!part) continue;
-        const meta = getAnimationMetadata(part.name as string);
-        if (meta && meta.vector) {
-          console.log(`  [${part.name}] vetor: ${JSON.stringify(meta.vector)}`);
-          resultVector = sumVectors(resultVector, meta.vector);
+        let animation = part.name;
+
+        // caso tenha o operador '~'
+        if (animation.includes('~')) {
+          const anim = animation.split('~')[1];
+          const meta = getAnimationMetadata(anim as string);
+          
+          if (meta && meta.vector) {
+            console.log(`  [${part.name}] vetor: ${JSON.stringify(meta.vector)}`);
+            resultVector = sumVectors(resultVector, meta.vector);
+          }
+        } 
+        // caso não tenha o operador
+        else {
+          const meta = getAnimationMetadata(part.name as string);
+
+          if (meta && meta.vector) {
+            console.log(`  [${part.name}] vetor: ${JSON.stringify(meta.vector)}`);
+            resultVector = sumVectors(resultVector, meta.vector);
+          }
         }
       }
 
@@ -336,7 +342,7 @@ export function interpret(ast: ProgramNode) {
               }
 
               // Cada sequência deve rodar de forma sequencial, mas a sequência inteira pode rodar em paralelo com outras statements
-              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs, seq.properties, seq.propertiesType));
+              statementPromises.push(executeAnimationSequence(element, seq.parts, seq.operators, seq.finalActions, seq.delays, seq.finalDelayMs, seq.properties));
             }
           }
 
